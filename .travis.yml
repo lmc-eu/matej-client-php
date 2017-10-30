@@ -1,0 +1,25 @@
+language: php
+
+php:
+  - 7.1
+  - 7.2
+
+matrix:
+  include:
+    - php: 7.1
+      env: dependencies="--prefer-lowest"
+    - php: 7.1
+      env: CHECK_CODESTYLE=1
+      before_install: phpenv config-rm xdebug.ini
+      script: composer check
+      after_success: ~
+
+install:
+  - travis_retry composer self-update && composer --version
+  - travis_retry composer update --no-interaction $DEPENDENCIES
+
+script:
+  - vendor/bin/phpunit --coverage-clover coverage-clover.xml
+
+after_success:
+  - travis_retry php vendor/bin/coveralls -v
