@@ -9,5 +9,25 @@
             "name": "LMC s.r.o.",
             "homepage": "https://github.com/lmc-eu"
         }
-    ]
+    ],
+    "autoload": {
+        "psr-4": {
+            "Lmc\\Matej\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lmc\\Matej\\": "tests/"
+        }
+    },
+    "require": {
+        "php-http/httplug": "^1.1",
+        "php-http/message": "^1.0",
+        "php-http/client-implementation": "^1.0",
+        "php-http/discovery": "^1.0"
+    },
+    "require-dev": {
+        "php-http/guzzle6-adapter": "^1.1",
+        "phpunit/phpunit": "^6.4"
+    }
 }
