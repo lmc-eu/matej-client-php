@@ -3,5 +3,14 @@
 ## Changelog
 For latest changes see [CHANGELOG.md](CHANGELOG.md) file. We follow [Semantic Versioning](http://semver.org/).
 
-## License
-This library is open source software licensed under the [MIT license](LICENCE.md).
+## Running Tests
+
+For each pull-request, unit tests as well as static analysis and codestyle checks must pass.
+
+To run all those checks execute:
+
+
+```sh
+$ composer test
+
+```
