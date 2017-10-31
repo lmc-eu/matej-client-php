@@ -1,0 +1,5 @@
+composer.lock
+composer.phar
+/vendor/
+.php_cs.cache
+coverage-clover.xml

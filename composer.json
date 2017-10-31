@@ -1,0 +1,46 @@
+{
+    "name": "lmc/matej",
+    "description": "API Client for Matej recommendation engine",
+    "type": "library",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "authors": [
+        {
+            "name": "LMC s.r.o.",
+            "homepage": "https://github.com/lmc-eu"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Lmc\\Matej\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lmc\\Matej\\": "tests/"
+        }
+    },
+    "require": {
+        "php-http/httplug": "^1.1",
+        "php-http/message": "^1.0",
+        "php-http/client-implementation": "^1.0",
+        "php-http/discovery": "^1.0"
+    },
+    "require-dev": {
+        "php-http/guzzle6-adapter": "^1.1",
+        "phpunit/phpunit": "^5.7 || ^6.4",
+        "friendsofphp/php-cs-fixer": "^2.7",
+        "phpstan/phpstan-shim": "^0.8.5",
+        "php-coveralls/php-coveralls": "^1.0"
+    },
+    "scripts": {
+        "test": [
+            "@check",
+            "./vendor/bin/phpunit"
+        ],
+        "check": [
+            "vendor/bin/php-cs-fixer fix --diff --dry-run --ansi",
+            "vendor/bin/phpstan.phar analyze ./src ./tests --level 7 --ansi"
+        ]
+    }
+}
