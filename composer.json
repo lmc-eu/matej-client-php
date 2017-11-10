@@ -25,7 +25,8 @@
         "php-http/message-factory": "^1.0",
         "php-http/client-implementation": "^1.0",
         "php-http/discovery": "^1.0",
-        "fig/http-message-util": "^1.1"
+        "fig/http-message-util": "^1.1",
+        "php-http/client-common": "^1.6"
     },
     "require-dev": {
         "php-http/guzzle6-adapter": "^1.1",
