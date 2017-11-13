@@ -11,7 +11,7 @@ matrix:
     - php: 7.1
       env: CHECK_CODESTYLE=1
       before_install: phpenv config-rm xdebug.ini
-      script: composer check
+      script: composer all
       after_success: ~
   allow_failures:
     - php: 7.2

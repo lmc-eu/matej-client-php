@@ -40,11 +40,11 @@
         "php-mock/php-mock-phpunit": "^2.0"
     },
     "scripts": {
-        "test": [
-            "@check",
+        "all": [
+            "@analyze",
             "./vendor/bin/phpunit"
         ],
-        "check": [
+        "analyze": [
             "vendor/bin/php-cs-fixer fix -vvv --diff --dry-run --ansi",
             "vendor/bin/phpstan.phar analyze ./src ./tests --level 7 --ansi"
         ]

@@ -14,6 +14,5 @@ For each pull-request, unit tests as well as static analysis and codestyle check
 To run all those checks execute:
 
 ```sh
-$ composer test
-
+$ composer all
 ```
