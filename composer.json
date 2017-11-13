@@ -1,5 +1,5 @@
 {
-    "name": "lmc/matej",
+    "name": "lmc/matej-client",
     "description": "API Client for Matej recommendation engine",
     "type": "library",
     "license": "MIT",
