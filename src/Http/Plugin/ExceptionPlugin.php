@@ -27,7 +27,7 @@ final class ExceptionPlugin implements Plugin
         $responseCode = $response->getStatusCode();
 
         if ($responseCode === StatusCodeInterface::STATUS_UNAUTHORIZED) {
-            throw AuthorizationException::createFromRequestAndResponse($request, $response);
+            throw AuthorizationException::fromRequestAndResponse($request, $response);
         }
 
         if ($responseCode >= 401 && $responseCode < 600) {

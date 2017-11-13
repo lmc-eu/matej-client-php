@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface;
  */
 class AuthorizationException extends RequestException
 {
-    public static function createFromRequestAndResponse(
+    public static function fromRequestAndResponse(
         RequestInterface $request,
         ResponseInterface $response,
         \Throwable $previous = null
