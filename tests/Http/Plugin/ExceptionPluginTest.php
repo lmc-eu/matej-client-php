@@ -40,8 +40,11 @@ class ExceptionPluginTest extends TestCase
     public function provideSuccessStatusCodes(): array
     {
         return [
-            'HTTP 200' => [StatusCodeInterface::STATUS_OK, RequestException::class],
-            'HTTP 201' => [StatusCodeInterface::STATUS_CREATED, AuthorizationException::class],
+            'HTTP 200' => [StatusCodeInterface::STATUS_OK],
+            'HTTP 201' => [StatusCodeInterface::STATUS_CREATED],
+            'HTTP 400 (batch was successfully executed, but all commands were rejected)' => [
+                StatusCodeInterface::STATUS_BAD_REQUEST,
+            ],
         ];
     }
 
@@ -72,7 +75,6 @@ class ExceptionPluginTest extends TestCase
     public function provideErrorStatusCodes(): array
     {
         return [
-            'HTTP 400' => [StatusCodeInterface::STATUS_BAD_REQUEST, RequestException::class],
             'HTTP 401' => [StatusCodeInterface::STATUS_UNAUTHORIZED, AuthorizationException::class],
             'HTTP 404' => [StatusCodeInterface::STATUS_NOT_FOUND, RequestException::class],
             'HTTP 500' => [StatusCodeInterface::STATUS_INTERNAL_SERVER_ERROR, RequestException::class],

@@ -30,7 +30,7 @@ final class ExceptionPlugin implements Plugin
             throw AuthorizationException::createFromRequestAndResponse($request, $response);
         }
 
-        if ($responseCode >= 400 && $responseCode < 600) {
+        if ($responseCode >= 401 && $responseCode < 600) {
             // TODO: use more specific exceptions
             throw new RequestException($response->getReasonPhrase(), $request, $response);
         }
