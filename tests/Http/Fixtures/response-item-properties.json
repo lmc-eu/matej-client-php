@@ -1,0 +1,26 @@
+{
+  "commands": {
+    "number_of_commands": 3,
+    "number_of_failed_commands": 1,
+    "number_of_successful_commands": 2,
+    "responses": [
+      {
+        "data": [],
+        "message": "",
+        "status": "OK"
+      },
+      {
+        "data": [],
+        "message": "DuplicateKeyError(u'E11000 duplicate key error collection: foo.data_items_properties index: property_1 dup key: { : \"title\" }',)",
+        "status": "ERROR"
+      },
+      {
+        "data": [],
+        "message": "",
+        "status": "OK"
+      }
+    ]
+  },
+  "message": "",
+  "status": "OK"
+}

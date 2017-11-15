@@ -21,7 +21,7 @@ class AuthorizationExceptionTest extends TestCase
             '{"message": "Invalid signature. Check your secret key","result": "ERROR"}'
         );
 
-        $exception = AuthorizationException::createFromRequestAndResponse($request, $response);
+        $exception = AuthorizationException::fromRequestAndResponse($request, $response);
 
         $this->assertInstanceOf(AuthorizationException::class, $exception);
         $this->assertSame(
