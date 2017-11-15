@@ -21,6 +21,7 @@
         }
     },
     "require": {
+        "php": "^7.1",
         "php-http/httplug": "^1.1",
         "php-http/message-factory": "^1.0",
         "php-http/client-implementation": "^1.0",
@@ -32,7 +33,7 @@
         "php-http/guzzle6-adapter": "^1.1",
         "php-http/mock-client": "^1.0",
         "php-http/message": "^1.0",
-        "phpunit/phpunit": "^5.7 || ^6.4",
+        "phpunit/phpunit": "^6.4",
         "friendsofphp/php-cs-fixer": "^2.7",
         "phpstan/phpstan-shim": "^0.8.5",
         "php-coveralls/php-coveralls": "^1.0",
