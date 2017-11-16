@@ -21,4 +21,14 @@ class ResponseDecodingException extends AbstractMatejException
             )
         );
     }
+
+    public static function forInvalidData(ResponseInterface $response): self
+    {
+        return new self(
+            sprintf(
+                "Error decoding Matej response: required data missing.\n\nBody:\n%s",
+                $response->getBody()
+            )
+        );
+    }
 }

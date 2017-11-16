@@ -2,6 +2,7 @@
   "commands": {
     "number_of_commands": 1,
     "number_of_failed_commands": 0,
+    "number_of_skipped_commands": 0,
     "number_of_successful_commands": 1,
     "responses": [
       {
