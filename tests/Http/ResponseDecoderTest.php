@@ -31,6 +31,7 @@ class ResponseDecoderTest extends TestCase
         $this->assertSame(1, $output->getNumberOfCommands());
         $this->assertSame(1, $output->getNumberOfSuccessfulCommands());
         $this->assertSame(0, $output->getNumberOfFailedCommands());
+        $this->assertSame(0, $output->getNumberOfSkippedCommands());
 
         $commandResponses = $output->getCommandResponses();
         $this->assertCount(1, $commandResponses);
@@ -48,6 +49,7 @@ class ResponseDecoderTest extends TestCase
         $this->assertSame(3, $output->getNumberOfCommands());
         $this->assertSame(2, $output->getNumberOfSuccessfulCommands());
         $this->assertSame(1, $output->getNumberOfFailedCommands());
+        $this->assertSame(0, $output->getNumberOfSkippedCommands());
 
         $commandResponses = $output->getCommandResponses();
         $this->assertCount(3, $commandResponses);
@@ -67,6 +69,18 @@ class ResponseDecoderTest extends TestCase
         $this->expectExceptionMessage('Error decoding Matej response');
         $this->expectExceptionMessage('Status code: 404 Not Found');
         $this->expectExceptionMessage('<p>The requested URL /foo was not found on this server.</p>');
+        $this->decoder->decode($response);
+    }
+
+    /** @test */
+    public function shouldThrowExceptionWhenJsonWithInvalidDataIsDecoded(): void
+    {
+        $notJsonData = file_get_contents(__DIR__ . '/Fixtures/invalid-response-format.json');
+        $response = new Response(StatusCodeInterface::STATUS_NOT_FOUND, [], $notJsonData);
+
+        $this->expectException(ResponseDecodingException::class);
+        $this->expectExceptionMessage('Error decoding Matej response: required data missing.');
+        $this->expectExceptionMessage('"invalid": [],');
         $this->decoder->decode($response);
     }
 

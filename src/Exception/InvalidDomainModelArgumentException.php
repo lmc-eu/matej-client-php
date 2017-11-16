@@ -23,15 +23,18 @@ class InvalidDomainModelArgumentException extends AbstractMatejException
     public static function forInconsistentNumbersOfCommandProperties(
         int $numberOfCommands,
         $numberOfSuccessfulCommands,
-        $numberOfFailedCommands
+        $numberOfFailedCommands,
+        $numberOfSkippedCommands
     ): self {
         return new self(
             sprintf(
                 'Provided numberOfCommands (%d) is inconsistent with provided sum of '
-                . 'numberOfSuccessfulCommands (%d) and numberOfFailedCommands (%d)',
+                . 'numberOfSuccessfulCommands (%d) + numberOfFailedCommands (%d)'
+                . ' + numberOfSkippedCommands (%d)',
                 $numberOfCommands,
                 $numberOfSuccessfulCommands,
-                $numberOfFailedCommands
+                $numberOfFailedCommands,
+                $numberOfSkippedCommands
             )
         );
     }
