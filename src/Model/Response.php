@@ -14,16 +14,20 @@ class Response
     private $numberOfSuccessfulCommands;
     /** @var int */
     private $numberOfFailedCommands;
+    /** @var int */
+    private $numberOfSkippedCommands;
 
     public function __construct(
         int $numberOfCommands,
         int $numberOfSuccessfulCommands,
         int $numberOfFailedCommands,
+        int $numberOfSkippedCommands,
         array $commandResponses = []
     ) {
         $this->numberOfCommands = $numberOfCommands;
         $this->numberOfSuccessfulCommands = $numberOfSuccessfulCommands;
         $this->numberOfFailedCommands = $numberOfFailedCommands;
+        $this->numberOfSkippedCommands = $numberOfSkippedCommands;
 
         foreach ($commandResponses as $rawCommandResponse) {
             $this->commandResponses[] = CommandResponse::createFromRawCommandResponseObject($rawCommandResponse);
@@ -36,11 +40,15 @@ class Response
             );
         }
 
-        if ($this->numberOfCommands !== ($this->numberOfSuccessfulCommands + $this->numberOfFailedCommands)) {
+        $commandSum = $this->numberOfSuccessfulCommands + $this->numberOfFailedCommands
+            + $this->numberOfSkippedCommands;
+
+        if ($this->numberOfCommands !== $commandSum) {
             throw InvalidDomainModelArgumentException::forInconsistentNumbersOfCommandProperties(
                 $this->numberOfCommands,
                 $this->numberOfSuccessfulCommands,
-                $this->numberOfFailedCommands
+                $this->numberOfFailedCommands,
+                $this->numberOfSkippedCommands
             );
         }
     }
@@ -58,6 +66,11 @@ class Response
     public function getNumberOfFailedCommands(): int
     {
         return $this->numberOfFailedCommands;
+    }
+
+    public function getNumberOfSkippedCommands(): int
+    {
+        return $this->numberOfSkippedCommands;
     }
 
     /**

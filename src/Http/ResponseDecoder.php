@@ -16,11 +16,30 @@ class ResponseDecoder implements ResponseDecoderInterface
             throw ResponseDecodingException::forJsonError(json_last_error_msg(), $httpResponse);
         }
 
+        if (!$this->isResponseValid($responseData)) {
+            throw ResponseDecodingException::forInvalidData($httpResponse);
+        }
+
         return new Response(
             (int) $responseData->commands->number_of_commands,
             (int) $responseData->commands->number_of_successful_commands,
             (int) $responseData->commands->number_of_failed_commands,
+            (int) $responseData->commands->number_of_skipped_commands,
             $responseData->commands->responses
+        );
+    }
+
+    private function isResponseValid(\stdClass $responseData): bool
+    {
+        return isset(
+            $responseData->commands,
+            $responseData->commands->number_of_commands,
+            $responseData->commands->number_of_successful_commands,
+            $responseData->commands->number_of_failed_commands,
+            $responseData->commands->number_of_skipped_commands,
+            $responseData->commands->responses,
+            $responseData->message,
+            $responseData->status
         );
     }
 }
