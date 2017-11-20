@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Lmc\Matej\Http;
 
@@ -7,8 +6,7 @@ use Fig\Http\Message\StatusCodeInterface;
 use GuzzleHttp\Psr7\Response;
 use Lmc\Matej\Exception\ResponseDecodingException;
 use Lmc\Matej\Model\CommandResponse;
-use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\ResponseInterface;
+use Lmc\Matej\TestCase;
 
 class ResponseDecoderTest extends TestCase
 {
@@ -82,13 +80,5 @@ class ResponseDecoderTest extends TestCase
         $this->expectExceptionMessage('Error decoding Matej response: required data missing.');
         $this->expectExceptionMessage('"invalid": [],');
         $this->decoder->decode($response);
-    }
-
-    private function createJsonResponseFromFile(string $fileName): ResponseInterface
-    {
-        $jsonData = file_get_contents($fileName);
-        $response = new Response(StatusCodeInterface::STATUS_OK, ['Content-Type' => 'application/json'], $jsonData);
-
-        return $response;
     }
 }

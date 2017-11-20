@@ -2,8 +2,8 @@
 
 namespace Lmc\Matej\Http;
 
+use Lmc\Matej\TestCase;
 use phpmock\phpunit\PHPMock;
-use PHPUnit\Framework\TestCase;
 
 class HmacAuthenticationTest extends TestCase
 {
