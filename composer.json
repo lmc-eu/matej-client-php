@@ -47,7 +47,7 @@
         ],
         "analyze": [
             "vendor/bin/php-cs-fixer fix -vvv --diff --dry-run --ansi",
-            "vendor/bin/phpstan.phar analyze ./src ./tests --level 7 --ansi"
+            "vendor/bin/phpstan.phar analyze ./src ./tests -c phpstan.neon --level 7 --ansi"
         ]
     }
 }
