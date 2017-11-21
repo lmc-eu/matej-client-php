@@ -3,6 +3,7 @@
 namespace Lmc\Matej\RequestBuilder;
 
 use Lmc\Matej\Http\RequestManager;
+use Lmc\Matej\Model\Command\ItemProperty;
 use Lmc\Matej\Model\Command\ItemPropertySetup;
 use Lmc\Matej\Model\Request;
 use Lmc\Matej\Model\Response;
@@ -52,9 +53,14 @@ class RequestBuilderFactoryTest extends TestCase
             $builder->addProperty(ItemPropertySetup::timestamp('valid_from'));
         };
 
+        $eventInit = function (EventsRequestBuilder $builder): void {
+            $builder->addItemProperty(ItemProperty::create('item-id', []));
+        };
+
         return [
             ['setupItemProperties', ItemPropertiesSetupRequestBuilder::class, $itemPropertiesSetupInit],
             ['deleteItemProperties', ItemPropertiesSetupRequestBuilder::class, $itemPropertiesSetupInit],
+            ['events', EventsRequestBuilder::class, $eventInit],
         ];
     }
 }
