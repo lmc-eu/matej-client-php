@@ -4,6 +4,9 @@ namespace Lmc\Matej;
 
 class Matej
 {
+    public const CLIENT_ID = 'php-client';
+    public const VERSION = '0.0.0';
+
     /** @var string */
     private $clientId;
     /** @var string */
