@@ -34,6 +34,11 @@ class RequestBuilderFactory
         return $this->createConfiguredBuilder(ItemPropertiesSetupRequestBuilder::class, $shouldDelete = true);
     }
 
+    public function events(): EventsRequestBuilder
+    {
+        return $this->createConfiguredBuilder(EventsRequestBuilder::class);
+    }
+
     // TODO: builders for other endpoints
 
     /**
