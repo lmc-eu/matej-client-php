@@ -5,7 +5,7 @@ namespace Lmc\Matej\Exception;
 /**
  * Exception thrown when invalid argument is passed while creating domain model.
  */
-class InvalidDomainModelArgumentException extends AbstractMatejException
+class InvalidDomainModelArgumentException extends LogicException
 {
     public static function forInconsistentNumberOfCommands(
         int $numberOfCommands,
