@@ -4,8 +4,11 @@
 [![Travis Build Status](https://img.shields.io/travis/lmc-eu/matej-client-php/master.svg?style=flat-square)](https://travis-ci.org/lmc-eu/matej-client-php)
 [![Coverage Status](https://img.shields.io/coveralls/lmc-eu/matej-client-php/master.svg?style=flat-square)](https://coveralls.io/r/lmc-eu/matej-client-php?branch=master)
 
-## Changelog
-For latest changes see [CHANGELOG.md](CHANGELOG.md) file. We follow [Semantic Versioning](http://semver.org/).
+## Still using PHP 5.6?
+
+This library requires PHP 7.1. However, we provide also PHP 5.6-compatible version [`matej-client-php5`](https://github.com/lmc-eu/matej-client-php5).
+
+Please note the PHP 5.6 version is just transpiled copy of this library - examples, pull requests, issues, changelog etc. are placed in this repository.
 
 ## Installation
 
@@ -20,13 +23,13 @@ This means that besides the `lmc/matej-client` library itself you must install a
 If you, for example, want to use Guzzle 6 as the underlying HTTP library, install the package like this:
 
 ```sh
-$ composer require lmc/matej-client php-http/guzzle6-adapter
+$ composer require lmc/matej-client php-http/guzzle6-adapter # use lmc/matej-client-php5 instead for PHP 5.6 version
 ```
 
 Or if you want to use cURL client:
 
 ```sh
-$ composer require lmc/matej-client php-http/curl-client guzzlehttp/psr7
+$ composer require lmc/matej-client php-http/curl-client guzzlehttp/psr7 # use lmc/matej-client-php5 instead for PHP 5.6 version
 ```
 
 ## Usage
@@ -54,6 +57,9 @@ $response = $matej->request()
     ->addItemProperty(ItemProperty::create('1337', ['valid_from' => time(), 'title' => 'Title']))
     ->send();
 ```
+
+## Changelog
+For latest changes see [CHANGELOG.md](CHANGELOG.md) file. We follow [Semantic Versioning](http://semver.org/).
 
 ## Running Tests
 
