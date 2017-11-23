@@ -14,7 +14,7 @@ class MatejTest extends TestCase
     /** @test */
     public function shouldBeInstantiable(): void
     {
-        $matej = new Matej('accountId', 'apiKey');
+        $matej = new Matej('account-id', 'apiKey');
         $this->assertInstanceOf(Matej::class, $matej);
     }
 
@@ -26,7 +26,7 @@ class MatejTest extends TestCase
         $mockClient = new Client();
         $mockClient->addResponse($dummyHttpResponse);
 
-        $matej = new Matej('accountId', 'apiKey');
+        $matej = new Matej('account-id', 'apiKey');
         $matej->setHttpClient($mockClient);
 
         $response = $matej->request()
@@ -36,7 +36,7 @@ class MatejTest extends TestCase
 
         $this->assertCount(1, $mockClient->getRequests());
         $this->assertStringStartsWith(
-            'https://accountid.matej.lmc.cz/',
+            'https://account-id.matej.lmc.cz/',
             $mockClient->getRequests()[0]->getUri()->__toString()
         );
 
