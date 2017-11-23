@@ -12,7 +12,7 @@ class ResponseDecoder implements ResponseDecoderInterface
     {
         $responseData = json_decode($httpResponse->getBody()->getContents());
 
-        if (JSON_ERROR_NONE !== json_last_error()) {
+        if (json_last_error() !== JSON_ERROR_NONE) {
             throw ResponseDecodingException::forJsonError(json_last_error_msg(), $httpResponse);
         }
 
