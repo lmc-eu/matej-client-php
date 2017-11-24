@@ -57,7 +57,7 @@ $response = $matej->request()
 ### Send Events data to Matej
 
 You can use `events()` builder for sending batch of following commands to Matej:
-- `Interaction` via `addInteraction()` - to send information about interaction between user and item *(Not yet implemented.)*
+- `Interaction` via `addInteraction()` - to send information about interaction between user and item
 - `ItemProperty` via `addItemProperty()` - to update item data stored in Matej database
 - `UserMerge` via `addUserMerge()` - to merge interactions of two users and delete the source user
 
@@ -68,8 +68,11 @@ $matej = new Matej('accountId', 'apikey');
 
 $response = $matej->request()
     ->events()
+    // Add interaction between user and item
+    ->addInteraction(Interaction::purchase('user-id', 'item-id'))
+    ->addInteractions([/* array of Interaction objects */]))
     // Update item data
-    ->addItemProperty(ItemProperty::create('1337', ['valid_from' => time(), 'title' => 'Title']))
+    ->addItemProperty(ItemProperty::create('item-id', ['valid_from' => time(), 'title' => 'Title']))
     ->addItemProperties([/* array of ItemProperty objects */]))
     // Merge user
     ->addUserMerge(UserMerge::mergeInto('target-user-id', 'source-user-id')
