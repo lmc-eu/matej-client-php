@@ -55,7 +55,7 @@ class RequestManagerTest extends TestCase
         );
         $this->assertSame(['application/json'], $recordedRequests[0]->getHeader('Content-Type'));
         $this->assertSame(
-            'php-client/' . Matej::VERSION,
+            Matej::CLIENT_ID . '/' . Matej::VERSION,
             $recordedRequests[0]->getHeader(RequestManager::CLIENT_VERSION_HEADER)[0]
         );
     }
