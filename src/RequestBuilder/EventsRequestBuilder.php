@@ -6,6 +6,7 @@ use Fig\Http\Message\RequestMethodInterface;
 use Lmc\Matej\Exception\LogicException;
 use Lmc\Matej\Model\Command\AbstractCommand;
 use Lmc\Matej\Model\Command\ItemProperty;
+use Lmc\Matej\Model\Command\UserMerge;
 use Lmc\Matej\Model\Request;
 
 class EventsRequestBuilder extends AbstractRequestBuilder
@@ -35,7 +36,27 @@ class EventsRequestBuilder extends AbstractRequestBuilder
         return $this;
     }
 
-    // TODO: methods to addInteraction(s) and addUserMerge(s)
+    public function addUserMerge(UserMerge $userMerge): self
+    {
+        $this->commands[] = $userMerge;
+
+        return $this;
+    }
+
+    /**
+     * @param UserMerge[] $userMerges
+     * @return self
+     */
+    public function addUserMerges(array $userMerges): self
+    {
+        foreach ($userMerges as $userMerge) {
+            $this->addUserMerge($userMerge);
+        }
+
+        return $this;
+    }
+
+    // TODO: methods to addInteraction(s)
 
     public function build(): Request
     {
