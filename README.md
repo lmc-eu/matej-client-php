@@ -34,6 +34,8 @@ $ composer require lmc/matej-client php-http/curl-client guzzlehttp/psr7 # use l
 
 ## Usage
 
+### Item properties setup (to setup you Matej database)
+
 ```php
 $matej = new Matej('accountId', 'apikey');
 
@@ -50,11 +52,28 @@ $response = $matej->request()
     ->addProperty(ItemPropertySetup::timestamp('valid_from'))
     ->addProperty(ItemPropertySetup::string('title'))
     ->send();
+```
 
-// Send item property data to database
+### Send Events data to Matej
+
+You can use `events()` builder for sending batch of following commands to Matej:
+- `Interaction` via `addInteraction()` - to send information about interaction between user and item *(Not yet implemented.)*
+- `ItemProperty` via `addItemProperty()` - to update item data stored in Matej database
+- `UserMerge` via `addUserMerge()` - to merge interactions of two users and delete the source user
+
+Different commands could be mixed in one request, however, one request could contain 1 000 commands at most.
+
+```php
+$matej = new Matej('accountId', 'apikey');
+
 $response = $matej->request()
     ->events()
+    // Update item data
     ->addItemProperty(ItemProperty::create('1337', ['valid_from' => time(), 'title' => 'Title']))
+    ->addItemProperties([/* array of ItemProperty objects */]))
+    // Merge user
+    ->addUserMerge(UserMerge::mergeInto('target-user-id', 'source-user-id')
+    ->addUserMerges([/* array of UserMerge objects */]))
     ->send();
 ```
 
