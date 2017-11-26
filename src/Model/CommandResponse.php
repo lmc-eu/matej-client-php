@@ -53,4 +53,9 @@ class CommandResponse
     {
         return $this->data;
     }
+
+    public function isSuccessful(): bool
+    {
+        return $this->getStatus() === self::STATUS_OK;
+    }
 }
