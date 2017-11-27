@@ -3,6 +3,7 @@
 namespace Lmc\Matej\RequestBuilder;
 
 use Lmc\Matej\Http\RequestManager;
+use Lmc\Matej\Model\Command\Sorting;
 
 /**
  * Factory to create concrete RequestBuilder which helps you to create request for each Matej API
@@ -52,6 +53,14 @@ class RequestBuilderFactory
     public function campaign(): CampaignRequestBuilder
     {
         return $this->createConfiguredBuilder(CampaignRequestBuilder::class);
+    }
+
+    /**
+     * @return SortingRequestBuilder
+     */
+    public function sorting(Sorting $sorting): SortingRequestBuilder
+    {
+        return $this->createConfiguredBuilder(SortingRequestBuilder::class, $sorting);
     }
 
     // TODO: builders for other endpoints
