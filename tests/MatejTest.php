@@ -48,4 +48,29 @@ class MatejTest extends TestCase
         $this->assertInstanceOf(CommandResponse::class, $response->getCommandResponses()[0]);
         $this->assertSame(CommandResponse::STATUS_OK, $response->getCommandResponses()[0]->getStatus());
     }
+
+    /** @test */
+    public function shouldOverwriteBaseUrl(): void
+    {
+        $dummyHttpResponse = $this->createJsonResponseFromFile(__DIR__ . '/Http/Fixtures/response-one-successful-command.json');
+
+        $mockClient = new Client();
+        $mockClient->addResponse($dummyHttpResponse);
+
+        $matej = new Matej('account-id', 'apiKey');
+        $matej->setHttpClient($mockClient);
+
+        $matej->setBaseUrl('https://nobody.nowhere.com/%s');
+
+        $matej->request()
+            ->setupItemProperties()
+            ->addProperty(ItemPropertySetup::timestamp('valid_from'))
+            ->send();
+
+        $this->assertCount(1, $mockClient->getRequests());
+        $this->assertStringStartsWith(
+            'https://nobody.nowhere.com/account-id',
+            $mockClient->getRequests()[0]->getUri()->__toString()
+        );
+    }
 }
