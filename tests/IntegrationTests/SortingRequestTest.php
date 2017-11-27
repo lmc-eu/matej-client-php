@@ -7,8 +7,7 @@ use Lmc\Matej\Model\Command\Sorting;
 use Lmc\Matej\Model\Command\UserMerge;
 
 /**
- * @covers \Lmc\Matej\RequestBuilder\ItemPropertiesSetupRequestBuilder
- * @covers \Lmc\Matej\RequestBuilder\EventsRequestBuilder
+ * @covers \Lmc\Matej\RequestBuilder\SortingRequestBuilder
  */
 class SortingRequestTest extends IntegrationTestCase
 {
@@ -40,7 +39,7 @@ class SortingRequestTest extends IntegrationTestCase
         $response = $this->createMatejInstance()
             ->request()
             ->sorting(Sorting::create('integration-test-php-client-user-id-A', ['itemA', 'itemB', 'itemC']))
-            ->addInteraction(Interaction::bookmark('integration-test-php-client-user-id-A', 'itemA'))
+            ->setInteraction(Interaction::bookmark('integration-test-php-client-user-id-A', 'itemA'))
             ->send();
 
         $this->assertResponseCommandStatuses($response, 'OK', 'SKIPPED', 'OK');
@@ -52,7 +51,7 @@ class SortingRequestTest extends IntegrationTestCase
         $response = $this->createMatejInstance()
             ->request()
             ->sorting(Sorting::create('integration-test-php-client-user-id-A', ['itemA', 'itemB', 'itemC']))
-            ->addUserMerge(UserMerge::mergeInto('integration-test-php-client-user-id-A', 'integration-test-php-client-user-id-B'))
+            ->setUserMerge(UserMerge::mergeInto('integration-test-php-client-user-id-A', 'integration-test-php-client-user-id-B'))
             ->send();
 
         $this->assertResponseCommandStatuses($response, 'SKIPPED', 'OK', 'OK');
@@ -64,8 +63,8 @@ class SortingRequestTest extends IntegrationTestCase
         $response = $this->createMatejInstance()
             ->request()
             ->sorting(Sorting::create('integration-test-php-client-user-id-A', ['itemA', 'itemB', 'itemC']))
-            ->addUserMerge(UserMerge::mergeInto('integration-test-php-client-user-id-A', 'integration-test-php-client-user-id-B'))
-            ->addInteraction(Interaction::bookmark('integration-test-php-client-user-id-A', 'itemA'))
+            ->setUserMerge(UserMerge::mergeInto('integration-test-php-client-user-id-A', 'integration-test-php-client-user-id-B'))
+            ->setInteraction(Interaction::bookmark('integration-test-php-client-user-id-A', 'itemA'))
             ->send();
 
         $this->assertResponseCommandStatuses($response, 'OK', 'OK', 'OK');

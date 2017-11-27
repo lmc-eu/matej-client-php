@@ -8,21 +8,22 @@ use Lmc\Matej\Http\RequestManager;
 use Lmc\Matej\Model\Command\Interaction;
 use Lmc\Matej\Model\Command\Sorting;
 use Lmc\Matej\Model\Command\UserMerge;
+use Lmc\Matej\Model\Command\UserRecommendation;
 use Lmc\Matej\Model\Request;
 use Lmc\Matej\Model\Response;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Lmc\Matej\RequestBuilder\SortingRequestBuilder
+ * @covers \Lmc\Matej\RequestBuilder\RecommendationRequestBuilder
  * @covers \Lmc\Matej\RequestBuilder\AbstractRequestBuilder
  */
-class SortingRequestBuilderTest extends TestCase
+class RecommendationRequestBuilderTest extends TestCase
 {
     /** @test */
     public function shouldBuildRequestWithCommands(): void
     {
-        $sortingCommand = Sorting::create('userId1', ['itemId1', 'itemId2']);
-        $builder = new SortingRequestBuilder($sortingCommand);
+        $recommendationsCommand = UserRecommendation::create('userId1', 5, 'test-scenario', 0.5, 3600);
+        $builder = new RecommendationRequestBuilder($recommendationsCommand);
 
         $interactionCommand = Interaction::detailView('userId1', 'itemId1');
         $builder->setInteraction($interactionCommand);
@@ -34,19 +35,20 @@ class SortingRequestBuilderTest extends TestCase
 
         $this->assertInstanceOf(Request::class, $request);
         $this->assertSame(RequestMethodInterface::METHOD_POST, $request->getMethod());
-        $this->assertSame('/sorting', $request->getPath());
+        $this->assertSame('/recommendations', $request->getPath());
 
         $requestData = $request->getData();
         $this->assertCount(3, $requestData);
         $this->assertSame($interactionCommand, $requestData[0]);
         $this->assertSame($userMergeCommand, $requestData[1]);
-        $this->assertSame($sortingCommand, $requestData[2]);
+        $this->assertSame($recommendationsCommand, $requestData[2]);
     }
 
     /** @test */
     public function shouldThrowExceptionWhenSendingCommandsWithoutRequestManager(): void
     {
-        $builder = new SortingRequestBuilder(Sorting::create('userId1', ['itemId1', 'itemId2']));
+        $recommendationsCommand = UserRecommendation::create('userId1', 5, 'test-scenario', 0.5, 3600);
+        $builder = new RecommendationRequestBuilder($recommendationsCommand);
 
         $this->expectException(LogicException::class);
         $this->expectExceptionMessage('Instance of RequestManager must be set to request builder');
