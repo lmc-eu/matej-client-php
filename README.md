@@ -108,9 +108,25 @@ $response = $matej->request()
     ->send();
 ```
 
+### Request item sorting for single user
+
+Request item sorting for single user. You can combine this sorting command with the most recent interaction
+and user merge event in one request, to make them taken in account when executing the item sorting.
+
+```php
+$matej = new Matej('accountId', 'apikey');
+
+$response =  $matej->request()
+    ->sorting(Sorting::create('user-id', ['item-id-1', 'item-id-2', 'item-id-3']))
+    ->setInteraction(Interaction::purchase('user-id', 'item-id')) // optional
+    ->setUserMerge(UserMerge::mergeInto('user-id', 'source-id')) // optional
+    ->send();
+
+```
+
 ### Request batch of recommendations/item sortings
 
-Use `campaign()` builder to request batch of recommendations or item sorting for multiple users.
+Use `campaign()` builder to request batch of recommendations and/or item sorting for multiple users.
 Typical use case for this is generating emailing campaigns.
 
 ```php
