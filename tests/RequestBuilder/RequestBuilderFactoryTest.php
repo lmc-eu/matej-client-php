@@ -5,6 +5,7 @@ namespace Lmc\Matej\RequestBuilder;
 use Lmc\Matej\Http\RequestManager;
 use Lmc\Matej\Model\Command\ItemProperty;
 use Lmc\Matej\Model\Command\ItemPropertySetup;
+use Lmc\Matej\Model\Command\Sorting;
 use Lmc\Matej\Model\Request;
 use Lmc\Matej\Model\Response;
 use PHPUnit\Framework\TestCase;
@@ -57,10 +58,15 @@ class RequestBuilderFactoryTest extends TestCase
             $builder->addItemProperty(ItemProperty::create('item-id', []));
         };
 
+        $campaignInit = function (CampaignRequestBuilder $builder): void {
+            $builder->addSorting(Sorting::create('item-id', ['item1', 'item2']));
+        };
+
         return [
             ['setupItemProperties', ItemPropertiesSetupRequestBuilder::class, $itemPropertiesSetupInit],
             ['deleteItemProperties', ItemPropertiesSetupRequestBuilder::class, $itemPropertiesSetupInit],
             ['events', EventsRequestBuilder::class, $eventInit],
+            ['campaign', CampaignRequestBuilder::class, $campaignInit],
         ];
     }
 }

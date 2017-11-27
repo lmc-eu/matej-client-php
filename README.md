@@ -80,6 +80,25 @@ $response = $matej->request()
     ->send();
 ```
 
+### Request batch of recommendations/item sortings
+
+Use `campaign()` builder to request batch of recommendations or item sorting for multiple users.
+Typical use case for this is generating emailing campaigns.
+
+```php
+$matej = new Matej('accountId', 'apikey');
+
+$response = $matej->request()
+    ->campaign()
+    // Request item sortings
+    ->addSorting(Sorting::create('user-id', ['item-id-1', 'item-id-2', 'item-id-3']))
+    ->addSortings([/* array of Sorting objects */])
+    // Request user-based recommendations
+    ->addRecommendation(UserRecommendation::create('user-id', 10, 'emailing', 1.0, 3600))
+    ->addRecommendations([/* array of UserRecommendation objects */])
+    ->send();
+```
+
 ## Changelog
 For latest changes see [CHANGELOG.md](CHANGELOG.md) file. We follow [Semantic Versioning](http://semver.org/).
 
