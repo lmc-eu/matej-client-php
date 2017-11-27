@@ -8,6 +8,7 @@
 ### Added
 - `UserMerge` command and `addUserMerge` & `addUserMerges` method for `EventsRequestBuilder`. (Accessible via `$matej->events()->...`).
 - `Interaction` command and `addInteraction` & `addInteractions` method for `EventsRequestBuilder`. (Accessible via `$matej->events()->...`).
+- `CampaignRequestBuilder` to request batch of recommendations and item sortings for multiple users. (Accessible via `$matej->campaign()->...`).
 - Method `isSuccessfull()` of `CommandResponse` for easy and encapsulated detection of successful command responses.
 
 ### Fixed

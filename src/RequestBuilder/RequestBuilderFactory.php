@@ -46,6 +46,14 @@ class RequestBuilderFactory
         return $this->createConfiguredBuilder(EventsRequestBuilder::class);
     }
 
+    /**
+     * @return CampaignRequestBuilder
+     */
+    public function campaign(): CampaignRequestBuilder
+    {
+        return $this->createConfiguredBuilder(CampaignRequestBuilder::class);
+    }
+
     // TODO: builders for other endpoints
 
     /**
