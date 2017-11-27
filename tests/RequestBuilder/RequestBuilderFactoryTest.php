@@ -22,7 +22,8 @@ class RequestBuilderFactoryTest extends TestCase
     public function shouldInstantiateBuilderToBuildAndSendRequest(
         string $factoryMethod,
         string $expectedBuilderClass,
-        \Closure $minimalBuilderInit
+        \Closure $minimalBuilderInit,
+        ...$factoryArguments
     ): void {
         $requestManagerMock = $this->createMock(RequestManager::class);
         $requestManagerMock->expects($this->once())
@@ -33,7 +34,7 @@ class RequestBuilderFactoryTest extends TestCase
         $factory = new RequestBuilderFactory($requestManagerMock);
 
         /** @var AbstractRequestBuilder $builder */
-        $builder = $factory->$factoryMethod();
+        $builder = $factory->$factoryMethod(...$factoryArguments);
 
         // Builders may require some minimal setup to be able to execute the build() method
         $minimalBuilderInit($builder);
@@ -62,11 +63,15 @@ class RequestBuilderFactoryTest extends TestCase
             $builder->addSorting(Sorting::create('item-id', ['item1', 'item2']));
         };
 
+        $sortingInit = function (SortingRequestBuilder $builder): void {
+        };
+
         return [
             ['setupItemProperties', ItemPropertiesSetupRequestBuilder::class, $itemPropertiesSetupInit],
             ['deleteItemProperties', ItemPropertiesSetupRequestBuilder::class, $itemPropertiesSetupInit],
             ['events', EventsRequestBuilder::class, $eventInit],
             ['campaign', CampaignRequestBuilder::class, $campaignInit],
+            ['sorting', SortingRequestBuilder::class, $sortingInit, Sorting::create('user-a', ['item-a', 'item-b', 'item-c'])],
         ];
     }
 }
