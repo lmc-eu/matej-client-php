@@ -39,6 +39,14 @@ class Matej
         return $this;
     }
 
+    /** @internal used mainly in integration tests */
+    public function setBaseUrl($baseUrl): self
+    {
+        $this->getRequestManager()->setBaseUrl($baseUrl);
+
+        return $this;
+    }
+
     /** @codeCoverageIgnore */
     public function setHttpMessageFactory(MessageFactory $messageFactory): self
     {
