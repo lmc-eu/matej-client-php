@@ -6,6 +6,7 @@ use Lmc\Matej\Http\RequestManager;
 use Lmc\Matej\Model\Command\ItemProperty;
 use Lmc\Matej\Model\Command\ItemPropertySetup;
 use Lmc\Matej\Model\Command\Sorting;
+use Lmc\Matej\Model\Command\UserRecommendation;
 use Lmc\Matej\Model\Request;
 use Lmc\Matej\Model\Response;
 use PHPUnit\Framework\TestCase;
@@ -63,15 +64,17 @@ class RequestBuilderFactoryTest extends TestCase
             $builder->addSorting(Sorting::create('item-id', ['item1', 'item2']));
         };
 
-        $sortingInit = function (SortingRequestBuilder $builder): void {
-        };
+        $voidInit = function ($builder): void {};
+
+        $userRecommendation = UserRecommendation::create('user-id', 1, 'test-scenario', 0.5, 3600);
 
         return [
             ['setupItemProperties', ItemPropertiesSetupRequestBuilder::class, $itemPropertiesSetupInit],
             ['deleteItemProperties', ItemPropertiesSetupRequestBuilder::class, $itemPropertiesSetupInit],
             ['events', EventsRequestBuilder::class, $eventInit],
             ['campaign', CampaignRequestBuilder::class, $campaignInit],
-            ['sorting', SortingRequestBuilder::class, $sortingInit, Sorting::create('user-a', ['item-a', 'item-b', 'item-c'])],
+            ['sorting', SortingRequestBuilder::class, $voidInit, Sorting::create('user-a', ['item-a', 'item-b', 'item-c'])],
+            ['recommendation', RecommendationRequestBuilder::class, $voidInit, $userRecommendation],
         ];
     }
 }

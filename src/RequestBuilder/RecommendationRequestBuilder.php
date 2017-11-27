@@ -4,24 +4,24 @@ namespace Lmc\Matej\RequestBuilder;
 
 use Fig\Http\Message\RequestMethodInterface;
 use Lmc\Matej\Model\Command\Interaction;
-use Lmc\Matej\Model\Command\Sorting;
 use Lmc\Matej\Model\Command\UserMerge;
+use Lmc\Matej\Model\Command\UserRecommendation;
 use Lmc\Matej\Model\Request;
 
-class SortingRequestBuilder extends AbstractRequestBuilder
+class RecommendationRequestBuilder extends AbstractRequestBuilder
 {
-    protected const ENDPOINT_PATH = '/sorting';
+    protected const ENDPOINT_PATH = '/recommendations';
 
     /** @var Interaction|null */
     private $interactionCommand;
     /** @var UserMerge|null */
     private $userMergeCommand;
-    /** @var Sorting */
-    private $sortingCommand;
+    /** @var UserRecommendation */
+    private $userRecommendationCommand;
 
-    public function __construct(Sorting $sortingCommand)
+    public function __construct(UserRecommendation $userRecommendationCommand)
     {
-        $this->sortingCommand = $sortingCommand;
+        $this->userRecommendationCommand = $userRecommendationCommand;
     }
 
     public function setUserMerge(UserMerge $merge): self
@@ -43,7 +43,7 @@ class SortingRequestBuilder extends AbstractRequestBuilder
         return new Request(
             self::ENDPOINT_PATH,
             RequestMethodInterface::METHOD_POST,
-            [$this->interactionCommand, $this->userMergeCommand, $this->sortingCommand]
+            [$this->interactionCommand, $this->userMergeCommand, $this->userRecommendationCommand]
         );
     }
 }

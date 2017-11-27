@@ -80,6 +80,34 @@ $response = $matej->request()
     ->send();
 ```
 
+### Request recommendations for single user
+
+Request recommendation for single user. You can combine this recommendation command with the most recent interaction
+and user merge event in one request, to make them taken in account when providing the recommendations.
+
+```php
+$matej = new Matej('accountId', 'apikey');
+
+$response = $matej->request()
+    ->recommendation(UserRecommendation::create('user-id', 5, 'integration-test-scenario', 1.00, 3600))
+    ->setInteraction(Interaction::purchase('user-id', 'item-id')) // optional
+    ->setUserMerge(UserMerge::mergeInto('user-id', 'source-id')) // optional
+    ->send();
+```
+
+If you need to configure your recommendation command more:
+
+```php
+$recommendation = UserRecommendation::create('user-id', 5, 'integration-test-scenario', 1.00, 3600);
+$recommendation->setFilters(['valid_to >= NOW']) // Note this filter is present by default
+    ->setMinimalRelevance(UserRecommendation::MINIMAL_RELEVANCE_HIGH)
+    ->enableHardRotation();
+
+$response = $matej->request()
+    ->recommendation($recommendation)
+    ->send();
+```
+
 ### Request batch of recommendations/item sortings
 
 Use `campaign()` builder to request batch of recommendations or item sorting for multiple users.
