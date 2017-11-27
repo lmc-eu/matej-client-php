@@ -32,29 +32,57 @@ class CommandResponseTest extends TestCase
     {
         return [
             'OK response with only status' => [
-                (object) ['status' => 'OK'],
-                'OK',
+                (object) ['status' => CommandResponse::STATUS_OK],
+                CommandResponse::STATUS_OK,
                 '',
                 [],
             ],
             'OK response with status and empty message and data' => [
-                (object) ['status' => 'OK', 'message' => '', 'data' => []],
-                'OK',
+                (object) ['status' => CommandResponse::STATUS_OK, 'message' => '', 'data' => []],
+                CommandResponse::STATUS_OK,
                 '',
                 [],
             ],
             'OK response with all fields' => [
-                (object) ['status' => 'OK', 'message' => 'Nice!', 'data' => [['foo' => 'bar'], ['baz' => 'bak']]],
-                'OK',
+                (object) [
+                    'status' => CommandResponse::STATUS_OK,
+                    'message' => 'Nice!',
+                    'data' => [['foo' => 'bar'], ['baz' => 'bak']],
+                ],
+                CommandResponse::STATUS_OK,
                 'Nice!',
                 [['foo' => 'bar'], ['baz' => 'bak']],
             ],
-            'Error response with status and message' => [
-                (object) ['status' => 'ERROR', 'message' => 'DuplicateKeyError(Duplicate key error collection)'],
-                'ERROR',
-                'DuplicateKeyError(Duplicate key error collection)',
+            'Invalid error response with status and message' => [
+                (object) ['status' => CommandResponse::STATUS_ERROR, 'message' => 'Internal unhandled error'],
+                CommandResponse::STATUS_ERROR,
+                'Internal unhandled error',
                 [],
             ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider provideResponseStatuses
+     */
+    public function shouldDetectSuccessfulResponse(string $status, bool $shouldBeSuccessful): void
+    {
+        $commandResponse = CommandResponse::createFromRawCommandResponseObject((object) ['status' => $status]);
+
+        $this->assertSame($shouldBeSuccessful, $commandResponse->isSuccessful());
+    }
+
+    /**
+     * @return array[]
+     */
+    public function provideResponseStatuses(): array
+    {
+        return [
+            ['status' => CommandResponse::STATUS_OK, 'isSuccessful' => true],
+            ['status' => CommandResponse::STATUS_ERROR, 'isSuccessful' => false],
+            ['status' => CommandResponse::STATUS_INVALID, 'isSuccessful' => false],
+            ['status' => CommandResponse::STATUS_SKIPPED, 'isSuccessful' => false]  ,
         ];
     }
 
