@@ -10,6 +10,10 @@ use Lmc\Matej\Model\Request;
 use Lmc\Matej\Model\Response;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \Lmc\Matej\RequestBuilder\ItemPropertiesSetupRequestBuilder
+ * @covers \Lmc\Matej\RequestBuilder\AbstractRequestBuilder
+ */
 class ItemPropertiesSetupRequestBuilderTest extends TestCase
 {
     /** @test */

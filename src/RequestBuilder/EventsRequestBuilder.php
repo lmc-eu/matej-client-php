@@ -5,6 +5,7 @@ namespace Lmc\Matej\RequestBuilder;
 use Fig\Http\Message\RequestMethodInterface;
 use Lmc\Matej\Exception\LogicException;
 use Lmc\Matej\Model\Command\AbstractCommand;
+use Lmc\Matej\Model\Command\Interaction;
 use Lmc\Matej\Model\Command\ItemProperty;
 use Lmc\Matej\Model\Command\UserMerge;
 use Lmc\Matej\Model\Request;
@@ -15,6 +16,26 @@ class EventsRequestBuilder extends AbstractRequestBuilder
 
     /** @var AbstractCommand[] */
     protected $commands = [];
+
+    public function addInteraction(Interaction $interaction): self
+    {
+        $this->commands[] = $interaction;
+
+        return $this;
+    }
+
+    /**
+     * @param Interaction[] $interactions
+     * @return self
+     */
+    public function addInteractions(array $interactions): self
+    {
+        foreach ($interactions as $interaction) {
+            $this->addInteraction($interaction);
+        }
+
+        return $this;
+    }
 
     public function addItemProperty(ItemProperty $itemProperty): self
     {
@@ -55,8 +76,6 @@ class EventsRequestBuilder extends AbstractRequestBuilder
 
         return $this;
     }
-
-    // TODO: methods to addInteraction(s)
 
     public function build(): Request
     {
