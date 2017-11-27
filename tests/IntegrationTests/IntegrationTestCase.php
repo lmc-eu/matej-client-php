@@ -3,6 +3,7 @@
 namespace Lmc\Matej\IntegrationTests;
 
 use Lmc\Matej\Matej;
+use Lmc\Matej\Model\Response;
 use Lmc\Matej\TestCase;
 
 class IntegrationTestCase extends TestCase
@@ -28,5 +29,18 @@ class IntegrationTestCase extends TestCase
         }
 
         return $instance;
+    }
+
+    protected function assertResponseCommandStatuses(Response $response, ...$expectedCommandStatuses): void
+    {
+        $this->assertSame(count($expectedCommandStatuses), $response->getNumberOfCommands());
+        $this->assertSame(count(array_intersect($expectedCommandStatuses, ['OK'])), $response->getNumberOfSuccessfulCommands());
+        $this->assertSame(count(array_intersect($expectedCommandStatuses, ['ERROR'])), $response->getNumberOfFailedCommands());
+        $this->assertSame(count(array_intersect($expectedCommandStatuses, ['SKIPPED'])), $response->getNumberOfSkippedCommands());
+
+        $commandResponses = $response->getCommandResponses();
+        foreach ($expectedCommandStatuses as $key => $expectedStatus) {
+            $this->assertSame($expectedStatus, $commandResponses[$key]->getStatus());
+        }
     }
 }
