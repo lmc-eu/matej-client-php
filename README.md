@@ -6,7 +6,7 @@
 
 ## Still using PHP 5.6?
 
-This library requires PHP 7.1. However, we provide also PHP 5.6-compatible version [`matej-client-php5`](https://github.com/lmc-eu/matej-client-php5).
+This library requires PHP 7.1+. However, we provide also PHP 5.6-compatible version [`matej-client-php5`](https://github.com/lmc-eu/matej-client-php5).
 
 Please note the PHP 5.6 version is just transpiled copy of this library - examples, pull requests, issues, changelog etc. are placed in this repository.
 
@@ -33,6 +33,49 @@ $ composer require lmc/matej-client php-http/curl-client guzzlehttp/psr7 # use l
 ```
 
 ## Usage
+
+To start using Matej you will need your account id (database name) and secret API key - both of them must be obtained
+from LMC R&D team.
+
+First create an instance of `Matej` object:
+```php
+$matej = new Matej('accountId', 'apikey');
+```
+
+Now you can use `request()` method to use *builders*, which are available for each Matej endpoint and which will
+help you to assemble the request. Each request builder accepts via its methods instances of various Command(s)
+objects (see `Lmc\Matej\Model\Command` namespace). Refer to Matej documentation, code-completion in your IDE or examples
+below for more information.
+
+Once finished with building the request, use `send()` method to execute it and retrieve the response:
+
+```php
+$response = $matej->request()
+    ->events()
+    ->addInteraction(\Lmc\Matej\Model\Command\Interaction::purchase('user-id', 'item-id'))
+    ->send();
+    ...
+```
+
+See below for examples of building request for each endpoint.
+
+To process the response:
+
+```php
+echo 'Number of commands: ' . $response->getNumberOfCommands() . "\n";
+echo 'Number of successful commands: ' . $response->getNumberOfSuccessfulCommands() . "\n";
+echo 'Number of failed commands: ' . $response->NumberOfFailedCommands()() . "\n";
+
+// Iterate over getCommandResponses() to get response for each command passed to the builder.
+// Commands in the reponse are present in the same order as they were added to the requets builder.
+foreach ($response->getCommandResponses() as $commandResponse) {
+    if ($commandResponse->isSuccessful()) {
+        // Methods $commandResponse->getData(), ->getMessage() and ->getStatus() are available
+    } else {
+        // Log error etc.
+    }
+}
+```
 
 ### Item properties setup (to setup you Matej database)
 
@@ -61,7 +104,7 @@ You can use `events()` builder for sending batch of following commands to Matej:
 - `ItemProperty` via `addItemProperty()` - to update item data stored in Matej database
 - `UserMerge` via `addUserMerge()` - to merge interactions of two users and delete the source user
 
-Different commands could be mixed in one request, however, one request could contain 1 000 commands at most.
+You can mix different command types in the same request. You can send up to 1 000 commands in a single request.
 
 ```php
 $matej = new Matej('accountId', 'apikey');
@@ -70,35 +113,36 @@ $response = $matej->request()
     ->events()
     // Add interaction between user and item
     ->addInteraction(Interaction::purchase('user-id', 'item-id'))
-    ->addInteractions([/* array of Interaction objects */]))
+    ->addInteractions([/* array of Interaction objects */])
     // Update item data
     ->addItemProperty(ItemProperty::create('item-id', ['valid_from' => time(), 'title' => 'Title']))
-    ->addItemProperties([/* array of ItemProperty objects */]))
+    ->addItemProperties([/* array of ItemProperty objects */])
     // Merge user
-    ->addUserMerge(UserMerge::mergeInto('target-user-id', 'source-user-id')
-    ->addUserMerges([/* array of UserMerge objects */]))
+    ->addUserMerge(UserMerge::mergeInto('target-user-id', 'source-user-id'))
+    ->addUserMerges([/* array of UserMerge objects */])
     ->send();
 ```
 
-### Request recommendations for single user
+### Recommendations for single user
 
-Request recommendation for single user. You can combine this recommendation command with the most recent interaction
-and user merge event in one request, to make them taken in account when providing the recommendations.
+You can get recommendations for single user using `recommendation()` builder.
+You can attach most recent interaction and user merge event to the request, so that they're taken into account
+when providing recommendations.
 
 ```php
 $matej = new Matej('accountId', 'apikey');
 
 $response = $matej->request()
-    ->recommendation(UserRecommendation::create('user-id', 5, 'integration-test-scenario', 1.00, 3600))
+    ->recommendation(UserRecommendation::create('user-id', 5, 'test-scenario', 1.0, 3600))
     ->setInteraction(Interaction::purchase('user-id', 'item-id')) // optional
     ->setUserMerge(UserMerge::mergeInto('user-id', 'source-id')) // optional
     ->send();
 ```
 
-If you need to configure your recommendation command more:
+You can also set more granular options of the recommendation command:
 
 ```php
-$recommendation = UserRecommendation::create('user-id', 5, 'integration-test-scenario', 1.00, 3600);
+$recommendation = UserRecommendation::create('user-id', 5, 'test-scenario', 1.0, 3600);
 $recommendation->setFilters(['valid_to >= NOW']) // Note this filter is present by default
     ->setMinimalRelevance(UserRecommendation::MINIMAL_RELEVANCE_HIGH)
     ->enableHardRotation();
@@ -111,7 +155,7 @@ $response = $matej->request()
 ### Request item sorting for single user
 
 Request item sorting for single user. You can combine this sorting command with the most recent interaction
-and user merge event in one request, to make them taken in account when executing the item sorting.
+and user merge event in one request, to make them taken into account when executing the item sorting.
 
 ```php
 $matej = new Matej('accountId', 'apikey');
@@ -127,7 +171,7 @@ $response =  $matej->request()
 ### Request batch of recommendations/item sortings
 
 Use `campaign()` builder to request batch of recommendations and/or item sorting for multiple users.
-Typical use case for this is generating emailing campaigns.
+Typical use case for this is generating email campaigns.
 
 ```php
 $matej = new Matej('accountId', 'apikey');
