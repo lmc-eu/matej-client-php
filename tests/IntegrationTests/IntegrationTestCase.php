@@ -43,4 +43,13 @@ class IntegrationTestCase extends TestCase
             $this->assertSame($expectedStatus, $commandResponses[$key]->getStatus());
         }
     }
+
+    /** @return string[] */
+    protected function generateOkStatuses(int $amount): array
+    {
+        $data = explode(',', str_repeat('OK,', $amount));
+        array_pop($data);
+
+        return $data;
+    }
 }
