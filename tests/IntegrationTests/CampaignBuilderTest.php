@@ -55,21 +55,11 @@ class CampaignBuilderTest extends IntegrationTestCase
         $this->expectExceptionCode(400);
         $this->expectExceptionMessage('BAD REQUEST');
 
-        try {
-            $builder = $this->createMatejInstance()->request()->campaign();
-
-            for ($i = 0; $i < 3000; $i++) {
-                $builder->addSorting(Sorting::create('integration-test-php-client-user-id-A', ['itemA', 'itemB', 'itemC']));
-            }
-
-            $builder->send();
-        } catch (RequestException $exception) {
-            $this->assertContains(
-                'Request cannot contain more than 1000 commands; 3000 was sent.',
-                (string) $exception->getResponse()->getBody()
-            );
-            throw $exception;
+        $builder = $this->createMatejInstance()->request()->campaign();
+        for ($i = 0; $i < 3000; $i++) {
+            $builder->addSorting(Sorting::create('integration-test-php-client-user-id-A', ['itemA', 'itemB', 'itemC']));
         }
+        $builder->send();
     }
 
     private function createRecommendationCommand(): UserRecommendation

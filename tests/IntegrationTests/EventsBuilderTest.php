@@ -110,19 +110,11 @@ class EventsBuilderTest extends IntegrationTestCase
         $this->expectExceptionCode(400);
         $this->expectExceptionMessage('BAD REQUEST');
 
-        try {
-            $builder = $this->createMatejInstance()->request()->events();
-            $this->appendInteractionCommands($builder, null, 1000);
-            $this->appendUserMergeCommands($builder, 1000);
-            $this->appendItemPropertyCommands($builder, 1000);
-            $builder->send();
-        } catch (RequestException $exception) {
-            $this->assertContains(
-                'Request cannot contain more than 1000 commands; 3000 was sent.',
-                (string) $exception->getResponse()->getBody()
-            );
-            throw $exception;
-        }
+        $builder = $this->createMatejInstance()->request()->events();
+        $this->appendInteractionCommands($builder, null, 1000);
+        $this->appendUserMergeCommands($builder, 1000);
+        $this->appendItemPropertyCommands($builder, 1000);
+        $builder->send();
     }
 
     private function appendInteractionCommands(EventsRequestBuilder $builder, int $seed = null, int $amount = 1): void

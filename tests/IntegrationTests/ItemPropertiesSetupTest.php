@@ -132,19 +132,11 @@ class ItemPropertiesSetupTest extends IntegrationTestCase
         $this->expectExceptionCode(400);
         $this->expectExceptionMessage('BAD REQUEST');
 
-        try {
-            for ($i = 0; $i < 3000; $i++) {
-                $builder->addProperty(Command\ItemPropertySetup::boolean('integration_test_php_client_property_' . $i));
-            }
-
-            $builder->send();
-        } catch (RequestException $exception) {
-            $this->assertContains(
-                'Request cannot contain more than 1000 commands; 3000 was sent.',
-                (string) $exception->getResponse()->getBody()
-            );
-            throw $exception;
+        for ($i = 0; $i < 3000; $i++) {
+            $builder->addProperty(Command\ItemPropertySetup::boolean('integration_test_php_client_property_' . $i));
         }
+
+        $builder->send();
     }
 
     public function provideBuilders(): array
