@@ -2,6 +2,7 @@
 
 namespace Lmc\Matej\IntegrationTests;
 
+use Lmc\Matej\Exception\RequestException;
 use Lmc\Matej\Model\Command\Sorting;
 use Lmc\Matej\Model\Command\UserRecommendation;
 
@@ -45,6 +46,30 @@ class CampaignBuilderTest extends IntegrationTestCase
             ->send();
 
         $this->assertResponseCommandStatuses($response, 'OK', 'OK');
+    }
+
+    /** @test */
+    public function shouldExecuteThreeThousandCommandsAndFail(): void
+    {
+        $this->expectException(RequestException::class);
+        $this->expectExceptionCode(400);
+        $this->expectExceptionMessage('BAD REQUEST');
+
+        try {
+            $builder = $this->createMatejInstance()->request()->campaign();
+
+            for ($i = 0; $i < 3000; $i++) {
+                $builder->addSorting(Sorting::create('integration-test-php-client-user-id-A', ['itemA', 'itemB', 'itemC']));
+            }
+
+            $builder->send();
+        } catch (RequestException $exception) {
+            $this->assertContains(
+                'Request cannot contain more than 1000 commands; 3000 was sent.',
+                (string) $exception->getResponse()->getBody()
+            );
+            throw $exception;
+        }
     }
 
     private function createRecommendationCommand(): UserRecommendation

@@ -2,7 +2,9 @@
 
 namespace Lmc\Matej\IntegrationTests;
 
+use Lmc\Matej\Exception\RequestException;
 use Lmc\Matej\Model\Command;
+use Lmc\Matej\RequestBuilder\ItemPropertiesSetupRequestBuilder;
 
 /**
  * @covers \Lmc\Matej\RequestBuilder\ItemPropertiesSetupRequestBuilder
@@ -118,5 +120,38 @@ class ItemPropertiesSetupTest extends IntegrationTestCase
         $this->assertSame(6, $response->getNumberOfSuccessfulCommands());
         $this->assertSame(0, $response->getNumberOfFailedCommands());
         $this->assertSame(0, $response->getNumberOfSkippedCommands());
+    }
+
+    /**
+     * @dataProvider provideBuilders
+     * @test
+     */
+    public function shouldExecuteThreeThousandSetupCommandsAndFail(ItemPropertiesSetupRequestBuilder $builder): void
+    {
+        $this->expectException(RequestException::class);
+        $this->expectExceptionCode(400);
+        $this->expectExceptionMessage('BAD REQUEST');
+
+        try {
+            for ($i = 0; $i < 3000; $i++) {
+                $builder->addProperty(Command\ItemPropertySetup::boolean('integration_test_php_client_property_' . $i));
+            }
+
+            $builder->send();
+        } catch (RequestException $exception) {
+            $this->assertContains(
+                'Request cannot contain more than 1000 commands; 3000 was sent.',
+                (string) $exception->getResponse()->getBody()
+            );
+            throw $exception;
+        }
+    }
+
+    public function provideBuilders(): array
+    {
+        return [
+            'setup properties' => [$this->createMatejInstance()->request()->setupItemProperties()],
+            'delete properties' => [$this->createMatejInstance()->request()->deleteItemProperties()],
+        ];
     }
 }
