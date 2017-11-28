@@ -2,7 +2,7 @@
 
 namespace Lmc\Matej\Model;
 
-use Lmc\Matej\Exception\InvalidDomainModelArgumentException;
+use Lmc\Matej\Exception\ResponseDecodingException;
 
 /**
  * Response to one single command which was part of request batch.
@@ -28,7 +28,7 @@ class CommandResponse
     public static function createFromRawCommandResponseObject(\stdClass $rawCommandResponseObject): self
     {
         if (!isset($rawCommandResponseObject->status)) {
-            throw new InvalidDomainModelArgumentException('Status field is missing in command response object');
+            throw new ResponseDecodingException('Status field is missing in command response object');
         }
 
         $commandResponse = new self();

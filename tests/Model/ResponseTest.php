@@ -2,7 +2,7 @@
 
 namespace Lmc\Matej\Model;
 
-use Lmc\Matej\Exception\InvalidDomainModelArgumentException;
+use Lmc\Matej\Exception\ResponseDecodingException;
 use Lmc\Matej\TestCase;
 
 class ResponseTest extends TestCase
@@ -77,7 +77,7 @@ class ResponseTest extends TestCase
         array $commandResponses,
         string $expectedExceptionMessage
     ): void {
-        $this->expectException(InvalidDomainModelArgumentException::class);
+        $this->expectException(ResponseDecodingException::class);
         $this->expectExceptionMessage($expectedExceptionMessage);
 
         new Response($numberOfCommands, $numberOfSuccessful, $numberOfFailed, $numberOfSkipped, $commandResponses);
