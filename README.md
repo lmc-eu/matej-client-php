@@ -199,6 +199,7 @@ The exception tree is:
 | &nbsp;&nbsp;└ AuthorizationException              | Request errored as unauthorized                               |
 | └ ResponseDecodingException                       | Response contains invalid or inconsistent data                |
 | └ LogicException                                  | Incorrect library use - no data passed to request etc.        |
+| &nbsp;&nbsp;└ DomainException                     | Invalid value was passed to domain model                      |
 
 Please note if you inject custom HTTP client (via `$matej->setHttpClient()`), it may be configured to throw custom
 exceptions when HTTP request fails. So please make sure this behavior is disabled (eg. `http_errors` option in Guzzle 6).

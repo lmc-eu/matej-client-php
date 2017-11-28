@@ -2,6 +2,8 @@
 
 namespace Lmc\Matej\Model\Command;
 
+use Lmc\Matej\Model\Assertion;
+
 /**
  * Command to save different item content properties to Matej.
  */
@@ -14,15 +16,20 @@ class ItemProperty extends AbstractCommand
 
     private function __construct(string $itemId, array $properties)
     {
-        // TODO: assert itemId format
-
-        $this->itemId = $itemId;
+        $this->setItemId($itemId);
         $this->properties = $properties;
     }
 
     public static function create(string $itemId, array $properties = []): self
     {
         return new static($itemId, $properties);
+    }
+
+    protected function setItemId(string $itemId): void
+    {
+        Assertion::typeIdentifier($itemId);
+
+        $this->itemId = $itemId;
     }
 
     protected function getCommandType(): string
