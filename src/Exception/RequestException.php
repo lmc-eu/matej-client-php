@@ -9,7 +9,7 @@ use Psr\Http\Message\ResponseInterface;
  * Generic exception thrown when error occurs during request execution.
  * Some more specific child exception could be thrown instead.
  */
-class RequestException extends AbstractMatejException
+class RequestException extends \RuntimeException implements MatejExceptionInterface
 {
     /** @var RequestInterface */
     private $request;
