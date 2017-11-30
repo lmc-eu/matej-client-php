@@ -13,19 +13,19 @@ class UserMergeTest extends TestCase
         $targetUserId = 'target-user';
 
         $command = UserMerge::mergeInto($targetUserId, $sourceUserId);
-        $this->assertUserMergeObject($command, $sourceUserId, $targetUserId);
+        $this->assertUserMergeCommand($command, $sourceUserId, $targetUserId);
 
         $command = UserMerge::mergeFromSourceToTargetUser($sourceUserId, $targetUserId);
-        $this->assertUserMergeObject($command, $sourceUserId, $targetUserId);
+        $this->assertUserMergeCommand($command, $sourceUserId, $targetUserId);
     }
 
     /**
-     * Execute asserts against user merge object
-     * @param UserMerge $object
+     * Execute asserts against user merge command
+     * @param UserMerge $command
      */
-    private function assertUserMergeObject($object, string $sourceUserId, string $targetUserId): void
+    private function assertUserMergeCommand($command, string $sourceUserId, string $targetUserId): void
     {
-        $this->assertInstanceOf(UserMerge::class, $object);
+        $this->assertInstanceOf(UserMerge::class, $command);
         $this->assertSame(
             [
                 'type' => 'user-merge',
@@ -34,7 +34,8 @@ class UserMergeTest extends TestCase
                     'source_user_id' => $sourceUserId,
                 ],
             ],
-            $object->jsonSerialize()
+            $command->jsonSerialize()
         );
+        $this->assertSame($targetUserId, $command->getUserId());
     }
 }

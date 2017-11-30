@@ -51,6 +51,7 @@ class InteractionTest extends TestCase
             ],
             $command->jsonSerialize()
         );
+        $this->assertSame('exampleUserId', $command->getUserId());
     }
 
     /**

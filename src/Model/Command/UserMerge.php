@@ -8,7 +8,7 @@ use Lmc\Matej\Model\Assertion;
  * Take all interactions from the source user and merge them to the target user.
  * Source user will be DELETED and unknown to Matej from this action.
  */
-class UserMerge extends AbstractCommand
+class UserMerge extends AbstractCommand implements UserAwareInterface
 {
     /** @var string */
     private $sourceUserId;
@@ -35,6 +35,11 @@ class UserMerge extends AbstractCommand
     public static function mergeFromSourceToTargetUser(string $sourceUserIdToBeDeleted, string $targetUserId): self
     {
         return new static($targetUserId, $sourceUserIdToBeDeleted);
+    }
+
+    public function getUserId(): string
+    {
+        return $this->targetUserId;
     }
 
     protected function setSourceUserId(string $sourceUserId): void

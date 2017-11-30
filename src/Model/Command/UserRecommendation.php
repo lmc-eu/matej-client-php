@@ -7,7 +7,7 @@ use Lmc\Matej\Model\Assertion;
 /**
  * Deliver personalized recommendations for the given user.
  */
-class UserRecommendation extends AbstractCommand
+class UserRecommendation extends AbstractCommand implements UserAwareInterface
 {
     public const MINIMAL_RELEVANCE_LOW = 'low';
     public const MINIMAL_RELEVANCE_MEDIUM = 'medium';
@@ -111,6 +111,11 @@ class UserRecommendation extends AbstractCommand
         $this->filters = $filters;
 
         return $this;
+    }
+
+    public function getUserId(): string
+    {
+        return $this->userId;
     }
 
     protected function setUserId(string $userId): void

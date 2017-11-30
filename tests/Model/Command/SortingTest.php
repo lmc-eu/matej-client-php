@@ -13,16 +13,16 @@ class SortingTest extends TestCase
         $itemIds = ['item-1', 'item-3', 'item-2'];
 
         $command = Sorting::create($userId, $itemIds);
-        $this->assertSortingObject($command, $userId, $itemIds);
+        $this->assertSortingCommand($command, $userId, $itemIds);
     }
 
     /**
-     * Execute asserts against user merge object
-     * @param Sorting $object
+     * Execute asserts against user merge command
+     * @param Sorting $command
      */
-    private function assertSortingObject($object, string $userId, array $itemIds): void
+    private function assertSortingCommand($command, string $userId, array $itemIds): void
     {
-        $this->assertInstanceOf(Sorting::class, $object);
+        $this->assertInstanceOf(Sorting::class, $command);
         $this->assertSame(
             [
                 'type' => 'sorting',
@@ -31,7 +31,8 @@ class SortingTest extends TestCase
                     'item_ids' => $itemIds,
                 ],
             ],
-            $object->jsonSerialize()
+            $command->jsonSerialize()
         );
+        $this->assertSame($userId, $command->getUserId());
     }
 }
