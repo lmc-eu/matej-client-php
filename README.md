@@ -53,6 +53,8 @@ Once finished with building the request, use `send()` method to execute it and r
 $response = $matej->request()
     ->events()
     ->addInteraction(\Lmc\Matej\Model\Command\Interaction::purchase('user-id', 'item-id'))
+    ->addUserMerge(...)
+    ...
     ->send();
     ...
 ```
@@ -67,7 +69,7 @@ echo 'Number of successful commands: ' . $response->getNumberOfSuccessfulCommand
 echo 'Number of failed commands: ' . $response->NumberOfFailedCommands()() . "\n";
 
 // Iterate over getCommandResponses() to get response for each command passed to the builder.
-// Commands in the reponse are present in the same order as they were added to the requets builder.
+// Commands in the response are present in the same order as they were added to the requets builder.
 foreach ($response->getCommandResponses() as $commandResponse) {
     if ($commandResponse->isSuccessful()) {
         // Methods $commandResponse->getData(), ->getMessage() and ->getStatus() are available
