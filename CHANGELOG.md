@@ -5,6 +5,8 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+
+## 0.10.0 - 2017-11-30
 ### Changed
 - All exceptions now implement `MatejExceptionInterface` instead of subclassing `AbstractMatejException`.
 - Exceptions raised during response processing are now all of `ResponseDecodingException` type.
