@@ -21,7 +21,7 @@ class UserMergeTest extends TestCase
 
     /**
      * Execute asserts against user merge object
-     * @param object $object
+     * @param UserMerge $object
      */
     private function assertUserMergeObject($object, string $sourceUserId, string $targetUserId): void
     {

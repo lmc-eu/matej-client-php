@@ -18,7 +18,7 @@ class SortingTest extends TestCase
 
     /**
      * Execute asserts against user merge object
-     * @param object $object
+     * @param Sorting $object
      */
     private function assertSortingObject($object, string $userId, array $itemIds): void
     {
