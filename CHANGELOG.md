@@ -8,6 +8,7 @@
 ### Changed
 - All exceptions now implement `MatejExceptionInterface` instead of subclassing `AbstractMatejException`.
 - Exceptions raised during response processing are now all of `ResponseDecodingException` type.
+- Values passed to Command objects are now validated on construction and throws `Lmc\Matej\Exception\DomainException` when invalid.
 
 ## 0.9.0 - 2017-11-27
 ### Added

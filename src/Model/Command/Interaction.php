@@ -2,6 +2,8 @@
 
 namespace Lmc\Matej\Model\Command;
 
+use Lmc\Matej\Model\Assertion;
+
 /**
  * Interaction command allows to send one interaction between a user and item.
  * When given user or item identifier is unknown, Matej will create such user or item respectively.
@@ -34,12 +36,12 @@ class Interaction extends AbstractCommand
         string $context = 'default',
         int $timestamp = null
     ) {
-        $this->interactionType = $interactionType; // TODO: assert one of INTERACTION_TYPE_*
-        $this->userId = $userId; // TODO: assert format
-        $this->itemId = $itemId; // TODO: assert format
-        $this->value = $value; // TODO: assert value between 0-1
-        $this->context = $context; // TODO: assert format
-        $this->timestamp = $timestamp ?: time(); // TODO: assert format
+        $this->interactionType = $interactionType;
+        $this->setUserId($userId);
+        $this->setItemId($itemId);
+        $this->setValue($value);
+        $this->setContext($context);
+        $this->setTimestamp($timestamp ?? time());
     }
 
     /**
@@ -120,5 +122,40 @@ class Interaction extends AbstractCommand
             'value' => $this->value,
             'context' => $this->context,
         ];
+    }
+
+    protected function setUserId(string $userId): void
+    {
+        Assertion::typeIdentifier($userId);
+
+        $this->userId = $userId;
+    }
+
+    protected function setItemId(string $itemId): void
+    {
+        Assertion::typeIdentifier($itemId);
+
+        $this->itemId = $itemId;
+    }
+
+    protected function setValue(float $value): void
+    {
+        Assertion::between($value, 0, 1);
+
+        $this->value = $value;
+    }
+
+    protected function setContext(string $context): void
+    {
+        Assertion::typeIdentifier($context);
+
+        $this->context = $context;
+    }
+
+    protected function setTimestamp(int $timestamp): void
+    {
+        Assertion::greaterThan($timestamp, 0);
+
+        $this->timestamp = $timestamp;
     }
 }
