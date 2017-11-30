@@ -3,6 +3,7 @@
 namespace Lmc\Matej\RequestBuilder;
 
 use Fig\Http\Message\RequestMethodInterface;
+use Lmc\Matej\Exception\LogicException;
 use Lmc\Matej\Model\Command\Interaction;
 use Lmc\Matej\Model\Command\UserMerge;
 use Lmc\Matej\Model\Command\UserRecommendation;
@@ -40,10 +41,24 @@ class RecommendationRequestBuilder extends AbstractRequestBuilder
 
     public function build(): Request
     {
+        $this->assertConsistentUsersInCommands();
+
         return new Request(
             self::ENDPOINT_PATH,
             RequestMethodInterface::METHOD_POST,
             [$this->interactionCommand, $this->userMergeCommand, $this->userRecommendationCommand]
         );
+    }
+
+    private function assertConsistentUsersInCommands(): void
+    {
+        $mainCommandUser = $this->userRecommendationCommand->getUserId();
+        if ($this->interactionCommand !== null && $mainCommandUser !== $this->interactionCommand->getUserId()) {
+            throw LogicException::forInconsistentUserId($this->userRecommendationCommand, $this->interactionCommand);
+        }
+
+        if ($this->userMergeCommand !== null && $mainCommandUser !== $this->userMergeCommand->getUserId()) {
+            throw LogicException::forInconsistentUserId($this->userRecommendationCommand, $this->userMergeCommand);
+        }
     }
 }

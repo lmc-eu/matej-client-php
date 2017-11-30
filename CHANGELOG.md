@@ -8,6 +8,9 @@
 ### Added
 - Commands which include user now implements `UserAwareInterface` and `getUserId()` method (ie. Interaction, Sorting, UserMerge, UserRecommendation).
 
+### Changed
+- Validate all commands of `recommendation()` and `sorting()` request involve the same user.
+
 ## 0.10.0 - 2017-11-30
 ### Changed
 - All exceptions now implement `MatejExceptionInterface` instead of subclassing `AbstractMatejException`.

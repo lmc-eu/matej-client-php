@@ -28,7 +28,7 @@ class RecommendationRequestBuilderTest extends TestCase
         $interactionCommand = Interaction::detailView('userId1', 'itemId1');
         $builder->setInteraction($interactionCommand);
 
-        $userMergeCommand = UserMerge::mergeFromSourceToTargetUser('sourceId1', 'targetId1');
+        $userMergeCommand = UserMerge::mergeFromSourceToTargetUser('sourceId1', 'userId1');
         $builder->setUserMerge($userMergeCommand);
 
         $request = $builder->build();
@@ -67,5 +67,39 @@ class RecommendationRequestBuilderTest extends TestCase
         $builder = new SortingRequestBuilder(Sorting::create('userId1', ['itemId1', 'itemId2']));
         $builder->setRequestManager($requestManagerMock);
         $builder->send();
+    }
+
+    /** @test */
+    public function shouldThrowExceptionWhenUserOfInteractionDiffersFromSorting(): void
+    {
+        $builder = new RecommendationRequestBuilder(
+            $recommendationsCommand = UserRecommendation::create('userId1', 5, 'scenario', 0.5, 3600)
+        );
+
+        $builder->setInteraction(Interaction::purchase('different-user', 'itemId1'));
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage(
+            'User in Interaction command ("different-user") must be the same as user in UserRecommendation command '
+            . '("userId1")'
+        );
+        $builder->build();
+    }
+
+    /** @test */
+    public function shouldThrowExceptionWhenUserOfUserMergeDiffersFromSorting(): void
+    {
+        $builder = new RecommendationRequestBuilder(
+            $recommendationsCommand = UserRecommendation::create('userId1', 5, 'scenario', 0.5, 3600)
+        );
+
+        $builder->setUserMerge(UserMerge::mergeInto('different-user', 'userId1'));
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage(
+            'User in UserMerge command ("different-user") must be the same as user in UserRecommendation command'
+            . ' ("userId1")'
+        );
+        $builder->build();
     }
 }

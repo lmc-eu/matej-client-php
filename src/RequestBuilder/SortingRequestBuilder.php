@@ -3,6 +3,7 @@
 namespace Lmc\Matej\RequestBuilder;
 
 use Fig\Http\Message\RequestMethodInterface;
+use Lmc\Matej\Exception\LogicException;
 use Lmc\Matej\Model\Command\Interaction;
 use Lmc\Matej\Model\Command\Sorting;
 use Lmc\Matej\Model\Command\UserMerge;
@@ -40,10 +41,24 @@ class SortingRequestBuilder extends AbstractRequestBuilder
 
     public function build(): Request
     {
+        $this->assertConsistentUsersInCommands();
+
         return new Request(
             self::ENDPOINT_PATH,
             RequestMethodInterface::METHOD_POST,
             [$this->interactionCommand, $this->userMergeCommand, $this->sortingCommand]
         );
+    }
+
+    private function assertConsistentUsersInCommands(): void
+    {
+        $mainCommandUser = $this->sortingCommand->getUserId();
+        if ($this->interactionCommand !== null && $mainCommandUser !== $this->interactionCommand->getUserId()) {
+            throw LogicException::forInconsistentUserId($this->sortingCommand, $this->interactionCommand);
+        }
+
+        if ($this->userMergeCommand !== null && $mainCommandUser !== $this->userMergeCommand->getUserId()) {
+            throw LogicException::forInconsistentUserId($this->sortingCommand, $this->userMergeCommand);
+        }
     }
 }
