@@ -24,17 +24,32 @@ class ResponseDecoderTest extends TestCase
     {
         $response = $this->createJsonResponseFromFile(__DIR__ . '/Fixtures/response-one-successful-command.json');
 
-        $output = $this->decoder->decode($response);
+        $decodedResponse = $this->decoder->decode($response);
 
-        $this->assertSame(1, $output->getNumberOfCommands());
-        $this->assertSame(1, $output->getNumberOfSuccessfulCommands());
-        $this->assertSame(0, $output->getNumberOfFailedCommands());
-        $this->assertSame(0, $output->getNumberOfSkippedCommands());
+        $this->assertSame(1, $decodedResponse->getNumberOfCommands());
+        $this->assertSame(1, $decodedResponse->getNumberOfSuccessfulCommands());
+        $this->assertSame(0, $decodedResponse->getNumberOfFailedCommands());
+        $this->assertSame(0, $decodedResponse->getNumberOfSkippedCommands());
+        $this->assertNull($decodedResponse->getResponseId());
 
-        $commandResponses = $output->getCommandResponses();
+        $commandResponses = $decodedResponse->getCommandResponses();
         $this->assertCount(1, $commandResponses);
         $this->assertInstanceOf(CommandResponse::class, $commandResponses[0]);
         $this->assertSame(CommandResponse::STATUS_OK, $commandResponses[0]->getStatus());
+    }
+
+    /** @test */
+    public function shouldDecodeResponseId(): void
+    {
+        $response = new Response(
+            StatusCodeInterface::STATUS_OK,
+            [RequestManager::RESPONSE_ID_HEADER => 'received-response-id', 'Content-Type' => 'application/json'],
+            file_get_contents(__DIR__ . '/Fixtures/response-one-successful-command.json')
+        );
+
+        $decodedResponse = $this->decoder->decode($response);
+
+        $this->assertSame('received-response-id', $decodedResponse->getResponseId());
     }
 
     /** @test */
@@ -42,14 +57,14 @@ class ResponseDecoderTest extends TestCase
     {
         $response = $this->createJsonResponseFromFile(__DIR__ . '/Fixtures/response-item-properties.json');
 
-        $output = $this->decoder->decode($response);
+        $decodedResponse = $this->decoder->decode($response);
 
-        $this->assertSame(3, $output->getNumberOfCommands());
-        $this->assertSame(2, $output->getNumberOfSuccessfulCommands());
-        $this->assertSame(1, $output->getNumberOfFailedCommands());
-        $this->assertSame(0, $output->getNumberOfSkippedCommands());
+        $this->assertSame(3, $decodedResponse->getNumberOfCommands());
+        $this->assertSame(2, $decodedResponse->getNumberOfSuccessfulCommands());
+        $this->assertSame(1, $decodedResponse->getNumberOfFailedCommands());
+        $this->assertSame(0, $decodedResponse->getNumberOfSkippedCommands());
 
-        $commandResponses = $output->getCommandResponses();
+        $commandResponses = $decodedResponse->getCommandResponses();
         $this->assertCount(3, $commandResponses);
         $this->assertContainsOnlyInstancesOf(CommandResponse::class, $commandResponses);
         $this->assertSame(CommandResponse::STATUS_OK, $commandResponses[0]->getStatus());

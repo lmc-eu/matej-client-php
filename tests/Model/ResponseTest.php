@@ -5,6 +5,10 @@ namespace Lmc\Matej\Model;
 use Lmc\Matej\Exception\ResponseDecodingException;
 use Lmc\Matej\TestCase;
 
+/**
+ * @covers \Lmc\Matej\Model\Response
+ * @covers \Lmc\Matej\Exception\ResponseDecodingException
+ */
 class ResponseTest extends TestCase
 {
     /**
@@ -18,12 +22,14 @@ class ResponseTest extends TestCase
         int $numberOfSkipped,
         array $commandResponses
     ): void {
+        $responseId = uniqid((string) time());
         $response = new Response(
             $numberOfCommands,
             $numberOfSuccessful,
             $numberOfFailed,
             $numberOfSkipped,
-            $commandResponses
+            $commandResponses,
+            $responseId
         );
 
         $this->assertSame($numberOfCommands, $response->getNumberOfCommands());
@@ -33,6 +39,8 @@ class ResponseTest extends TestCase
 
         $this->assertContainsOnlyInstancesOf(CommandResponse::class, $response->getCommandResponses());
         $this->assertCount(count($commandResponses), $response->getCommandResponses());
+
+        $this->assertSame($responseId, $response->getResponseId());
     }
 
     /**
