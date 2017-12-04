@@ -15,6 +15,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers \Lmc\Matej\RequestBuilder\SortingRequestBuilder
  * @covers \Lmc\Matej\RequestBuilder\AbstractRequestBuilder
+ * @covers \Lmc\Matej\Exception\LogicException
  */
 class SortingRequestBuilderTest extends TestCase
 {
@@ -27,7 +28,7 @@ class SortingRequestBuilderTest extends TestCase
         $interactionCommand = Interaction::detailView('userId1', 'itemId1');
         $builder->setInteraction($interactionCommand);
 
-        $userMergeCommand = UserMerge::mergeFromSourceToTargetUser('sourceId1', 'targetId1');
+        $userMergeCommand = UserMerge::mergeFromSourceToTargetUser('sourceId1', 'userId1');
         $builder->setUserMerge($userMergeCommand);
 
         $request = $builder->build();
@@ -65,5 +66,33 @@ class SortingRequestBuilderTest extends TestCase
         $builder = new SortingRequestBuilder(Sorting::create('userId1', ['itemId1', 'itemId2']));
         $builder->setRequestManager($requestManagerMock);
         $builder->send();
+    }
+
+    /** @test */
+    public function shouldThrowExceptionWhenUserOfInteractionDiffersFromSorting(): void
+    {
+        $builder = new SortingRequestBuilder(Sorting::create('userId1', ['itemId1', 'itemId2']));
+
+        $builder->setInteraction(Interaction::purchase('different-user', 'itemId1'));
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage(
+            'User in Interaction command ("different-user") must be the same as user in Sorting command ("userId1")'
+        );
+        $builder->build();
+    }
+
+    /** @test */
+    public function shouldThrowExceptionWhenUserOfUserMergeDiffersFromSorting(): void
+    {
+        $builder = new SortingRequestBuilder(Sorting::create('userId1', ['itemId1', 'itemId2']));
+
+        $builder->setUserMerge(UserMerge::mergeInto('different-user', 'userId1'));
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage(
+            'User in UserMerge command ("different-user") must be the same as user in Sorting command ("userId1")'
+        );
+        $builder->build();
     }
 }

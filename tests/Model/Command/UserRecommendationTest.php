@@ -28,6 +28,7 @@ class UserRecommendationTest extends TestCase
             ],
             $command->jsonSerialize()
         );
+        $this->assertSame('user-id', $command->getUserId());
     }
 
     /** @test */
