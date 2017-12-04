@@ -189,14 +189,20 @@ $response = $matej->request()
     ->send();
 ```
 
-### Exceptions
+### Exceptions and error handling
+
+Exceptions are thrown only if the whole Request to Matej failed (when sending, decoding, authenticating etc.) or if
+the library is used incorrectly. If the request is successfully delivered to Matej, **exception is not thrown** even
+if any (or maybe all) of the submitted commands (which were part of the request) were rejected by Matej.
+This means to make sure any individual CommandResponse was successful, you need to check its status
+(eg. using `isSuccessful()` method) or compare value of `getNumberOfSuccessfulCommands()` - see usage examples above.
 
 Exceptions occurring inside Matej API client implements `Lmc\Matej\Exception̈́\MatejExceptionInterface`.
 The exception tree is:
 
 | Exception                                         | Thrown when                                                   |
 |---------------------------------------------------|---------------------------------------------------------------|
-| MatejExceptionInterface                           | Commont interace of all Matej exceptions                      |
+| MatejExceptionInterface                           | Common interface of all Matej exceptions                      |
 | └ RequestException                                | Request to Matej errored                                      |
 | &nbsp;&nbsp;└ AuthorizationException              | Request errored as unauthorized                               |
 | └ ResponseDecodingException                       | Response contains invalid or inconsistent data                |
