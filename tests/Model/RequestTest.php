@@ -20,5 +20,16 @@ class RequestTest extends TestCase
         $this->assertSame($path, $request->getPath());
         $this->assertSame($method, $request->getMethod());
         $this->assertSame($data, $request->getData());
+
+        // no custom request id was set => random UUID v4 was generated
+        $this->assertSame(36, mb_strlen($request->getRequestId()));
+    }
+
+    /** @test */
+    public function shouldStoreCustomRequestId(): void
+    {
+        $request = new Request('/foo', RequestMethodInterface::METHOD_GET, [], 'custom-request-id');
+
+        $this->assertSame('custom-request-id', $request->getRequestId());
     }
 }

@@ -46,7 +46,8 @@ class RecommendationRequestBuilder extends AbstractRequestBuilder
         return new Request(
             self::ENDPOINT_PATH,
             RequestMethodInterface::METHOD_POST,
-            [$this->interactionCommand, $this->userMergeCommand, $this->userRecommendationCommand]
+            [$this->interactionCommand, $this->userMergeCommand, $this->userRecommendationCommand],
+            $this->requestId
         );
     }
 

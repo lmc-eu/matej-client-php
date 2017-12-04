@@ -22,6 +22,7 @@ use Psr\Http\Message\RequestInterface;
 class RequestManager
 {
     public const CLIENT_VERSION_HEADER = 'Matej-Client-Version';
+    public const REQUEST_ID_HEADER = 'Matej-Request-Id';
 
     /** @var string */
     private $baseUrl = 'https://%s.matej.lmc.cz';
@@ -127,7 +128,10 @@ class RequestManager
             ->createRequest(
                 $request->getMethod(),
                 $uri,
-                ['Content-Type' => 'application/json'],
+                [
+                    'Content-Type' => 'application/json',
+                    self::REQUEST_ID_HEADER => $request->getRequestId(),
+                ],
                 $requestBody
             );
     }

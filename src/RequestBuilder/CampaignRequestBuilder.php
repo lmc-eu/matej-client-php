@@ -62,6 +62,6 @@ class CampaignRequestBuilder extends AbstractRequestBuilder
             throw new LogicException('At least one command must be added to the builder before sending the request');
         }
 
-        return new Request(self::ENDPOINT_PATH, RequestMethodInterface::METHOD_POST, $this->commands);
+        return new Request(self::ENDPOINT_PATH, RequestMethodInterface::METHOD_POST, $this->commands, $this->requestId);
     }
 }

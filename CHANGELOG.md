@@ -10,6 +10,7 @@
 
 ### Changed
 - Validate all commands of `recommendation()` and `sorting()` request involve the same user.
+- Custom request ID could be passed to a request (via `setRequestId()` method of request builders). If none is set, random request ID is generated.
 
 ## 0.10.0 - 2017-11-30
 ### Changed

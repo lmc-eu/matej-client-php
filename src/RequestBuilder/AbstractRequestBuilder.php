@@ -17,6 +17,8 @@ abstract class AbstractRequestBuilder
 {
     /** @var RequestManager */
     protected $requestManager;
+    /** @var string */
+    protected $requestId;
 
     /**
      * Use Commands and other settings which were passed to this builder object to build instance of
@@ -31,6 +33,19 @@ abstract class AbstractRequestBuilder
     public function setRequestManager(RequestManager $requestManager): self
     {
         $this->requestManager = $requestManager;
+
+        return $this;
+    }
+
+    /**
+     * Set custom identifier of the request to make it traceable in case of debugging.
+     * The same ID will then also be available in the response.
+     *
+     * @see Response::getResponseId()
+     */
+    public function setRequestId(string $requestId): self
+    {
+        $this->requestId = $requestId;
 
         return $this;
     }
