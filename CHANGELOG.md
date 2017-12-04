@@ -7,6 +7,8 @@
 ## Unreleased
 ### Added
 - Commands which include user now implements `UserAwareInterface` and `getUserId()` method (ie. Interaction, Sorting, UserMerge, UserRecommendation).
+- Item properties cannot contain `$property['item_id']` as that would redefine the primary key
+- Item property setup cannot set up property named `item_id` as that would conflict with the primary key
 
 ### Changed
 - Validate all commands of `recommendation()` and `sorting()` request involve the same user.

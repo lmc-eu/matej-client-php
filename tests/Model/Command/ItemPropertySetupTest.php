@@ -2,6 +2,7 @@
 
 namespace Lmc\Matej\Model\Command;
 
+use Lmc\Matej\Exception\DomainException;
 use PHPUnit\Framework\TestCase;
 
 class ItemPropertySetupTest extends TestCase
@@ -17,7 +18,7 @@ class ItemPropertySetupTest extends TestCase
         $propertyName = 'examplePropertyName';
 
         /** @var ItemPropertySetup $command */
-        $command = forward_static_call([ItemPropertySetup::class, $constructorName], $propertyName);
+        $command = ItemPropertySetup::$constructorName($propertyName);
 
         $this->assertInstanceOf(ItemPropertySetup::class, $command);
         $this->assertSame(
@@ -30,6 +31,17 @@ class ItemPropertySetupTest extends TestCase
             ],
             $command->jsonSerialize()
         );
+    }
+
+    /**
+     * @test
+     * @dataProvider provideConstructorName
+     */
+    public function shouldNotAllowItemIdAsPropertyName(string $constructorName): void
+    {
+        $this->expectException(DomainException::class);
+        $this->expectExceptionMessage('Cannot manipulate with property "item_id" - it is used by Matej to identify items.');
+        ItemPropertySetup::$constructorName('item_id');
     }
 
     /**
