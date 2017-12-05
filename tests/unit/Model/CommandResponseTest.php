@@ -3,9 +3,9 @@
 namespace Lmc\Matej\Model;
 
 use Lmc\Matej\Exception\ResponseDecodingException;
-use Lmc\Matej\TestCase;
+use Lmc\Matej\UnitTestCase;
 
-class CommandResponseTest extends TestCase
+class CommandResponseTest extends UnitTestCase
 {
     /**
      * @test

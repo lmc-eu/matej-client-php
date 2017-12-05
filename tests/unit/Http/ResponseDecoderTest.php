@@ -6,9 +6,9 @@ use Fig\Http\Message\StatusCodeInterface;
 use GuzzleHttp\Psr7\Response;
 use Lmc\Matej\Exception\ResponseDecodingException;
 use Lmc\Matej\Model\CommandResponse;
-use Lmc\Matej\TestCase;
+use Lmc\Matej\UnitTestCase;
 
-class ResponseDecoderTest extends TestCase
+class ResponseDecoderTest extends UnitTestCase
 {
     /** @var ResponseDecoder */
     protected $decoder;

@@ -1,8 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Lmc\Matej\IntegrationTests;
+namespace Lmc\Matej\IntegrationTests\RequestBuilder;
 
 use Lmc\Matej\Exception\RequestException;
+use Lmc\Matej\IntegrationTests\IntegrationTestCase;
 use Lmc\Matej\Model\Command\Interaction;
 use Lmc\Matej\Model\Command\ItemProperty;
 use Lmc\Matej\Model\Command\UserMerge;
@@ -11,7 +12,7 @@ use Lmc\Matej\RequestBuilder\EventsRequestBuilder;
 /**
  * @covers \Lmc\Matej\RequestBuilder\EventsRequestBuilder
  */
-class EventsBuilderTest extends IntegrationTestCase
+class EventsRequestBuilderTest extends IntegrationTestCase
 {
     /** @test */
     public function shouldExecuteInteractionCommandOnly(): void

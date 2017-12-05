@@ -2,10 +2,10 @@
 
 namespace Lmc\Matej\Http;
 
-use Lmc\Matej\TestCase;
+use Lmc\Matej\UnitTestCase;
 use phpmock\phpunit\PHPMock;
 
-class HmacAuthenticationTest extends TestCase
+class HmacAuthenticationTest extends UnitTestCase
 {
     const TIMESTAMP = 1510230813;
     const APIKEY = 'foobar';

@@ -1,7 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Lmc\Matej\IntegrationTests;
+namespace Lmc\Matej\IntegrationTests\RequestBuilder;
 
+use Lmc\Matej\IntegrationTests\IntegrationTestCase;
 use Lmc\Matej\Model\Command\Interaction;
 use Lmc\Matej\Model\Command\UserMerge;
 use Lmc\Matej\Model\Command\UserRecommendation;

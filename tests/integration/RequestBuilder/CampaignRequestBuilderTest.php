@@ -1,15 +1,16 @@
 <?php declare(strict_types=1);
 
-namespace Lmc\Matej\IntegrationTests;
+namespace Lmc\Matej\IntegrationTests\RequestBuilder;
 
 use Lmc\Matej\Exception\RequestException;
+use Lmc\Matej\IntegrationTests\IntegrationTestCase;
 use Lmc\Matej\Model\Command\Sorting;
 use Lmc\Matej\Model\Command\UserRecommendation;
 
 /**
  * @covers \Lmc\Matej\RequestBuilder\CampaignRequestBuilder
  */
-class CampaignBuilderTest extends IntegrationTestCase
+class CampaignRequestBuilderTest extends IntegrationTestCase
 {
     /** @test */
     public function shouldExecuteRecommendationCommandOnly(): void

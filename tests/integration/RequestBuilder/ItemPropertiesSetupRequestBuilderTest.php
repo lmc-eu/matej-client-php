@@ -1,8 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Lmc\Matej\IntegrationTests;
+namespace Lmc\Matej\IntegrationTests\RequestBuilder;
 
 use Lmc\Matej\Exception\RequestException;
+use Lmc\Matej\IntegrationTests\IntegrationTestCase;
 use Lmc\Matej\Model\Command;
 use Lmc\Matej\RequestBuilder\ItemPropertiesSetupRequestBuilder;
 
@@ -10,7 +11,7 @@ use Lmc\Matej\RequestBuilder\ItemPropertiesSetupRequestBuilder;
  * @covers \Lmc\Matej\RequestBuilder\ItemPropertiesSetupRequestBuilder
  * @covers \Lmc\Matej\RequestBuilder\EventsRequestBuilder
  */
-class ItemPropertiesSetupTest extends IntegrationTestCase
+class ItemPropertiesSetupRequestBuilderTest extends IntegrationTestCase
 {
     /**
      * In Matej's Mongo Worker, this will throw an error, because the property isn't defined.

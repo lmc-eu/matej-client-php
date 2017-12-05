@@ -7,12 +7,12 @@ use Http\Mock\Client;
 use Lmc\Matej\Matej;
 use Lmc\Matej\Model\Request;
 use Lmc\Matej\Model\Response;
-use Lmc\Matej\TestCase;
+use Lmc\Matej\UnitTestCase;
 
 /**
  * @covers \Lmc\Matej\Http\RequestManager
  */
-class RequestManagerTest extends TestCase
+class RequestManagerTest extends UnitTestCase
 {
     /**
      * Test sending request and decoding response - but isolated from the real HTTP using Http\Mock\Client.
