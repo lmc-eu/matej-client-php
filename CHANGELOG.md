@@ -10,10 +10,10 @@
 ### Added
 - Commands which include user now implements `UserAwareInterface` and `getUserId()` method (ie. Interaction, Sorting, UserMerge, UserRecommendation).
 - Custom request ID could be passed to a request (via `setRequestId()` method of request builders). If none is set, random request ID is generated.
+- Response ID could be read from the response via `getRequestId()` method of the Response object.
 
 ### Changed
 - Validate all commands of `recommendation()` and `sorting()` request involve the same user.
-- Response ID could be read from the response via `getRequestId()` method of the Response object.
 - Validate Item properties to not contain `$property['item_id']` as that would redefine the primary key in Matej database.
 - Validate Item property setup to not set up property named `item_id` as that would conflict with the primary key in Matej database.
 
