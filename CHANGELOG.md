@@ -5,6 +5,8 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+### Added
+- Endpoint to get all defined item properties in the Matej database (`$matej->request()->getItemProperties()`).
 
 ## 1.0.0 - 2017-12-05
 ### Added

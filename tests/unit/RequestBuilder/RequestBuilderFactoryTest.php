@@ -69,6 +69,7 @@ class RequestBuilderFactoryTest extends TestCase
         $userRecommendation = UserRecommendation::create('user-id', 1, 'test-scenario', 0.5, 3600);
 
         return [
+            ['getItemProperties', ItemPropertiesGetRequestBuilder::class, $voidInit],
             ['setupItemProperties', ItemPropertiesSetupRequestBuilder::class, $itemPropertiesSetupInit],
             ['deleteItemProperties', ItemPropertiesSetupRequestBuilder::class, $itemPropertiesSetupInit],
             ['events', EventsRequestBuilder::class, $eventInit],

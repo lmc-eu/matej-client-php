@@ -91,6 +91,11 @@ $response = $matej->request()
     ->addProperty(ItemPropertySetup::string('title'))
     ->send();
 
+// Get list of item properties that are defined in matej
+$response = $matej->request()
+    ->getItemProperties()
+    ->send();
+
 // Delete item property from database:
 $response = $matej->request()
     ->deleteItemProperties()
