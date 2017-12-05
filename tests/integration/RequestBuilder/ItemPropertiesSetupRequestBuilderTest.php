@@ -2,63 +2,48 @@
 
 namespace Lmc\Matej\IntegrationTests\RequestBuilder;
 
-use Lmc\Matej\Exception\RequestException;
+use Lmc\Matej\Exception\LogicException;
 use Lmc\Matej\IntegrationTests\IntegrationTestCase;
 use Lmc\Matej\Model\Command;
 use Lmc\Matej\RequestBuilder\ItemPropertiesSetupRequestBuilder;
 
 /**
  * @covers \Lmc\Matej\RequestBuilder\ItemPropertiesSetupRequestBuilder
- * @covers \Lmc\Matej\RequestBuilder\EventsRequestBuilder
  */
 class ItemPropertiesSetupRequestBuilderTest extends IntegrationTestCase
 {
     /**
-     * In Matej's Mongo Worker, this will throw an error, because the property isn't defined.
-     * The API will however return OK. This is desired behaviour.
-     *
      * @test
+     * @dataProvider provideBuilders
      */
-    public function shouldExecuteRequestContainingUnknownPropertyButPass(): void
+    public function shouldThrowExceptionWhenSendingBlankRequests(ItemPropertiesSetupRequestBuilder $builder): void
     {
-        $response = $this->createMatejInstance()
-            ->request()
-            ->events()
-            ->addItemProperty(
-                Command\ItemProperty::create(
-                    'integration-test-php-clientitem-id',
-                    ['integration_test_php_client_property_1' => true, 'integration_test_php_client_property_2' => false]
-                )
-            )
-            ->send();
-
-        $this->assertSame(1, $response->getNumberOfCommands());
-        $this->assertSame(1, $response->getNumberOfSuccessfulCommands());
-        $this->assertSame(0, $response->getNumberOfFailedCommands());
-        $this->assertSame(0, $response->getNumberOfSkippedCommands());
-
-        $commandResponse = $response->getCommandResponses()[0];
-        $this->assertSame('OK', $commandResponse->getStatus());
-        $this->assertSame([], $commandResponse->getData());
-        $this->assertSame('', $commandResponse->getMessage());
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('At least one ItemPropertySetup command must be added to the builder before sending the request');
+        $builder->send();
     }
 
-    /**
-     * @test
-     * @depends shouldExecuteRequestContainingUnknownPropertyButPass
-     */
+    public function provideBuilders(): array
+    {
+        return [
+            'setup properties' => [$this->createMatejInstance()->request()->setupItemProperties()],
+            'delete properties' => [$this->createMatejInstance()->request()->deleteItemProperties()],
+        ];
+    }
+
+    /** @test */
     public function shouldCreateNewPropertiesInMatej(): void
     {
         $response = $this->createMatejInstance()
             ->request()
             ->setupItemProperties()
-            ->addProperty(Command\ItemPropertySetup::boolean('integration_test_php_client_bool'))
-            ->addProperty(Command\ItemPropertySetup::double('integration_test_php_client_double'))
-            ->addProperty(Command\ItemPropertySetup::int('integration_test_php_client_int'))
-            ->addProperty(Command\ItemPropertySetup::string('integration_test_php_client_string'))
+            ->addProperty(Command\ItemPropertySetup::boolean('test_property_bool'))
+            ->addProperty(Command\ItemPropertySetup::double('test_property_double'))
+            ->addProperty(Command\ItemPropertySetup::int('test_property_int'))
+            ->addProperty(Command\ItemPropertySetup::string('test_property_string'))
             ->addProperties([
-                Command\ItemPropertySetup::timestamp('integration_test_php_client_timestamp'),
-                Command\ItemPropertySetup::set('integration_test_php_client_set'),
+                Command\ItemPropertySetup::timestamp('test_property_timestamp'),
+                Command\ItemPropertySetup::set('test_property_set'),
             ])
             ->send();
 
@@ -72,48 +57,18 @@ class ItemPropertiesSetupRequestBuilderTest extends IntegrationTestCase
      * @test
      * @depends shouldCreateNewPropertiesInMatej
      */
-    public function shouldExecuteEventWithJustCreatedProperties(): void
-    {
-        $response = $this->createMatejInstance()
-            ->request()
-            ->events()
-            ->addItemProperty(
-                Command\ItemProperty::create(
-                    'integration-test-php-clientitem-id',
-                    [
-                        'integration_test_php_client_bool' => true,
-                        'integration_test_php_client_double' => 0.15,
-                        'integration_test_php_client_int' => 15,
-                        'integration_test_php_client_string' => 'some_string',
-                        'integration_test_php_client_timestamp' => 123456789,
-                        'integration_test_php_client_set' => ['some', 'set'],
-                    ]
-                )
-            )
-            ->send();
-
-        $this->assertSame(1, $response->getNumberOfCommands());
-        $this->assertSame(1, $response->getNumberOfSuccessfulCommands());
-        $this->assertSame(0, $response->getNumberOfFailedCommands());
-        $this->assertSame(0, $response->getNumberOfSkippedCommands());
-    }
-
-    /**
-     * @test
-     * @depends shouldExecuteEventWithJustCreatedProperties
-     */
     public function shouldDeleteCreatedPropertiesFromMatej(): void
     {
         $response = $this->createMatejInstance()
             ->request()
             ->deleteItemProperties()
-            ->addProperty(Command\ItemPropertySetup::boolean('integration_test_php_client_bool'))
-            ->addProperty(Command\ItemPropertySetup::double('integration_test_php_client_double'))
-            ->addProperty(Command\ItemPropertySetup::int('integration_test_php_client_int'))
-            ->addProperty(Command\ItemPropertySetup::string('integration_test_php_client_string'))
+            ->addProperty(Command\ItemPropertySetup::boolean('test_property_bool'))
+            ->addProperty(Command\ItemPropertySetup::double('test_property_double'))
+            ->addProperty(Command\ItemPropertySetup::int('test_property_int'))
+            ->addProperty(Command\ItemPropertySetup::string('test_property_string'))
             ->addProperties([
-                Command\ItemPropertySetup::timestamp('integration_test_php_client_timestamp'),
-                Command\ItemPropertySetup::set('integration_test_php_client_set'),
+                Command\ItemPropertySetup::timestamp('test_property_timestamp'),
+                Command\ItemPropertySetup::set('test_property_set'),
             ])
             ->send();
 
@@ -121,30 +76,5 @@ class ItemPropertiesSetupRequestBuilderTest extends IntegrationTestCase
         $this->assertSame(6, $response->getNumberOfSuccessfulCommands());
         $this->assertSame(0, $response->getNumberOfFailedCommands());
         $this->assertSame(0, $response->getNumberOfSkippedCommands());
-    }
-
-    /**
-     * @dataProvider provideBuilders
-     * @test
-     */
-    public function shouldExecuteThreeThousandSetupCommandsAndFail(ItemPropertiesSetupRequestBuilder $builder): void
-    {
-        $this->expectException(RequestException::class);
-        $this->expectExceptionCode(400);
-        $this->expectExceptionMessage('BAD REQUEST');
-
-        for ($i = 0; $i < 3000; $i++) {
-            $builder->addProperty(Command\ItemPropertySetup::boolean('integration_test_php_client_property_' . $i));
-        }
-
-        $builder->send();
-    }
-
-    public function provideBuilders(): array
-    {
-        return [
-            'setup properties' => [$this->createMatejInstance()->request()->setupItemProperties()],
-            'delete properties' => [$this->createMatejInstance()->request()->deleteItemProperties()],
-        ];
     }
 }

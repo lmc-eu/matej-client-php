@@ -17,45 +17,10 @@ class SortingRequestTest extends IntegrationTestCase
     {
         $response = $this->createMatejInstance()
             ->request()
-            ->sorting(Sorting::create('integration-test-php-client-user-id-A', ['itemA', 'itemB', 'itemC']))
+            ->sorting(Sorting::create('user-a', ['itemA', 'itemB', 'itemC']))
             ->send();
 
         $this->assertResponseCommandStatuses($response, 'SKIPPED', 'SKIPPED', 'OK');
-    }
-
-    /** @test */
-    public function shouldFailOnTooLittleItemIds(): void
-    {
-        $response = $this->createMatejInstance()
-            ->request()
-            ->sorting(Sorting::create('integration-test-php-client-user-id-A', ['itemA']))
-            ->send();
-
-        $this->assertResponseCommandStatuses($response, 'SKIPPED', 'SKIPPED', 'OK');
-    }
-
-    /** @test */
-    public function shouldExecuteSortingRequestWithInteraction(): void
-    {
-        $response = $this->createMatejInstance()
-            ->request()
-            ->sorting(Sorting::create('integration-test-php-client-user-id-A', ['itemA', 'itemB', 'itemC']))
-            ->setInteraction(Interaction::bookmark('integration-test-php-client-user-id-A', 'itemA'))
-            ->send();
-
-        $this->assertResponseCommandStatuses($response, 'OK', 'SKIPPED', 'OK');
-    }
-
-    /** @test */
-    public function shouldExecuteSortingRequestWithUserMerge(): void
-    {
-        $response = $this->createMatejInstance()
-            ->request()
-            ->sorting(Sorting::create('integration-test-php-client-user-id-A', ['itemA', 'itemB', 'itemC']))
-            ->setUserMerge(UserMerge::mergeInto('integration-test-php-client-user-id-A', 'integration-test-php-client-user-id-B'))
-            ->send();
-
-        $this->assertResponseCommandStatuses($response, 'SKIPPED', 'OK', 'OK');
     }
 
     /** @test */
@@ -63,9 +28,9 @@ class SortingRequestTest extends IntegrationTestCase
     {
         $response = $this->createMatejInstance()
             ->request()
-            ->sorting(Sorting::create('integration-test-php-client-user-id-A', ['itemA', 'itemB', 'itemC']))
-            ->setUserMerge(UserMerge::mergeInto('integration-test-php-client-user-id-A', 'integration-test-php-client-user-id-B'))
-            ->setInteraction(Interaction::bookmark('integration-test-php-client-user-id-A', 'itemA'))
+            ->sorting(Sorting::create('user-a', ['item-a', 'item-b', 'itemC-c']))
+            ->setUserMerge(UserMerge::mergeInto('user-a', 'user-b'))
+            ->setInteraction(Interaction::bookmark('user-a', 'item-a'))
             ->send();
 
         $this->assertResponseCommandStatuses($response, 'OK', 'OK', 'OK');

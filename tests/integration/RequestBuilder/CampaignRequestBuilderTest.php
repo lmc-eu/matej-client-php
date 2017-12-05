@@ -2,7 +2,7 @@
 
 namespace Lmc\Matej\IntegrationTests\RequestBuilder;
 
-use Lmc\Matej\Exception\RequestException;
+use Lmc\Matej\Exception\LogicException;
 use Lmc\Matej\IntegrationTests\IntegrationTestCase;
 use Lmc\Matej\Model\Command\Sorting;
 use Lmc\Matej\Model\Command\UserRecommendation;
@@ -13,27 +13,15 @@ use Lmc\Matej\Model\Command\UserRecommendation;
 class CampaignRequestBuilderTest extends IntegrationTestCase
 {
     /** @test */
-    public function shouldExecuteRecommendationCommandOnly(): void
+    public function shouldThrowExceptionWhenSendingBlankRequest(): void
     {
-        $response = $this->createMatejInstance()
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('At least one command must be added to the builder before sending the request');
+
+        $this->createMatejInstance()
             ->request()
             ->campaign()
-            ->addRecommendation($this->createRecommendationCommand())
             ->send();
-
-        $this->assertResponseCommandStatuses($response, 'OK');
-    }
-
-    /** @test */
-    public function shouldExecuteSortingCommandOnly(): void
-    {
-        $response = $this->createMatejInstance()
-            ->request()
-            ->campaign()
-            ->addSorting(Sorting::create('integration-test-php-client-user-id-A', ['itemA', 'itemB', 'itemC']))
-            ->send();
-
-        $this->assertResponseCommandStatuses($response, 'OK');
     }
 
     /** @test */
@@ -42,35 +30,37 @@ class CampaignRequestBuilderTest extends IntegrationTestCase
         $response = $this->createMatejInstance()
             ->request()
             ->campaign()
-            ->addRecommendation($this->createRecommendationCommand())
-            ->addSorting(Sorting::create('integration-test-php-client-user-id-A', ['itemA', 'itemB', 'itemC']))
+            ->addRecommendation($this->createRecommendationCommand('a'))
+            ->addRecommendations([
+                $this->createRecommendationCommand('b'),
+                $this->createRecommendationCommand('c'),
+            ])
+            ->addSorting($this->createSortingCommand('a'))
+            ->addSortings([
+                $this->createSortingCommand('b'),
+                $this->createSortingCommand('c'),
+            ])
             ->send();
 
-        $this->assertResponseCommandStatuses($response, 'OK', 'OK');
+        $this->assertResponseCommandStatuses($response, ...$this->generateOkStatuses(6));
     }
 
-    /** @test */
-    public function shouldExecuteThreeThousandCommandsAndFail(): void
-    {
-        $this->expectException(RequestException::class);
-        $this->expectExceptionCode(400);
-        $this->expectExceptionMessage('BAD REQUEST');
-
-        $builder = $this->createMatejInstance()->request()->campaign();
-        for ($i = 0; $i < 3000; $i++) {
-            $builder->addSorting(Sorting::create('integration-test-php-client-user-id-A', ['itemA', 'itemB', 'itemC']));
-        }
-        $builder->send();
-    }
-
-    private function createRecommendationCommand(): UserRecommendation
+    private function createRecommendationCommand(string $letter): UserRecommendation
     {
         return UserRecommendation::create(
-            'integration-test-php-client-user-id-A',
+            'user-' . $letter,
             1,
             'integration-test-scenario',
             1,
             3600
+        );
+    }
+
+    private function createSortingCommand(string $letter): Sorting
+    {
+        return Sorting::create(
+            'user-' . $letter,
+            ['itemA', 'itemB', 'itemC']
         );
     }
 }
