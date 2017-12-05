@@ -5,6 +5,8 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+
+## 1.0.0 - 2017-12-05
 ### Added
 - Commands which include user now implements `UserAwareInterface` and `getUserId()` method (ie. Interaction, Sorting, UserMerge, UserRecommendation).
 - Custom request ID could be passed to a request (via `setRequestId()` method of request builders). If none is set, random request ID is generated.
