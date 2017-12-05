@@ -13,6 +13,9 @@
 - Custom request ID could be passed to a request (via `setRequestId()` method of request builders). If none is set, random request ID is generated.
 - Response ID could be read from the response via `getRequestId()` method of the Response object.
 
+### Fixed
+- URL assembling was not working on systems with non-standard setting of `arg_separator.output` PHP directive.
+
 ## 0.10.0 - 2017-11-30
 ### Changed
 - All exceptions now implement `MatejExceptionInterface` instead of subclassing `AbstractMatejException`.

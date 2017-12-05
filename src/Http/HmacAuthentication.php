@@ -53,7 +53,7 @@ class HmacAuthentication implements Authentication
     {
         $uri = $request->getUri();
 
-        $query = http_build_query($params);
+        $query = http_build_query($params, '', '&');
         $uri = $uri->withQuery($query);
 
         return $request->withUri($uri);
