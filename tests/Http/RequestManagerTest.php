@@ -33,7 +33,8 @@ class RequestManagerTest extends TestCase
         $request = new Request(
             '/foo/endpoint',
             RequestMethodInterface::METHOD_PUT,
-            ['foo' => 'bar', 'list' => ['lorem' => 'ipsum', 'dolor' => 333]]
+            ['foo' => 'bar', 'list' => ['lorem' => 'ipsum', 'dolor' => 333]],
+            'custom-request-id'
         );
 
         $matejResponse = $requestManager->sendRequest($request);
@@ -54,6 +55,7 @@ class RequestManagerTest extends TestCase
             $recordedRequests[0]->getBody()->__toString()
         );
         $this->assertSame(['application/json'], $recordedRequests[0]->getHeader('Content-Type'));
+        $this->assertSame(['custom-request-id'], $recordedRequests[0]->getHeader(RequestManager::REQUEST_ID_HEADER));
         $this->assertSame(
             Matej::CLIENT_ID . '/' . Matej::VERSION,
             $recordedRequests[0]->getHeader(RequestManager::CLIENT_VERSION_HEADER)[0]

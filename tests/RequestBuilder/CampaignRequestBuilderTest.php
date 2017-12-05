@@ -45,6 +45,8 @@ class CampaignRequestBuilderTest extends TestCase
         $builder->addSorting($sortingCommand1);
         $builder->addSortings([$sortingCommand2, $sortingCommand3]);
 
+        $builder->setRequestId('custom-request-id-foo');
+
         $request = $builder->build();
 
         $this->assertInstanceOf(Request::class, $request);
@@ -59,6 +61,8 @@ class CampaignRequestBuilderTest extends TestCase
         $this->assertContains($sortingCommand1, $requestData);
         $this->assertContains($sortingCommand2, $requestData);
         $this->assertContains($sortingCommand3, $requestData);
+
+        $this->assertSame('custom-request-id-foo', $request->getRequestId());
     }
 
     /** @test */

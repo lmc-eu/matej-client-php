@@ -54,6 +54,6 @@ class ItemPropertiesSetupRequestBuilder extends AbstractRequestBuilder
 
         $method = $this->shouldDelete ? RequestMethodInterface::METHOD_DELETE : RequestMethodInterface::METHOD_PUT;
 
-        return new Request(self::ENDPOINT_PATH, $method, $this->commands);
+        return new Request(self::ENDPOINT_PATH, $method, $this->commands, $this->requestId);
     }
 }

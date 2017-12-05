@@ -41,6 +41,8 @@ class ItemPropertiesSetupRequestBuilderTest extends TestCase
         $builder->addProperty($command1);
         $builder->addProperties([$command2, $command3]);
 
+        $builder->setRequestId('custom-request-id-foo');
+
         $request = $builder->build();
 
         $this->assertInstanceOf(Request::class, $request);
@@ -50,6 +52,8 @@ class ItemPropertiesSetupRequestBuilderTest extends TestCase
         $this->assertSame($command1, $request->getData()[0]);
         $this->assertSame($command2, $request->getData()[1]);
         $this->assertSame($command3, $request->getData()[2]);
+
+        $this->assertSame('custom-request-id-foo', $request->getRequestId());
     }
 
     /**

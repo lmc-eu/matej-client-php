@@ -46,7 +46,8 @@ class SortingRequestBuilder extends AbstractRequestBuilder
         return new Request(
             self::ENDPOINT_PATH,
             RequestMethodInterface::METHOD_POST,
-            [$this->interactionCommand, $this->userMergeCommand, $this->sortingCommand]
+            [$this->interactionCommand, $this->userMergeCommand, $this->sortingCommand],
+            $this->requestId
         );
     }
 

@@ -16,18 +16,22 @@ class Response
     private $numberOfFailedCommands;
     /** @var int */
     private $numberOfSkippedCommands;
+    /** @var string|null */
+    private $responseId;
 
     public function __construct(
         int $numberOfCommands,
         int $numberOfSuccessfulCommands,
         int $numberOfFailedCommands,
         int $numberOfSkippedCommands,
-        array $commandResponses = []
+        array $commandResponses = [],
+        string $responseId = null
     ) {
         $this->numberOfCommands = $numberOfCommands;
         $this->numberOfSuccessfulCommands = $numberOfSuccessfulCommands;
         $this->numberOfFailedCommands = $numberOfFailedCommands;
         $this->numberOfSkippedCommands = $numberOfSkippedCommands;
+        $this->responseId = $responseId;
 
         foreach ($commandResponses as $rawCommandResponse) {
             $this->commandResponses[] = CommandResponse::createFromRawCommandResponseObject($rawCommandResponse);
@@ -51,6 +55,7 @@ class Response
                 $this->numberOfSkippedCommands
             );
         }
+        $this->responseId = $responseId;
     }
 
     public function getNumberOfCommands(): int
@@ -82,5 +87,10 @@ class Response
     public function getCommandResponses(): array
     {
         return $this->commandResponses;
+    }
+
+    public function getResponseId(): ?string
+    {
+        return $this->responseId;
     }
 }

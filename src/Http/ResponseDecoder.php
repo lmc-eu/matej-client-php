@@ -20,12 +20,15 @@ class ResponseDecoder implements ResponseDecoderInterface
             throw ResponseDecodingException::forInvalidData($httpResponse);
         }
 
+        $responseId = $httpResponse->getHeader(RequestManager::RESPONSE_ID_HEADER)[0] ?? null;
+
         return new Response(
             (int) $responseData->commands->number_of_commands,
             (int) $responseData->commands->number_of_successful_commands,
             (int) $responseData->commands->number_of_failed_commands,
             (int) $responseData->commands->number_of_skipped_commands,
-            $responseData->commands->responses
+            $responseData->commands->responses,
+            $responseId
         );
     }
 

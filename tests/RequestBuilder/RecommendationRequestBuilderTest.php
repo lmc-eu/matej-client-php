@@ -31,6 +31,8 @@ class RecommendationRequestBuilderTest extends TestCase
         $userMergeCommand = UserMerge::mergeFromSourceToTargetUser('sourceId1', 'userId1');
         $builder->setUserMerge($userMergeCommand);
 
+        $builder->setRequestId('custom-request-id-foo');
+
         $request = $builder->build();
 
         $this->assertInstanceOf(Request::class, $request);
@@ -42,6 +44,8 @@ class RecommendationRequestBuilderTest extends TestCase
         $this->assertSame($interactionCommand, $requestData[0]);
         $this->assertSame($userMergeCommand, $requestData[1]);
         $this->assertSame($recommendationsCommand, $requestData[2]);
+
+        $this->assertSame('custom-request-id-foo', $request->getRequestId());
     }
 
     /** @test */
