@@ -2,10 +2,21 @@
 
 namespace Lmc\Matej\Model\Command;
 
+use Lmc\Matej\Exception\DomainException;
 use PHPUnit\Framework\TestCase;
 
 class ItemPropertyTest extends TestCase
 {
+    /**
+     * @test
+     */
+    public function shouldNotAllowItemIdInProperties(): void
+    {
+        $this->expectException(DomainException::class);
+        $this->expectExceptionMessage('Cannot update value of "item_id" property - it is used by Matej to identify the item and cannot be altered once created.');
+        ItemProperty::create('exampleItemId', ['item_id' => 'customItemId']);
+    }
+
     /**
      * @test
      * @dataProvider provideProperties
@@ -35,10 +46,6 @@ class ItemPropertyTest extends TestCase
             'Multiple item properties' => [
                 ['item1' => 'value1', 'item2' => 'value2'],
                 ['item1' => 'value1', 'item2' => 'value2', 'item_id' => 'exampleItemId'],
-            ],
-            'Should not allow to override item_id' => [
-                ['item_id' => 'customItemId'],
-                ['item_id' => 'exampleItemId'],
             ],
         ];
     }
