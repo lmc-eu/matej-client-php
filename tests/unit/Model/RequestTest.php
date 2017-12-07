@@ -3,9 +3,9 @@
 namespace Lmc\Matej\Model;
 
 use Fig\Http\Message\RequestMethodInterface;
-use Lmc\Matej\TestCase;
+use Lmc\Matej\UnitTestCase;
 
-class RequestTest extends TestCase
+class RequestTest extends UnitTestCase
 {
     /** @test */
     public function shouldBeInstantiable(): void

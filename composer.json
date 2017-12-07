@@ -17,7 +17,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Lmc\\Matej\\": "tests/"
+            "Lmc\\Matej\\": "tests/unit/",
+            "Lmc\\Matej\\IntegrationTests\\": "tests/integration/"
         }
     },
     "require": {

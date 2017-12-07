@@ -2,9 +2,9 @@
 
 namespace Lmc\Matej\Model\Command;
 
-use Lmc\Matej\TestCase;
+use Lmc\Matej\UnitTestCase;
 
-class UserMergeTest extends TestCase
+class UserMergeTest extends UnitTestCase
 {
     /** @test */
     public function shouldGenerateCorrectSignature(): void

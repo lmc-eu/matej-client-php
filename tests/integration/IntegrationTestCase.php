@@ -4,12 +4,11 @@ namespace Lmc\Matej\IntegrationTests;
 
 use Lmc\Matej\Matej;
 use Lmc\Matej\Model\Response;
-use Lmc\Matej\TestCase;
+use PHPUnit\Framework\TestCase;
 
 class IntegrationTestCase extends TestCase
 {
-    /** @before */
-    protected function checkIfConfigured(): void
+    protected function markAsSkippedIfMatejIsNotAvailable(): void
     {
         if (!getenv('MATEJ_TEST_ACCOUNTID')) {
             $this->markTestSkipped('Environment variable MATEJ_TEST_ACCOUNTID has to be defined');
@@ -22,6 +21,8 @@ class IntegrationTestCase extends TestCase
 
     protected function createMatejInstance(): Matej
     {
+        $this->markAsSkippedIfMatejIsNotAvailable();
+
         $instance = new Matej(getenv('MATEJ_TEST_ACCOUNTID'), getenv('MATEJ_TEST_APIKEY'));
 
         if ($baseUrl = getenv('MATEJ_TEST_BASE_URL')) { // intentional assignment
@@ -42,5 +43,14 @@ class IntegrationTestCase extends TestCase
         foreach ($expectedCommandStatuses as $key => $expectedStatus) {
             $this->assertSame($expectedStatus, $commandResponses[$key]->getStatus());
         }
+    }
+
+    /** @return string[] */
+    protected function generateOkStatuses(int $amount): array
+    {
+        $data = explode(',', str_repeat('OK,', $amount));
+        array_pop($data);
+
+        return $data;
     }
 }

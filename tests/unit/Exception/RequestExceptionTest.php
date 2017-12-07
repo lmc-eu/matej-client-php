@@ -5,9 +5,9 @@ namespace Lmc\Matej\Exception;
 use Fig\Http\Message\StatusCodeInterface;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use Lmc\Matej\TestCase;
+use Lmc\Matej\UnitTestCase;
 
-class RequestExceptionTest extends TestCase
+class RequestExceptionTest extends UnitTestCase
 {
     /** @test */
     public function shouldConstructNewException(): void

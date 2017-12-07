@@ -2,9 +2,9 @@
 
 namespace Lmc\Matej\Model\Command;
 
-use Lmc\Matej\TestCase;
+use Lmc\Matej\UnitTestCase;
 
-class SortingTest extends TestCase
+class SortingTest extends UnitTestCase
 {
     /** @test */
     public function shouldBeInstantiableViaNamedConstructor(): void

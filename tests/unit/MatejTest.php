@@ -9,7 +9,7 @@ use Lmc\Matej\Model\CommandResponse;
 /**
  * @covers \Lmc\Matej\Matej
  */
-class MatejTest extends TestCase
+class MatejTest extends UnitTestCase
 {
     /** @test */
     public function shouldBeInstantiable(): void

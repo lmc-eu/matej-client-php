@@ -3,13 +3,13 @@
 namespace Lmc\Matej\Model;
 
 use Lmc\Matej\Exception\ResponseDecodingException;
-use Lmc\Matej\TestCase;
+use Lmc\Matej\UnitTestCase;
 
 /**
  * @covers \Lmc\Matej\Model\Response
  * @covers \Lmc\Matej\Exception\ResponseDecodingException
  */
-class ResponseTest extends TestCase
+class ResponseTest extends UnitTestCase
 {
     /**
      * @dataProvider provideResponseData

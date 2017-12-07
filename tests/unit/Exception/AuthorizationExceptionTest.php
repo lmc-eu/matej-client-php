@@ -5,9 +5,9 @@ namespace Lmc\Matej\Exception;
 use Fig\Http\Message\StatusCodeInterface;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use Lmc\Matej\TestCase;
+use Lmc\Matej\UnitTestCase;
 
-class AuthorizationExceptionTest extends TestCase
+class AuthorizationExceptionTest extends UnitTestCase
 {
     /** @test */
     public function shouldCreateExceptionFromJsonResponse(): void
