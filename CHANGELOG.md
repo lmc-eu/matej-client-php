@@ -6,6 +6,9 @@
 
 ## Unreleased
 
+### Changed
+- Validate max. 1000 commands are added to `campaign()`, `events()`, `setupItemProperties()` and `deleteItemProperties()` requests (in accordance with Matej batch API limit).
+
 ## 1.0.0 - 2017-12-05
 ### Added
 - Commands which include user now implements `UserAwareInterface` and `getUserId()` method (ie. Interaction, Sorting, UserMerge, UserRecommendation).

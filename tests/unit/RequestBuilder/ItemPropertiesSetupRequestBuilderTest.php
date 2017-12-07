@@ -3,6 +3,7 @@
 namespace Lmc\Matej\RequestBuilder;
 
 use Fig\Http\Message\RequestMethodInterface;
+use Lmc\Matej\Exception\DomainException;
 use Lmc\Matej\Exception\LogicException;
 use Lmc\Matej\Http\RequestManager;
 use Lmc\Matej\Model\Command\ItemPropertySetup;
@@ -16,16 +17,6 @@ use PHPUnit\Framework\TestCase;
  */
 class ItemPropertiesSetupRequestBuilderTest extends TestCase
 {
-    /** @test */
-    public function shouldThrowExceptionWhenBuildingEmptyCommands(): void
-    {
-        $builder = new ItemPropertiesSetupRequestBuilder();
-
-        $this->expectException(LogicException::class);
-        $this->expectExceptionMessage('At least one ItemPropertySetup command must be added to the builder');
-        $builder->build();
-    }
-
     /**
      * @test
      * @dataProvider provideBuilderVariants
@@ -65,6 +56,30 @@ class ItemPropertiesSetupRequestBuilderTest extends TestCase
             'builder to create item properties' => [false, RequestMethodInterface::METHOD_PUT],
             'builder to delete item properties' => [true, RequestMethodInterface::METHOD_DELETE],
         ];
+    }
+
+    /** @test */
+    public function shouldThrowExceptionWhenBuildingEmptyCommands(): void
+    {
+        $builder = new ItemPropertiesSetupRequestBuilder();
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('At least one ItemPropertySetup command must be added to the builder');
+        $builder->build();
+    }
+
+    /** @test */
+    public function shouldThrowExceptionWhenBatchSizeIsTooBig(): void
+    {
+        $builder = new ItemPropertiesSetupRequestBuilder();
+
+        for ($i = 0; $i < 1001; $i++) {
+            $builder->addProperty(ItemPropertySetup::timestamp('property1'));
+        }
+
+        $this->expectException(DomainException::class);
+        $this->expectExceptionMessage('Request contains 1001 commands, but at most 1000 is allowed in one request.');
+        $builder->build();
     }
 
     /** @test */
