@@ -3,6 +3,7 @@
 namespace Lmc\Matej\RequestBuilder;
 
 use Fig\Http\Message\RequestMethodInterface;
+use Lmc\Matej\Exception\DomainException;
 use Lmc\Matej\Exception\LogicException;
 use Lmc\Matej\Http\RequestManager;
 use Lmc\Matej\Model\Command\Interaction;
@@ -18,16 +19,6 @@ use PHPUnit\Framework\TestCase;
  */
 class EventsRequestBuilderTest extends TestCase
 {
-    /** @test */
-    public function shouldThrowExceptionWhenBuildingEmptyCommands(): void
-    {
-        $builder = new EventsRequestBuilder();
-
-        $this->expectException(LogicException::class);
-        $this->expectExceptionMessage('At least one command must be added to the builder');
-        $builder->build();
-    }
-
     /** @test */
     public function shouldBuildRequestWithCommands(): void
     {
@@ -72,6 +63,32 @@ class EventsRequestBuilderTest extends TestCase
         $this->assertContains($userMergeCommand3, $requestData);
 
         $this->assertSame('custom-request-id-foo', $request->getRequestId());
+    }
+
+    /** @test */
+    public function shouldThrowExceptionWhenBuildingEmptyCommands(): void
+    {
+        $builder = new EventsRequestBuilder();
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('At least one command must be added to the builder');
+        $builder->build();
+    }
+
+    /** @test */
+    public function shouldThrowExceptionWhenBatchSizeIsTooBig(): void
+    {
+        $builder = new EventsRequestBuilder();
+
+        for ($i = 0; $i < 334; $i++) {
+            $builder->addInteraction(Interaction::detailView('userId1', 'itemId1'));
+            $builder->addItemProperty(ItemProperty::create('itemId1', ['key1' => 'value1']));
+            $builder->addUserMerge(UserMerge::mergeFromSourceToTargetUser('sourceId1', 'targetId1'));
+        }
+
+        $this->expectException(DomainException::class);
+        $this->expectExceptionMessage('Request contains 1002 commands, but at most 1000 is allowed in one request.');
+        $builder->build();
     }
 
     /** @test */

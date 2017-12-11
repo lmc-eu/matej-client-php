@@ -3,6 +3,7 @@
 namespace Lmc\Matej\Model;
 
 use Lmc\Matej\Exception\DomainException;
+use Lmc\Matej\Model\Command\ItemPropertySetup;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -62,6 +63,64 @@ class AssertionTest extends TestCase
             'at character' => ['user@email', $formatExceptionMessage],
             'integer' => [333666, $formatExceptionMessage],
             'over max length (>100 characters)' => [str_repeat('a', 101), $lengthExceptionMessage],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider provideValidBatchSize
+     */
+    public function shouldAssertValidBatchSize(int $batchSize): void
+    {
+        $commands = [];
+
+        for ($i = 0; $i < $batchSize; $i++) {
+            $commands[] = ItemPropertySetup::string('name');
+        }
+
+        $this->assertTrue(Assertion::batchSize($commands));
+    }
+
+    /**
+     * @return array[]
+     */
+    public function provideValidBatchSize(): array
+    {
+        return [
+            [0],
+            [1],
+            [1000],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider provideInvalidBatchSize
+     */
+    public function shouldAssertInvalidBatchSize(int $batchSize): void
+    {
+        $commands = [];
+
+        for ($i = 0; $i < $batchSize; $i++) {
+            $commands[] = ItemPropertySetup::string('name');
+        }
+
+        $this->expectException(DomainException::class);
+        $this->expectExceptionMessage(
+            'Request contains ' . $batchSize . ' commands, but at most 1000 is allowed in one request.'
+        );
+
+        Assertion::batchSize($commands);
+    }
+
+    /**
+     * @return array[]
+     */
+    public function provideInvalidBatchSize(): array
+    {
+        return [
+            [1001],
+            [2000],
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace Lmc\Matej\RequestBuilder;
 
 use Fig\Http\Message\RequestMethodInterface;
+use Lmc\Matej\Exception\DomainException;
 use Lmc\Matej\Exception\LogicException;
 use Lmc\Matej\Http\RequestManager;
 use Lmc\Matej\Model\Command\Sorting;
@@ -17,16 +18,6 @@ use PHPUnit\Framework\TestCase;
  */
 class CampaignRequestBuilderTest extends TestCase
 {
-    /** @test */
-    public function shouldThrowExceptionWhenBuildingEmptyCommands(): void
-    {
-        $builder = new CampaignRequestBuilder();
-
-        $this->expectException(LogicException::class);
-        $this->expectExceptionMessage('At least one command must be added to the builder');
-        $builder->build();
-    }
-
     /** @test */
     public function shouldBuildRequestWithCommands(): void
     {
@@ -63,6 +54,31 @@ class CampaignRequestBuilderTest extends TestCase
         $this->assertContains($sortingCommand3, $requestData);
 
         $this->assertSame('custom-request-id-foo', $request->getRequestId());
+    }
+
+    /** @test */
+    public function shouldThrowExceptionWhenBuildingEmptyCommands(): void
+    {
+        $builder = new CampaignRequestBuilder();
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('At least one command must be added to the builder');
+        $builder->build();
+    }
+
+    /** @test */
+    public function shouldThrowExceptionWhenBatchSizeIsTooBig(): void
+    {
+        $builder = new CampaignRequestBuilder();
+
+        for ($i = 0; $i < 501; $i++) {
+            $builder->addRecommendation(UserRecommendation::create('userId1', 1, 'scenario1', 1.0, 600));
+            $builder->addSorting(Sorting::create('userId1', ['itemId1', 'itemId2']));
+        }
+
+        $this->expectException(DomainException::class);
+        $this->expectExceptionMessage('Request contains 1002 commands, but at most 1000 is allowed in one request.');
+        $builder->build();
     }
 
     /** @test */
