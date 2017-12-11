@@ -8,6 +8,7 @@
 
 ### Changed
 - Validate max. 1000 commands are added to `campaign()`, `events()`, `setupItemProperties()` and `deleteItemProperties()` requests (in accordance with Matej batch API limit).
+- Replaced `self` with `static` where possible
 
 ## 1.0.0 - 2017-12-05
 ### Added

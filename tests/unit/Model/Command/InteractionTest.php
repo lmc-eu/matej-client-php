@@ -15,7 +15,7 @@ class InteractionTest extends TestCase
     public function initTimeMock(): void
     {
         $time = $this->getFunctionMock(__NAMESPACE__, 'time');
-        $time->expects($this->any())->willReturn(self::TIMESTAMP);
+        $time->expects($this->any())->willReturn(static::TIMESTAMP);
     }
 
     /**
@@ -44,7 +44,7 @@ class InteractionTest extends TestCase
                     'interaction_type' => $expectedInteractionType,
                     'user_id' => 'exampleUserId',
                     'item_id' => 'exampleItemId',
-                    'timestamp' => $extraConstructorParams[2] ?? self::TIMESTAMP,
+                    'timestamp' => $extraConstructorParams[2] ?? static::TIMESTAMP,
                     'value' => $extraConstructorParams[0] ?? 1.0,
                     'context' => $extraConstructorParams[1] ?? 'default',
                 ],

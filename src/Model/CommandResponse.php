@@ -56,6 +56,6 @@ class CommandResponse
 
     public function isSuccessful(): bool
     {
-        return $this->getStatus() === self::STATUS_OK;
+        return $this->getStatus() === static::STATUS_OK;
     }
 }

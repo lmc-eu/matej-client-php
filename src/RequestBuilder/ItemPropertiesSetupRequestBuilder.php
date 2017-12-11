@@ -34,7 +34,7 @@ class ItemPropertiesSetupRequestBuilder extends AbstractRequestBuilder
 
     /**
      * @param ItemPropertySetup[] $itemPropertiesSetup
-     * @return self
+     * @return static
      */
     public function addProperties(array $itemPropertiesSetup): self
     {
@@ -56,6 +56,6 @@ class ItemPropertiesSetupRequestBuilder extends AbstractRequestBuilder
 
         $method = $this->shouldDelete ? RequestMethodInterface::METHOD_DELETE : RequestMethodInterface::METHOD_PUT;
 
-        return new Request(self::ENDPOINT_PATH, $method, $this->commands, $this->requestId);
+        return new Request(static::ENDPOINT_PATH, $method, $this->commands, $this->requestId);
     }
 }

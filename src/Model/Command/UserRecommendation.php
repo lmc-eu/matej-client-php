@@ -83,7 +83,7 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
     {
         Assertion::choice(
             $minimalRelevance,
-            [self::MINIMAL_RELEVANCE_LOW, self::MINIMAL_RELEVANCE_MEDIUM, self::MINIMAL_RELEVANCE_HIGH]
+            [static::MINIMAL_RELEVANCE_LOW, static::MINIMAL_RELEVANCE_MEDIUM, static::MINIMAL_RELEVANCE_HIGH]
         );
 
         $this->minimalRelevance = $minimalRelevance;

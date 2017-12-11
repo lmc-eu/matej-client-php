@@ -27,7 +27,7 @@ class EventsRequestBuilder extends AbstractRequestBuilder
 
     /**
      * @param Interaction[] $interactions
-     * @return self
+     * @return static
      */
     public function addInteractions(array $interactions): self
     {
@@ -47,7 +47,7 @@ class EventsRequestBuilder extends AbstractRequestBuilder
 
     /**
      * @param ItemProperty[] $itemProperties
-     * @return self
+     * @return static
      */
     public function addItemProperties(array $itemProperties): self
     {
@@ -67,7 +67,7 @@ class EventsRequestBuilder extends AbstractRequestBuilder
 
     /**
      * @param UserMerge[] $userMerges
-     * @return self
+     * @return static
      */
     public function addUserMerges(array $userMerges): self
     {
@@ -85,6 +85,6 @@ class EventsRequestBuilder extends AbstractRequestBuilder
         }
         Assertion::batchSize($this->commands);
 
-        return new Request(self::ENDPOINT_PATH, RequestMethodInterface::METHOD_POST, $this->commands, $this->requestId);
+        return new Request(static::ENDPOINT_PATH, RequestMethodInterface::METHOD_POST, $this->commands, $this->requestId);
     }
 }

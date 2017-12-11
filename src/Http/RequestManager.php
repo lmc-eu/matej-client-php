@@ -131,7 +131,7 @@ class RequestManager
                 $uri,
                 [
                     'Content-Type' => 'application/json',
-                    self::REQUEST_ID_HEADER => $request->getRequestId(),
+                    static::REQUEST_ID_HEADER => $request->getRequestId(),
                 ],
                 $requestBody
             );
@@ -145,7 +145,7 @@ class RequestManager
     private function getDefaultHeaders(): array
     {
         return [
-            self::CLIENT_VERSION_HEADER => Matej::CLIENT_ID . '/' . Matej::VERSION,
+            static::CLIENT_VERSION_HEADER => Matej::CLIENT_ID . '/' . Matej::VERSION,
         ];
     }
 }

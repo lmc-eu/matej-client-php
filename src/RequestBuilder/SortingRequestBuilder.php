@@ -44,7 +44,7 @@ class SortingRequestBuilder extends AbstractRequestBuilder
         $this->assertConsistentUsersInCommands();
 
         return new Request(
-            self::ENDPOINT_PATH,
+            static::ENDPOINT_PATH,
             RequestMethodInterface::METHOD_POST,
             [$this->interactionCommand, $this->userMergeCommand, $this->sortingCommand],
             $this->requestId

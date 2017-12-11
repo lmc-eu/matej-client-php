@@ -26,7 +26,7 @@ class CampaignRequestBuilder extends AbstractRequestBuilder
 
     /**
      * @param UserRecommendation[] $recommendations
-     * @return self
+     * @return static
      */
     public function addRecommendations(array $recommendations): self
     {
@@ -46,7 +46,7 @@ class CampaignRequestBuilder extends AbstractRequestBuilder
 
     /**
      * @param Sorting[] $sortings
-     * @return self
+     * @return static
      */
     public function addSortings(array $sortings): self
     {
@@ -64,6 +64,6 @@ class CampaignRequestBuilder extends AbstractRequestBuilder
         }
         Assertion::batchSize($this->commands);
 
-        return new Request(self::ENDPOINT_PATH, RequestMethodInterface::METHOD_POST, $this->commands, $this->requestId);
+        return new Request(static::ENDPOINT_PATH, RequestMethodInterface::METHOD_POST, $this->commands, $this->requestId);
     }
 }
