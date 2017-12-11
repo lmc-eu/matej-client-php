@@ -19,6 +19,11 @@ class RequestBuilderFactory
         $this->requestManager = $requestManager;
     }
 
+    public function getItemProperties(): ItemPropertiesGetRequestBuilder
+    {
+        return $this->createConfiguredBuilder(ItemPropertiesGetRequestBuilder::class);
+    }
+
     /**
      * Define new properties into the database. Those properties will be created and subsequently accepted by Matej.
      *

@@ -18,7 +18,7 @@ class Request
     /** @var string */
     private $requestId;
 
-    public function __construct(string $path, string $method, array $data, string $requestId = null)
+    public function __construct(string $path, string $method, array $data = [], string $requestId = null)
     {
         $this->path = $path;
         $this->method = $method;
