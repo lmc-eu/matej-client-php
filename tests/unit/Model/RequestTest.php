@@ -3,6 +3,8 @@
 namespace Lmc\Matej\Model;
 
 use Fig\Http\Message\RequestMethodInterface;
+use Lmc\Matej\Exception\LogicException;
+use Lmc\Matej\Model\Response\SortingResponse;
 use Lmc\Matej\UnitTestCase;
 
 class RequestTest extends UnitTestCase
@@ -31,5 +33,32 @@ class RequestTest extends UnitTestCase
         $request = new Request('/foo', RequestMethodInterface::METHOD_GET, [], 'custom-request-id');
 
         $this->assertSame('custom-request-id', $request->getRequestId());
+    }
+
+    /** @test */
+    public function shouldStoreResponseClass(): void
+    {
+        $request = new Request(
+            '/foo',
+            RequestMethodInterface::METHOD_GET,
+            [],
+            null,
+            SortingResponse::class
+        );
+
+        $this->assertSame(SortingResponse::class, $request->getResponseClass());
+    }
+
+    /** @test */
+    public function shouldThrowExceptionWhenSettingInvalidResponseClass(): void
+    {
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage(sprintf(
+            'Class %s has to be instance or subclass of %s.',
+            \stdClass::class,
+            Response::class
+        ));
+
+        $request = new Request('/foo', RequestMethodInterface::METHOD_GET, [], null, \stdClass::class);
     }
 }

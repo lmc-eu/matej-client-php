@@ -3,6 +3,7 @@
 namespace Lmc\Matej\Model;
 
 use Lmc\Matej\Exception\DomainException;
+use Lmc\Matej\Exception\LogicException;
 use Lmc\Matej\Model\Command\AbstractCommand;
 
 /**
@@ -37,13 +38,28 @@ class Assertion extends \Assert\Assertion
      *
      * @param AbstractCommand[] $commands
      */
-    public static function batchSize(array $commands)
+    public static function batchSize(array $commands): bool
     {
         static::lessOrEqualThan(
             count($commands),
             self::MAX_BATCH_SIZE,
             'Request contains %s commands, but at most %s is allowed in one request.'
         );
+
+        return true;
+    }
+
+    /**
+     * Assert that provided classname is an instance or subclass of Response
+     */
+    public static function isResponseClass(string $wantedClass): bool
+    {
+        if (
+            !is_a($wantedClass, Response::class, true) &&
+            !is_subclass_of($wantedClass, Response::class)
+        ) {
+            throw LogicException::forClassNotExtendingOtherClass($wantedClass, Response::class);
+        }
 
         return true;
     }

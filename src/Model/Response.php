@@ -79,6 +79,14 @@ class Response
     }
 
     /**
+     * Return individual command response by its index (0 indexed)
+     */
+    public function getCommandResponse(int $index): CommandResponse
+    {
+        return $this->commandResponses[$index];
+    }
+
+    /**
      * Each Command which was part of request batch has here corresponding CommandResponse - on the same index on which
      * the Command was added to the request batch.
      *

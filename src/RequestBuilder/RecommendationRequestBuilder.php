@@ -8,7 +8,11 @@ use Lmc\Matej\Model\Command\Interaction;
 use Lmc\Matej\Model\Command\UserMerge;
 use Lmc\Matej\Model\Command\UserRecommendation;
 use Lmc\Matej\Model\Request;
+use Lmc\Matej\Model\Response\RecommendationsResponse;
 
+/**
+ * @method RecommendationsResponse send()
+ */
 class RecommendationRequestBuilder extends AbstractRequestBuilder
 {
     protected const ENDPOINT_PATH = '/recommendations';
@@ -47,7 +51,8 @@ class RecommendationRequestBuilder extends AbstractRequestBuilder
             self::ENDPOINT_PATH,
             RequestMethodInterface::METHOD_POST,
             [$this->interactionCommand, $this->userMergeCommand, $this->userRecommendationCommand],
-            $this->requestId
+            $this->requestId,
+            RecommendationsResponse::class
         );
     }
 

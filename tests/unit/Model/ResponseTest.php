@@ -37,10 +37,13 @@ class ResponseTest extends UnitTestCase
         $this->assertSame($numberOfFailed, $response->getNumberOfFailedCommands());
         $this->assertSame($numberOfSkipped, $response->getNumberOfSkippedCommands());
 
-        $this->assertContainsOnlyInstancesOf(CommandResponse::class, $response->getCommandResponses());
-        $this->assertCount(count($commandResponses), $response->getCommandResponses());
-
         $this->assertSame($responseId, $response->getResponseId());
+
+        $this->assertCount(count($commandResponses), $response->getCommandResponses());
+        $this->assertContainsOnlyInstancesOf(CommandResponse::class, $response->getCommandResponses());
+        for ($i = 0; $i < count($commandResponses); $i++) {
+            $this->assertInstanceOf(CommandResponse::class, $response->getCommandResponse($i));
+        }
     }
 
     /**

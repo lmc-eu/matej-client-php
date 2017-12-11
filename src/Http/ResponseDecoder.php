@@ -8,7 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class ResponseDecoder implements ResponseDecoderInterface
 {
-    public function decode(ResponseInterface $httpResponse): Response
+    public function decode(ResponseInterface $httpResponse, string $responseClass = Response::class): Response
     {
         $responseData = json_decode($httpResponse->getBody()->getContents());
 
@@ -22,7 +22,7 @@ class ResponseDecoder implements ResponseDecoderInterface
 
         $responseId = $httpResponse->getHeader(RequestManager::RESPONSE_ID_HEADER)[0] ?? null;
 
-        return new Response(
+        return new $responseClass(
             (int) $responseData->commands->number_of_commands,
             (int) $responseData->commands->number_of_successful_commands,
             (int) $responseData->commands->number_of_failed_commands,

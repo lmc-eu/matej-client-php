@@ -21,4 +21,9 @@ class LogicException extends \LogicException implements MatejExceptionInterface
 
         return new self($message);
     }
+
+    public static function forClassNotExtendingOtherClass($class, $wantedClass)
+    {
+        return new self(sprintf('Class %s has to be instance or subclass of %s.', $class, $wantedClass));
+    }
 }
