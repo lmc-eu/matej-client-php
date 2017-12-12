@@ -9,6 +9,7 @@ use Lmc\Matej\Model\Command\UserAwareInterface;
  */
 class LogicException extends \LogicException implements MatejExceptionInterface
 {
+    /** @return static */
     public static function forInconsistentUserId(UserAwareInterface $mainCommand, UserAwareInterface $additionalCommand)
     {
         $message = sprintf(
@@ -19,6 +20,6 @@ class LogicException extends \LogicException implements MatejExceptionInterface
             $mainCommand->getUserId()
         );
 
-        return new self($message);
+        return new static($message);
     }
 }

@@ -18,6 +18,7 @@ class EventsRequestBuilder extends AbstractRequestBuilder
     /** @var AbstractCommand[] */
     protected $commands = [];
 
+    /** @return static */
     public function addInteraction(Interaction $interaction): self
     {
         $this->commands[] = $interaction;
@@ -38,6 +39,7 @@ class EventsRequestBuilder extends AbstractRequestBuilder
         return $this;
     }
 
+    /** @return static */
     public function addItemProperty(ItemProperty $itemProperty): self
     {
         $this->commands[] = $itemProperty;
@@ -58,6 +60,7 @@ class EventsRequestBuilder extends AbstractRequestBuilder
         return $this;
     }
 
+    /** @return static */
     public function addUserMerge(UserMerge $userMerge): self
     {
         $this->commands[] = $userMerge;

@@ -25,6 +25,7 @@ class ItemPropertiesSetupRequestBuilder extends AbstractRequestBuilder
         $this->shouldDelete = $shouldDelete;
     }
 
+    /** @return static */
     public function addProperty(ItemPropertySetup $itemPropertySetup): self
     {
         $this->commands[] = $itemPropertySetup;

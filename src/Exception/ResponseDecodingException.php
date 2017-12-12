@@ -9,9 +9,10 @@ use Psr\Http\Message\ResponseInterface;
  */
 class ResponseDecodingException extends \RuntimeException implements MatejExceptionInterface
 {
+    /** @return static */
     public static function forJsonError(string $jsonErrorMsg, ResponseInterface $response): self
     {
-        return new self(
+        return new static(
             sprintf(
                 "Error decoding Matej response: %s\n\nStatus code: %s %s\nBody:\n%s",
                 $jsonErrorMsg,
@@ -22,9 +23,10 @@ class ResponseDecodingException extends \RuntimeException implements MatejExcept
         );
     }
 
+    /** @return static */
     public static function forInvalidData(ResponseInterface $response): self
     {
-        return new self(
+        return new static(
             sprintf(
                 "Error decoding Matej response: required data missing.\n\nBody:\n%s",
                 $response->getBody()
@@ -32,9 +34,10 @@ class ResponseDecodingException extends \RuntimeException implements MatejExcept
         );
     }
 
+    /** @return static */
     public static function forInconsistentNumberOfCommands(int $numberOfCommands, int $commandResponsesCount): self
     {
-        return new self(
+        return new static(
             sprintf(
                 'Provided numberOfCommands (%d) is inconsistent with actual count of command responses (%d)',
                 $numberOfCommands,
@@ -43,13 +46,14 @@ class ResponseDecodingException extends \RuntimeException implements MatejExcept
         );
     }
 
+    /** @return static */
     public static function forInconsistentNumbersOfCommandProperties(
         int $numberOfCommands,
         $numberOfSuccessfulCommands,
         $numberOfFailedCommands,
         $numberOfSkippedCommands
     ): self {
-        return new self(
+        return new static(
             sprintf(
                 'Provided numberOfCommands (%d) is inconsistent with provided sum of '
                 . 'numberOfSuccessfulCommands (%d) + numberOfFailedCommands (%d)'

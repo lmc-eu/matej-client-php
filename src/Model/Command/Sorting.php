@@ -23,6 +23,8 @@ class Sorting extends AbstractCommand implements UserAwareInterface
 
     /**
      * Sort given item ids for user-based recommendations.
+     *
+     * @return static
      */
     public static function create(string $userId, array $itemIds): self
     {

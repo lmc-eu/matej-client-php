@@ -17,6 +17,7 @@ class CampaignRequestBuilder extends AbstractRequestBuilder
     /** @var AbstractCommand[] */
     protected $commands = [];
 
+    /** @return static */
     public function addRecommendation(UserRecommendation $recommendation): self
     {
         $this->commands[] = $recommendation;
@@ -37,6 +38,7 @@ class CampaignRequestBuilder extends AbstractRequestBuilder
         return $this;
     }
 
+    /** @return static */
     public function addSorting(Sorting $sorting): self
     {
         $this->commands[] = $sorting;

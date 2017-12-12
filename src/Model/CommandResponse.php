@@ -25,13 +25,14 @@ class CommandResponse
     {
     }
 
+    /** @return static */
     public static function createFromRawCommandResponseObject(\stdClass $rawCommandResponseObject): self
     {
         if (!isset($rawCommandResponseObject->status)) {
             throw new ResponseDecodingException('Status field is missing in command response object');
         }
 
-        $commandResponse = new self();
+        $commandResponse = new static();
         $commandResponse->status = $rawCommandResponseObject->status;
         $commandResponse->message = $rawCommandResponseObject->message ?? '';
         $commandResponse->data = $rawCommandResponseObject->data ?? [];

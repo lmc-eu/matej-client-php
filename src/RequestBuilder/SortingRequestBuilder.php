@@ -25,6 +25,7 @@ class SortingRequestBuilder extends AbstractRequestBuilder
         $this->sortingCommand = $sortingCommand;
     }
 
+    /** @return static */
     public function setUserMerge(UserMerge $merge): self
     {
         $this->userMergeCommand = $merge;
@@ -32,6 +33,7 @@ class SortingRequestBuilder extends AbstractRequestBuilder
         return $this;
     }
 
+    /** @return static */
     public function setInteraction(Interaction $interaction): self
     {
         $this->interactionCommand = $interaction;

@@ -32,6 +32,7 @@ class Matej
         return new RequestBuilderFactory($this->getRequestManager());
     }
 
+    /** @return static */
     public function setHttpClient(HttpClient $client): self
     {
         $this->getRequestManager()->setHttpClient($client);
@@ -39,15 +40,21 @@ class Matej
         return $this;
     }
 
-    /** @internal used mainly in integration tests */
-    public function setBaseUrl($baseUrl): self
+    /**
+     * @internal used mainly in integration tests
+     * @return static
+     */
+    public function setBaseUrl(string $baseUrl): self
     {
         $this->getRequestManager()->setBaseUrl($baseUrl);
 
         return $this;
     }
 
-    /** @codeCoverageIgnore */
+    /**
+     * @codeCoverageIgnore
+     * @return static
+     */
     public function setHttpMessageFactory(MessageFactory $messageFactory): self
     {
         $this->getRequestManager()->setMessageFactory($messageFactory);
@@ -55,7 +62,10 @@ class Matej
         return $this;
     }
 
-    /** @codeCoverageIgnore */
+    /**
+     * @codeCoverageIgnore
+     * @return static
+     */
     public function setHttpResponseDecoder(ResponseDecoderInterface $responseDecoder): self
     {
         $this->getRequestManager()->setResponseDecoder($responseDecoder);
