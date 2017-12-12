@@ -30,7 +30,7 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
     /** @var string */
     private $minimalRelevance = self::MINIMAL_RELEVANCE_LOW;
     /** @var array */
-    private $filters = ['valid_to >= NOW'];
+    private $filters = ['NOW <= valid_to'];
 
     private function __construct(string $userId, int $count, string $scenario, float $rotationRate, int $rotationTime)
     {
