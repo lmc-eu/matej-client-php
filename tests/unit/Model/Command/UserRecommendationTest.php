@@ -23,7 +23,7 @@ class UserRecommendationTest extends TestCase
                     'rotation_time' => 3600,
                     'hard_rotation' => false,
                     'min_relevance' => UserRecommendation::MINIMAL_RELEVANCE_LOW,
-                    'filter' => 'valid_to >= NOW',
+                    'filter' => 'NOW <= valid_to',
                 ],
             ],
             $command->jsonSerialize()
@@ -71,14 +71,14 @@ class UserRecommendationTest extends TestCase
         $command = UserRecommendation::create('user-id', 333, 'test-scenario', 1.0, 3600);
 
         // Default filter
-        $this->assertSame('valid_to >= NOW', $command->jsonSerialize()['parameters']['filter']);
+        $this->assertSame('NOW <= valid_to', $command->jsonSerialize()['parameters']['filter']);
 
         // Add custom filters to the default one
         $command->addFilter('foo = bar')
             ->addFilter('bar = baz');
 
         $this->assertSame(
-            'valid_to >= NOW and foo = bar and bar = baz',
+            'NOW <= valid_to and foo = bar and bar = baz',
             $command->jsonSerialize()['parameters']['filter']
         );
 
