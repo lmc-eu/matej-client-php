@@ -22,4 +22,4 @@ script:
   - vendor/bin/phpunit --coverage-clover coverage-clover.xml
 
 after_success:
-  - travis_retry php vendor/bin/coveralls -v
+  - travis_retry php vendor/bin/php-coveralls -v
