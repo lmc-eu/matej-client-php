@@ -52,7 +52,7 @@ class RequestManager
 
         $httpResponse = $client->sendRequest($httpRequest);
 
-        return $this->getResponseDecoder()->decode($httpResponse);
+        return $this->getResponseDecoder()->decode($httpResponse, $request->getResponseClass());
     }
 
     /** @codeCoverageIgnore */

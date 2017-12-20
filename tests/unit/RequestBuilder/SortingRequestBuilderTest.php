@@ -10,6 +10,7 @@ use Lmc\Matej\Model\Command\Sorting;
 use Lmc\Matej\Model\Command\UserMerge;
 use Lmc\Matej\Model\Request;
 use Lmc\Matej\Model\Response;
+use Lmc\Matej\Model\Response\SortingResponse;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -46,6 +47,7 @@ class SortingRequestBuilderTest extends TestCase
         $this->assertSame($sortingCommand, $requestData[2]);
 
         $this->assertSame('custom-request-id-foo', $request->getRequestId());
+        $this->assertSame(SortingResponse::class, $request->getResponseClass());
     }
 
     /** @test */

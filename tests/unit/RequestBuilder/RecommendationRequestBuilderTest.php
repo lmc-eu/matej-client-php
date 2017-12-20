@@ -11,6 +11,7 @@ use Lmc\Matej\Model\Command\UserMerge;
 use Lmc\Matej\Model\Command\UserRecommendation;
 use Lmc\Matej\Model\Request;
 use Lmc\Matej\Model\Response;
+use Lmc\Matej\Model\Response\RecommendationsResponse;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -46,6 +47,7 @@ class RecommendationRequestBuilderTest extends TestCase
         $this->assertSame($recommendationsCommand, $requestData[2]);
 
         $this->assertSame('custom-request-id-foo', $request->getRequestId());
+        $this->assertSame(RecommendationsResponse::class, $request->getResponseClass());
     }
 
     /** @test */

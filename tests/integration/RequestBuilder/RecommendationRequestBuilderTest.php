@@ -6,8 +6,11 @@ use Lmc\Matej\IntegrationTests\IntegrationTestCase;
 use Lmc\Matej\Model\Command\Interaction;
 use Lmc\Matej\Model\Command\UserMerge;
 use Lmc\Matej\Model\Command\UserRecommendation;
+use Lmc\Matej\Model\CommandResponse;
+use Lmc\Matej\Model\Response\RecommendationsResponse;
 
 /**
+ * @covers \Lmc\Matej\Model\Response\RecommendationsResponse
  * @covers \Lmc\Matej\RequestBuilder\RecommendationRequestBuilder
  */
 class RecommendationRequestBuilderTest extends IntegrationTestCase
@@ -20,7 +23,9 @@ class RecommendationRequestBuilderTest extends IntegrationTestCase
             ->recommendation($this->createRecommendationCommand())
             ->send();
 
+        $this->assertInstanceOf(RecommendationsResponse::class, $response);
         $this->assertResponseCommandStatuses($response, 'SKIPPED', 'SKIPPED', 'OK');
+        $this->assertShorthandResponse($response, 'SKIPPED', 'SKIPPED', 'OK');
     }
 
     /** @test */
@@ -33,7 +38,9 @@ class RecommendationRequestBuilderTest extends IntegrationTestCase
             ->setInteraction(Interaction::bookmark('user-a', 'item-a'))
             ->send();
 
+        $this->assertInstanceOf(RecommendationsResponse::class, $response);
         $this->assertResponseCommandStatuses($response, 'OK', 'OK', 'OK');
+        $this->assertShorthandResponse($response, 'OK', 'OK', 'OK');
     }
 
     private function createRecommendationCommand(): UserRecommendation
@@ -45,5 +52,15 @@ class RecommendationRequestBuilderTest extends IntegrationTestCase
             0.50,
             3600
         );
+    }
+
+    private function assertShorthandResponse(RecommendationsResponse $response, $interactionStatus, $userMergeStatus, $recommendationStatus): void
+    {
+        $this->assertInstanceOf(CommandResponse::class, $response->getInteraction());
+        $this->assertInstanceOf(CommandResponse::class, $response->getUserMerge());
+        $this->assertInstanceOf(CommandResponse::class, $response->getRecommendation());
+        $this->assertSame($interactionStatus, $response->getInteraction()->getStatus());
+        $this->assertSame($userMergeStatus, $response->getUserMerge()->getStatus());
+        $this->assertSame($recommendationStatus, $response->getRecommendation()->getStatus());
     }
 }

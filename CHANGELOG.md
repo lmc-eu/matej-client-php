@@ -10,6 +10,10 @@
 
 ### Changed
 - Validate max. 1000 commands are added to `campaign()`, `events()`, `setupItemProperties()` and `deleteItemProperties()` requests (in accordance with Matej batch API limit).
+- `Response` now contains `getCommandResponse(int $index)` to access individual command responses.
+- `sorting()->send()` request now returns `SortingResponse` instance, which provides semantic access to data of the response (ie `->getSorting()`).
+- `recommendation()->send()` request now returns `RecommendationResponse` instance, which provides semantic access to data of the response (ie. `->getRecommendation()`).
+- `getItemProperties()->send()` request now returns `ItemPropertiesListResponse` instance, which provides semantic access to data of the response (ie. `->getData()`).
 
 ## 1.0.0 - 2017-12-05
 ### Added

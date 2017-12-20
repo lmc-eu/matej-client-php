@@ -3,6 +3,7 @@
 namespace Lmc\Matej\Model;
 
 use Lmc\Matej\Exception\DomainException;
+use Lmc\Matej\Exception\LogicException;
 use Lmc\Matej\Model\Command\ItemPropertySetup;
 use PHPUnit\Framework\TestCase;
 
@@ -122,5 +123,28 @@ class AssertionTest extends TestCase
             [1001],
             [2000],
         ];
+    }
+
+    /** @test */
+    public function shouldAssertValidResponseClass(): void
+    {
+        $inheritedObject = new class(0, 0, 0, 0) extends Response {
+        };
+
+        $this->assertTrue(Assertion::isResponseClass(Response::class));
+        $this->assertTrue(Assertion::isResponseClass(get_class($inheritedObject)));
+    }
+
+    /** @test */
+    public function shouldAssertInvalidResponseClass(): void
+    {
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage(sprintf(
+            'Class %s has to be instance or subclass of %s.',
+            \stdClass::class,
+            Response::class
+        ));
+
+        Assertion::isResponseClass(\stdClass::class);
     }
 }

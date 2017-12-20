@@ -79,6 +79,10 @@ foreach ($response->getCommandResponses() as $commandResponse) {
 }
 ```
 
+[Recommendation](#recommendations-for-single-user), [Sorting](#request-item-sorting-for-single-user)
+and [Item Properties](#item-properties-setup-to-setup-you-matej-database) endpoints have syntax sugar,
+which makes processing responses easier. See below for detailed examples.
+
 ### Item properties setup (to setup you Matej database)
 
 ```php
@@ -95,6 +99,8 @@ $response = $matej->request()
 $response = $matej->request()
     ->getItemProperties()
     ->send();
+
+$properties = $response->getData();
 
 // Delete item property from database:
 $response = $matej->request()
@@ -144,6 +150,8 @@ $response = $matej->request()
     ->setInteraction(Interaction::purchase('user-id', 'item-id')) // optional
     ->setUserMerge(UserMerge::mergeInto('user-id', 'source-id')) // optional
     ->send();
+
+$recommendations = $response->getRecommendation()->getData();
 ```
 
 You can also set more granular options of the recommendation command:
@@ -157,6 +165,20 @@ $recommendation->setFilters(['valid_to >= NOW']) // Note this filter is present 
 $response = $matej->request()
     ->recommendation($recommendation)
     ->send();
+```
+
+From `$response`, you can also access rest of the data:
+
+```php
+$response = $matej->request()
+    ->recommendation($recommendation)
+    ->send();
+
+echo $response->getInteraction()->getStatus();    // SKIPPED
+echo $response->getUserMerge()->getStatus();      // SKIPPED
+echo $response->getRecommendation()->getStatus(); // OK
+
+$recommendations = $response->getRecommendation()->getData();
 ```
 
 ### Request item sorting for single user
@@ -173,6 +195,21 @@ $response =  $matej->request()
     ->setUserMerge(UserMerge::mergeInto('user-id', 'source-id')) // optional
     ->send();
 
+$sortedItems = $response->getSorting()->getData();
+```
+
+From `$response`, you can also access rest of the data:
+
+```php
+$response = $matej->request()
+    ->sorting($sorting)
+    ->send();
+
+echo $response->getInteraction()->getStatus(); // SKIPPED
+echo $response->getUserMerge()->getStatus();   // SKIPPED
+echo $response->getSorting()->getStatus();     // OK
+
+$sortedData = $response->getSorting()->getData();
 ```
 
 ### Request batch of recommendations/item sortings

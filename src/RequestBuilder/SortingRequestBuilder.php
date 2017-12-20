@@ -8,7 +8,11 @@ use Lmc\Matej\Model\Command\Interaction;
 use Lmc\Matej\Model\Command\Sorting;
 use Lmc\Matej\Model\Command\UserMerge;
 use Lmc\Matej\Model\Request;
+use Lmc\Matej\Model\Response\SortingResponse;
 
+/**
+ * @method SortingResponse send()
+ */
 class SortingRequestBuilder extends AbstractRequestBuilder
 {
     protected const ENDPOINT_PATH = '/sorting';
@@ -47,7 +51,8 @@ class SortingRequestBuilder extends AbstractRequestBuilder
             self::ENDPOINT_PATH,
             RequestMethodInterface::METHOD_POST,
             [$this->interactionCommand, $this->userMergeCommand, $this->sortingCommand],
-            $this->requestId
+            $this->requestId,
+            SortingResponse::class
         );
     }
 
