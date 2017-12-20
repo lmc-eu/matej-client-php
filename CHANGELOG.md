@@ -5,6 +5,8 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+
+## 1.1.0 - 2017-12-20
 ### Added
 - Endpoint to get all defined item properties in the Matej database (`$matej->request()->getItemProperties()`).
 - `Response` now contains `getCommandResponse(int $index)` to provide direct access to individual command responses.
