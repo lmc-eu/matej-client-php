@@ -56,7 +56,6 @@ $response = $matej->request()
     ->addUserMerge(...)
     ...
     ->send();
-    ...
 ```
 
 See below for examples of building request for each endpoint.
@@ -80,7 +79,7 @@ foreach ($response->getCommandResponses() as $commandResponse) {
 ```
 
 [Recommendation](#recommendations-for-single-user), [Sorting](#request-item-sorting-for-single-user)
-and [Item Properties](#item-properties-setup-to-setup-you-matej-database) endpoints have syntax sugar,
+and [Item Properties](#item-properties-setup-to-setup-you-matej-database) endpoints have syntax sugar shortcuts,
 which makes processing responses easier. See below for detailed examples.
 
 ### Item properties setup (to setup you Matej database)
@@ -95,12 +94,12 @@ $response = $matej->request()
     ->addProperty(ItemPropertySetup::string('title'))
     ->send();
 
-// Get list of item properties that are defined in matej
+// Get list of item properties that are defined in Matej
 $response = $matej->request()
     ->getItemProperties()
     ->send();
 
-$properties = $response->getData();
+$properties = $response->getData(); // this is shortcut for $response->getCommandResponse(0)->getData()
 
 // Delete item property from database:
 $response = $matej->request()

@@ -7,13 +7,14 @@
 ## Unreleased
 ### Added
 - Endpoint to get all defined item properties in the Matej database (`$matej->request()->getItemProperties()`).
+- `Response` now contains `getCommandResponse(int $index)` to provide direct access to individual command responses.
+- Syntaxt sugar shortcuts to provide semantic access to data of the responses:
+  - `sorting()->send()` now returns `SortingResponse` instance (so you can call eg. `$response->getSorting()`).
+  - `recommendation()->send()` now returns `RecommendationResponse` instance (so you can call eg. `$response->getRecommendation()`).
+  - `getItemProperties()->send()` now returns `ItemPropertiesListResponse` instance (so you can call eg. `getItemProperties()->send()->getData()`).
 
 ### Changed
 - Validate max. 1000 commands are added to `campaign()`, `events()`, `setupItemProperties()` and `deleteItemProperties()` requests (in accordance with Matej batch API limit).
-- `Response` now contains `getCommandResponse(int $index)` to access individual command responses.
-- `sorting()->send()` request now returns `SortingResponse` instance, which provides semantic access to data of the response (ie `->getSorting()`).
-- `recommendation()->send()` request now returns `RecommendationResponse` instance, which provides semantic access to data of the response (ie. `->getRecommendation()`).
-- `getItemProperties()->send()` request now returns `ItemPropertiesListResponse` instance, which provides semantic access to data of the response (ie. `->getData()`).
 
 ## 1.0.0 - 2017-12-05
 ### Added
