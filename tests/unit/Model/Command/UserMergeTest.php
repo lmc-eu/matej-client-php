@@ -37,5 +37,6 @@ class UserMergeTest extends UnitTestCase
             $command->jsonSerialize()
         );
         $this->assertSame($targetUserId, $command->getUserId());
+        $this->assertSame($sourceUserId, $command->getSourceUserId());
     }
 }
