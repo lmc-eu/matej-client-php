@@ -5,6 +5,7 @@ namespace Lmc\Matej\Model;
 use Lmc\Matej\Exception\DomainException;
 use Lmc\Matej\Exception\LogicException;
 use Lmc\Matej\Model\Command\ItemPropertySetup;
+use Lmc\Matej\Model\Fixtures\DummyResponse;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -128,8 +129,7 @@ class AssertionTest extends TestCase
     /** @test */
     public function shouldAssertValidResponseClass(): void
     {
-        $inheritedObject = new class(0, 0, 0, 0) extends Response {
-        };
+        $inheritedObject = new DummyResponse(0, 0, 0, 0);
 
         $this->assertTrue(Assertion::isResponseClass(Response::class));
         $this->assertTrue(Assertion::isResponseClass(get_class($inheritedObject)));
