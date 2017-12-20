@@ -68,7 +68,7 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
      * To prevent this, enable hard rotation - recommended items are then excluded until rotation time is expired.
      * By default hard rotation is not enabled.
      *
-     * @return static
+     * @return $this
      */
     public function enableHardRotation(): self
     {
@@ -81,7 +81,7 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
      * Define threshold of how much relevant must the recommended items be to be returned.
      * Default minimal relevance is "low".
      *
-     * @return static
+     * @return $this
      */
     public function setMinimalRelevance(string $minimalRelevance): self
     {
@@ -98,7 +98,7 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
     /**
      * Add a filter to already added filters (including the default filter).
      *
-     * @return static
+     * @return $this
      */
     public function addFilter(string $filter): self
     {
@@ -110,7 +110,7 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
     /**
      * Overwrite all filters by custom one. Note this will override also the default filter.
      *
-     * @return static
+     * @return $this
      */
     public function setFilters(array $filters): self
     {

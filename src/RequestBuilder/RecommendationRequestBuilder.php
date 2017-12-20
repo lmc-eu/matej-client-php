@@ -25,7 +25,7 @@ class RecommendationRequestBuilder extends AbstractRequestBuilder
         $this->userRecommendationCommand = $userRecommendationCommand;
     }
 
-    /** @return static */
+    /** @return $this */
     public function setUserMerge(UserMerge $merge): self
     {
         $this->userMergeCommand = $merge;
@@ -33,7 +33,7 @@ class RecommendationRequestBuilder extends AbstractRequestBuilder
         return $this;
     }
 
-    /** @return static */
+    /** @return $this */
     public function setInteraction(Interaction $interaction): self
     {
         $this->interactionCommand = $interaction;
