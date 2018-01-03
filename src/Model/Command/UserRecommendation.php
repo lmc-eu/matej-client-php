@@ -51,7 +51,7 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
      * Set from 0.0 for no rotation (same items will be recommended) up to 1.0 (same items should not be recommended).
      * @param int $rotationTime Specify for how long will the item's rotationRate be taken in account and so the item
      * is penalized for recommendations.
-     * @return UserRecommendation
+     * @return static
      */
     public static function create(
         string $userId,
@@ -67,6 +67,8 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
      * Even with rotation rate 1.0 user could still obtain the same recommendations in some edge cases.
      * To prevent this, enable hard rotation - recommended items are then excluded until rotation time is expired.
      * By default hard rotation is not enabled.
+     *
+     * @return $this
      */
     public function enableHardRotation(): self
     {
@@ -78,12 +80,14 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
     /**
      * Define threshold of how much relevant must the recommended items be to be returned.
      * Default minimal relevance is "low".
+     *
+     * @return $this
      */
     public function setMinimalRelevance(string $minimalRelevance): self
     {
         Assertion::choice(
             $minimalRelevance,
-            [self::MINIMAL_RELEVANCE_LOW, self::MINIMAL_RELEVANCE_MEDIUM, self::MINIMAL_RELEVANCE_HIGH]
+            [static::MINIMAL_RELEVANCE_LOW, static::MINIMAL_RELEVANCE_MEDIUM, static::MINIMAL_RELEVANCE_HIGH]
         );
 
         $this->minimalRelevance = $minimalRelevance;
@@ -93,6 +97,8 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
 
     /**
      * Add a filter to already added filters (including the default filter).
+     *
+     * @return $this
      */
     public function addFilter(string $filter): self
     {
@@ -103,6 +109,8 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
 
     /**
      * Overwrite all filters by custom one. Note this will override also the default filter.
+     *
+     * @return $this
      */
     public function setFilters(array $filters): self
     {

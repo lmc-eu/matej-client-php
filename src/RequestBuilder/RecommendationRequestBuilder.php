@@ -29,6 +29,7 @@ class RecommendationRequestBuilder extends AbstractRequestBuilder
         $this->userRecommendationCommand = $userRecommendationCommand;
     }
 
+    /** @return $this */
     public function setUserMerge(UserMerge $merge): self
     {
         $this->userMergeCommand = $merge;
@@ -36,6 +37,7 @@ class RecommendationRequestBuilder extends AbstractRequestBuilder
         return $this;
     }
 
+    /** @return $this */
     public function setInteraction(Interaction $interaction): self
     {
         $this->interactionCommand = $interaction;
@@ -48,7 +50,7 @@ class RecommendationRequestBuilder extends AbstractRequestBuilder
         $this->assertConsistentUsersInCommands();
 
         return new Request(
-            self::ENDPOINT_PATH,
+            static::ENDPOINT_PATH,
             RequestMethodInterface::METHOD_POST,
             [$this->interactionCommand, $this->userMergeCommand, $this->userRecommendationCommand],
             $this->requestId,

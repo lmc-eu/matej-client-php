@@ -23,6 +23,8 @@ class UserMerge extends AbstractCommand implements UserAwareInterface
 
     /**
      * Merge source user into target user AND DELETE SOURCE USER.
+     *
+     * @return static
      */
     public static function mergeInto(string $targetUserId, string $sourceUserIdToBeDeleted): self
     {
@@ -31,6 +33,8 @@ class UserMerge extends AbstractCommand implements UserAwareInterface
 
     /**
      * Merge source user into target user AND DELETE SOURCE USER.
+     *
+     * @return static
      */
     public static function mergeFromSourceToTargetUser(string $sourceUserIdToBeDeleted, string $targetUserId): self
     {

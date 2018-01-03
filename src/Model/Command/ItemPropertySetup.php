@@ -27,34 +27,40 @@ class ItemPropertySetup extends AbstractCommand
         $this->propertyType = $propertyType;
     }
 
+    /** @return static */
     public static function int(string $propertyName): self
     {
-        return new static($propertyName, self::PROPERTY_TYPE_INT);
+        return new static($propertyName, static::PROPERTY_TYPE_INT);
     }
 
+    /** @return static */
     public static function double(string $propertyName): self
     {
-        return new static($propertyName, self::PROPERTY_TYPE_DOUBLE);
+        return new static($propertyName, static::PROPERTY_TYPE_DOUBLE);
     }
 
+    /** @return static */
     public static function string(string $propertyName): self
     {
-        return new static($propertyName, self::PROPERTY_TYPE_STRING);
+        return new static($propertyName, static::PROPERTY_TYPE_STRING);
     }
 
+    /** @return static */
     public static function boolean(string $propertyName): self
     {
-        return new static($propertyName, self::PROPERTY_TYPE_BOOLEAN);
+        return new static($propertyName, static::PROPERTY_TYPE_BOOLEAN);
     }
 
+    /** @return static */
     public static function timestamp(string $propertyName): self
     {
-        return new static($propertyName, self::PROPERTY_TYPE_TIMESTAMP);
+        return new static($propertyName, static::PROPERTY_TYPE_TIMESTAMP);
     }
 
+    /** @return static */
     public static function set(string $propertyName): self
     {
-        return new static($propertyName, self::PROPERTY_TYPE_SET);
+        return new static($propertyName, static::PROPERTY_TYPE_SET);
     }
 
     protected function setPropertyName(string $propertyName): void
