@@ -5,6 +5,8 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+### Changed
+- Unify `self`/`static`/`$this` return typehints.
 
 ## 1.1.0 - 2017-12-20
 ### Added
@@ -17,7 +19,6 @@
 
 ### Changed
 - Validate max. 1000 commands are added to `campaign()`, `events()`, `setupItemProperties()` and `deleteItemProperties()` requests (in accordance with Matej batch API limit).
-- Replaced `self` with `static` where possible
 
 ## 1.0.0 - 2017-12-05
 ### Added
