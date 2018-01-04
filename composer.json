@@ -47,7 +47,7 @@
     "scripts": {
         "all": [
             "@analyze",
-            "./vendor/bin/phpunit"
+            "./vendor/bin/phpunit --colors=always"
         ],
         "analyze": [
             "vendor/bin/php-cs-fixer fix -vvv --diff --dry-run --ansi",
