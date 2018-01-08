@@ -46,6 +46,11 @@ class UserMerge extends AbstractCommand implements UserAwareInterface
         return $this->targetUserId;
     }
 
+    public function getSourceUserId(): string
+    {
+        return $this->sourceUserId;
+    }
+
     protected function setSourceUserId(string $sourceUserId): void
     {
         Assertion::typeIdentifier($sourceUserId);

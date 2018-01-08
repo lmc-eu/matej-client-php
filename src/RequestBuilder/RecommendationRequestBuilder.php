@@ -47,7 +47,8 @@ class RecommendationRequestBuilder extends AbstractRequestBuilder
 
     public function build(): Request
     {
-        $this->assertConsistentUsersInCommands();
+        $this->assertInteractionUserId();
+        $this->assertUserMergeUserId();
 
         return new Request(
             static::ENDPOINT_PATH,
@@ -58,14 +59,41 @@ class RecommendationRequestBuilder extends AbstractRequestBuilder
         );
     }
 
-    private function assertConsistentUsersInCommands(): void
+    /**
+     * Assert that interaction user ids are ok:
+     * - (A,  null,  A)
+     * - (A, A -> ?, ?)
+     */
+    private function assertInteractionUserId(): void
     {
-        $mainCommandUser = $this->userRecommendationCommand->getUserId();
-        if ($this->interactionCommand !== null && $mainCommandUser !== $this->interactionCommand->getUserId()) {
+        if ($this->interactionCommand === null) {
+            return;
+        }
+
+        $interactionUserId = $this->interactionCommand->getUserId();
+
+        // (A, null, A)
+        if ($this->userMergeCommand === null && $interactionUserId !== $this->userRecommendationCommand->getUserId()) {
             throw LogicException::forInconsistentUserId($this->userRecommendationCommand, $this->interactionCommand);
         }
 
-        if ($this->userMergeCommand !== null && $mainCommandUser !== $this->userMergeCommand->getUserId()) {
+        // (A, A -> ?, ?)
+        if ($this->userMergeCommand !== null && $interactionUserId !== $this->userMergeCommand->getSourceUserId()) {
+            throw LogicException::forInconsistentUserMergeAndInteractionCommand(
+                $this->userMergeCommand->getSourceUserId(),
+                $interactionUserId
+            );
+        }
+    }
+
+    /**
+     * Assert user merge id is ok:
+     * (?, ? -> A, A)
+     */
+    private function assertUserMergeUserId(): void
+    {
+        if ($this->userMergeCommand !== null
+            && $this->userMergeCommand->getUserId() !== $this->userRecommendationCommand->getUserId()) {
             throw LogicException::forInconsistentUserId($this->userRecommendationCommand, $this->userMergeCommand);
         }
     }

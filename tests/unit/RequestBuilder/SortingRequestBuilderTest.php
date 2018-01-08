@@ -26,7 +26,7 @@ class SortingRequestBuilderTest extends TestCase
         $sortingCommand = Sorting::create('userId1', ['itemId1', 'itemId2']);
         $builder = new SortingRequestBuilder($sortingCommand);
 
-        $interactionCommand = Interaction::detailView('userId1', 'itemId1');
+        $interactionCommand = Interaction::detailView('sourceId1', 'itemId1');
         $builder->setInteraction($interactionCommand);
 
         $userMergeCommand = UserMerge::mergeFromSourceToTargetUser('sourceId1', 'userId1');
@@ -99,6 +99,43 @@ class SortingRequestBuilderTest extends TestCase
         $this->expectExceptionMessage(
             'User in UserMerge command ("different-user") must be the same as user in Sorting command ("userId1")'
         );
+        $builder->build();
+    }
+
+    /**
+     * ([interaction], [user merge], [sorting]): (A, A -> B, B)
+     * @test
+     */
+    public function shouldPassOnCorrectSequenceOfUsersWhenMerging(): void
+    {
+        $interactionCommand = Interaction::purchase('test-user-a', 'test-item-id');
+        $userMergeCommand = UserMerge::mergeFromSourceToTargetUser('test-user-a', 'test-user-b');
+        $sortingCommand = Sorting::create('test-user-b', ['itemId1', 'itemId2']);
+
+        $builder = new SortingRequestBuilder($sortingCommand);
+        $builder->setUserMerge($userMergeCommand);
+        $builder->setInteraction($interactionCommand);
+        $this->assertInstanceOf(Request::class, $builder->build());
+    }
+
+    /**
+     * ([interaction], [user merge], [sorting]): (A, B -> A, A)
+     * @test
+     */
+    public function shouldFailOnIncorrectSequenceOfUsersWhenMerging(): void
+    {
+        $interactionCommand = Interaction::purchase('test-user-a', 'test-item-id');
+        $userMergeCommand = UserMerge::mergeFromSourceToTargetUser('test-user-b', 'test-user-a');
+        $sortingCommand = Sorting::create('test-user-a', ['itemId1', 'itemId2']);
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage(
+            'Source user in UserMerge command ("test-user-b") must be the same as user in Interaction command ("test-user-a")'
+        );
+
+        $builder = new SortingRequestBuilder($sortingCommand);
+        $builder->setUserMerge($userMergeCommand);
+        $builder->setInteraction($interactionCommand);
         $builder->build();
     }
 }

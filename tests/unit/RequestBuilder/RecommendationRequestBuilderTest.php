@@ -26,7 +26,7 @@ class RecommendationRequestBuilderTest extends TestCase
         $recommendationsCommand = UserRecommendation::create('userId1', 5, 'test-scenario', 0.5, 3600);
         $builder = new RecommendationRequestBuilder($recommendationsCommand);
 
-        $interactionCommand = Interaction::detailView('userId1', 'itemId1');
+        $interactionCommand = Interaction::detailView('sourceId1', 'itemId1');
         $builder->setInteraction($interactionCommand);
 
         $userMergeCommand = UserMerge::mergeFromSourceToTargetUser('sourceId1', 'userId1');
@@ -76,7 +76,7 @@ class RecommendationRequestBuilderTest extends TestCase
     }
 
     /** @test */
-    public function shouldThrowExceptionWhenUserOfInteractionDiffersFromSorting(): void
+    public function shouldThrowExceptionWhenInteractionIsForUnrelatedUser(): void
     {
         $builder = new RecommendationRequestBuilder(
             $recommendationsCommand = UserRecommendation::create('userId1', 5, 'scenario', 0.5, 3600)
@@ -93,7 +93,7 @@ class RecommendationRequestBuilderTest extends TestCase
     }
 
     /** @test */
-    public function shouldThrowExceptionWhenUserOfUserMergeDiffersFromSorting(): void
+    public function shouldThrowExceptionWhenMergeIsForUnrelatedUser(): void
     {
         $builder = new RecommendationRequestBuilder(
             $recommendationsCommand = UserRecommendation::create('userId1', 5, 'scenario', 0.5, 3600)
@@ -106,6 +106,43 @@ class RecommendationRequestBuilderTest extends TestCase
             'User in UserMerge command ("different-user") must be the same as user in UserRecommendation command'
             . ' ("userId1")'
         );
+        $builder->build();
+    }
+
+    /**
+     * ([interaction], [user merge], [recommendation]): (A, A -> B, B)
+     * @test
+     */
+    public function shouldPassOnCorrectSequenceOfUsersWhenMerging(): void
+    {
+        $interactionCommand = Interaction::purchase('test-user-a', 'test-item-id');
+        $userMergeCommand = UserMerge::mergeFromSourceToTargetUser('test-user-a', 'test-user-b');
+        $recommendationsCommand = UserRecommendation::create('test-user-b', 5, 'scenario', 0.5, 3600);
+
+        $builder = new RecommendationRequestBuilder($recommendationsCommand);
+        $builder->setUserMerge($userMergeCommand);
+        $builder->setInteraction($interactionCommand);
+        $this->assertInstanceOf(Request::class, $builder->build());
+    }
+
+    /**
+     * ([interaction], [user merge], [recommendation]): (A, B -> A, A)
+     * @test
+     */
+    public function shouldFailOnIncorrectSequenceOfUsersWhenMerging(): void
+    {
+        $interactionCommand = Interaction::purchase('test-user-a', 'test-item-id');
+        $userMergeCommand = UserMerge::mergeFromSourceToTargetUser('test-user-b', 'test-user-a');
+        $recommendationsCommand = UserRecommendation::create('test-user-a', 5, 'scenario', 0.5, 3600);
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage(
+            'Source user in UserMerge command ("test-user-b") must be the same as user in Interaction command ("test-user-a")'
+        );
+
+        $builder = new RecommendationRequestBuilder($recommendationsCommand);
+        $builder->setUserMerge($userMergeCommand);
+        $builder->setInteraction($interactionCommand);
         $builder->build();
     }
 }

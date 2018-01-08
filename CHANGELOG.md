@@ -8,6 +8,9 @@
 ### Changed
 - Unify `self`/`static`/`$this` return typehints.
 
+### Fixed
+- Checking of consistent user ids on `recommendation()` and `sorting()` requests was not working in accordance with API behavior.
+
 ## 1.1.0 - 2017-12-20
 ### Added
 - Endpoint to get all defined item properties in the Matej database (`$matej->request()->getItemProperties()`).
