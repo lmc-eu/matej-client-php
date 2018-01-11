@@ -5,6 +5,8 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+
+## 1.2.0 - 2018-01-11
 ### Changed
 - Unify `self`/`static`/`$this` return typehints.
 
