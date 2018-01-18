@@ -156,7 +156,7 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
 
     protected function setRotationTime(int $rotationTime): void
     {
-        Assertion::greaterThan($rotationTime, 0);
+        Assertion::greaterOrEqualThan($rotationTime, 0);
 
         $this->rotationTime = $rotationTime;
     }
