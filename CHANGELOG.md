@@ -5,6 +5,8 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+
+## 1.3.0 - 2018-01-19
 ### Changed
 - Allow setting rotation time = 0 in UserRecommendation, because it is now also accepted by Matej API.
 
