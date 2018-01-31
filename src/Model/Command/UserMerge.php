@@ -19,6 +19,8 @@ class UserMerge extends AbstractCommand implements UserAwareInterface
     {
         $this->setTargetUserId($targetUserId);
         $this->setSourceUserId($sourceUserId);
+
+        $this->assertUserIdsNotEqual();
     }
 
     /**
@@ -63,6 +65,15 @@ class UserMerge extends AbstractCommand implements UserAwareInterface
         Assertion::typeIdentifier($targetUserId);
 
         $this->targetUserId = $targetUserId;
+    }
+
+    private function assertUserIdsNotEqual(): void
+    {
+        Assertion::notEq(
+            $this->sourceUserId,
+            $this->targetUserId,
+            'You have to provide different source and target user id in UserMerge ("%s" set for both)'
+        );
     }
 
     protected function getCommandType(): string
