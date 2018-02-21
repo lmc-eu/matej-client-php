@@ -7,16 +7,16 @@ use Lmc\Matej\Model\Response\PlainResponse;
 
 /**
  * @covers \Lmc\Matej\Model\Response\PlainResponse
- * @covers \Lmc\Matej\RequestBuilder\ItemPropertiesGetRequestBuilder
+ * @covers \Lmc\Matej\RequestBuilder\ResetDatabaseRequestBuilder
  */
-class ItemPropertiesGetRequestBuilderTest extends IntegrationTestCase
+class ResetDatabaseRequestBuilderTest extends IntegrationTestCase
 {
     /** @test */
-    public function shouldGetListOfPropertiesFromMatej(): void
+    public function shouldResetMatejDatabase(): void
     {
         $response = $this->createMatejInstance()
             ->request()
-            ->getItemProperties()
+            ->resetDatabase()
             ->send();
 
         $this->assertResponseCommandStatuses($response, 'OK');

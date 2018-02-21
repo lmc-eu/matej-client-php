@@ -4,7 +4,10 @@ namespace Lmc\Matej\Model\Response;
 
 use Lmc\Matej\Model\Response;
 
-class ItemPropertiesListResponse extends Response
+/**
+ * Response for endpoints always returning data for only one command.
+ */
+class PlainResponse extends Response
 {
     public function isSuccessful(): bool
     {

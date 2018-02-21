@@ -9,10 +9,10 @@ use Lmc\Matej\Exception\ResponseDecodingException;
  */
 class CommandResponse
 {
-    const STATUS_OK = 'OK';
-    const STATUS_ERROR = 'ERROR';
-    const STATUS_SKIPPED = 'SKIPPED';
-    const STATUS_INVALID = 'INVALID';
+    public const STATUS_OK = 'OK';
+    public const STATUS_ERROR = 'ERROR';
+    public const STATUS_SKIPPED = 'SKIPPED';
+    public const STATUS_INVALID = 'INVALID';
 
     /** @var string */
     private $status;

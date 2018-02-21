@@ -5,7 +5,7 @@ namespace Lmc\Matej\Model\Response;
 use Lmc\Matej\Model\CommandResponse;
 use Lmc\Matej\UnitTestCase;
 
-class ItemPropertiesListResponseTest extends UnitTestCase
+class PlainResponseTest extends UnitTestCase
 {
     /** @test */
     public function shouldBeInstantiable(): void
@@ -16,7 +16,7 @@ class ItemPropertiesListResponseTest extends UnitTestCase
             'data' => ['MOCK' => 'DATA'],
         ];
 
-        $response = new ItemPropertiesListResponse(1, 1, 0, 0, [$commandResponse]);
+        $response = new PlainResponse(1, 1, 0, 0, [$commandResponse]);
 
         $this->assertTrue($response->isSuccessful());
         $this->assertSame(CommandResponse::STATUS_OK, $response->getStatus());
