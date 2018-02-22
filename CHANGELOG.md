@@ -5,6 +5,9 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+### Added
+- Endpoint to reset Matej test-databases (`$matej->request()->resetDatabase()`).
+
 ### Fixed
 - Check for equality of user ids in `UserMerge` - so that we don't "merge" user into the same user id
 

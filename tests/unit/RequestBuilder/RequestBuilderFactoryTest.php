@@ -76,6 +76,7 @@ class RequestBuilderFactoryTest extends TestCase
             ['campaign', CampaignRequestBuilder::class, $campaignInit],
             ['sorting', SortingRequestBuilder::class, $voidInit, Sorting::create('user-a', ['item-a', 'item-b', 'item-c'])],
             ['recommendation', RecommendationRequestBuilder::class, $voidInit, $userRecommendation],
+            ['resetDatabase', ResetDatabaseRequestBuilder::class, $voidInit],
         ];
     }
 }
