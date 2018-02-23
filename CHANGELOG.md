@@ -5,6 +5,8 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+
+## 1.4.0 - 2018-02-23
 ### Added
 - Endpoint to reset Matej test-databases (`$matej->request()->resetDatabase()`).
 
