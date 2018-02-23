@@ -121,7 +121,7 @@ $response = $matej->request()
     ->resetDatabase()
     ->send();
 
-var_dump($respone->isSuccessful()); // true on success
+var_dump($response->isSuccessful()); // true on success
 ```
 
 ### Send Events data to Matej
@@ -152,8 +152,8 @@ $response = $matej->request()
 
 ### Recommendations for single user
 
-You can get recommendations for single user using `recommendation()` builder.
-You can attach most recent interaction and user merge event to the request, so that they're taken into account
+You can get recommendations for a single user using `recommendation()` builder.
+You can attach most recent interaction and user merge event to the request so that they're taken into account
 when providing recommendations.
 
 ```php
@@ -197,7 +197,7 @@ $recommendations = $response->getRecommendation()->getData();
 
 ### Request item sorting for single user
 
-Request item sorting for single user. You can combine this sorting command with the most recent interaction
+Request item sorting for a single user. You can combine this sorting command with the most recent interaction
 and user merge event in one request, to make them taken into account when executing the item sorting.
 
 ```php
@@ -229,7 +229,7 @@ $sortedData = $response->getSorting()->getData();
 ### Request batch of recommendations/item sortings
 
 Use `campaign()` builder to request batch of recommendations and/or item sorting for multiple users.
-Typical use case for this is generating email campaigns.
+A typical use case for this is generating email campaigns.
 
 ```php
 $matej = new Matej('accountId', 'apikey');
