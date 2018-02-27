@@ -50,7 +50,7 @@
             "./vendor/bin/phpunit --colors=always"
         ],
         "analyze": [
-            "vendor/bin/php-cs-fixer fix -vvv --diff --dry-run --ansi",
+            "vendor/bin/php-cs-fixer fix -vvv --diff --diff-format=udiff --dry-run --ansi",
             "vendor/bin/phpstan.phar analyze ./src ./tests -c phpstan.neon --level 7 --ansi"
         ]
     }
