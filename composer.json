@@ -23,6 +23,8 @@
     },
     "require": {
         "php": "^7.1",
+        "ext-json": "*",
+        "ext-hash": "*",
         "php-http/httplug": "^1.1",
         "php-http/message-factory": "^1.0",
         "php-http/client-implementation": "^1.0",
