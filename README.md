@@ -26,6 +26,12 @@ If you, for example, want to use Guzzle 6 as the underlying HTTP library, instal
 $ composer require lmc/matej-client php-http/guzzle6-adapter # use lmc/matej-client-php5 instead for PHP 5.6 version
 ```
 
+Or if you want to use Guzzle 5 (note that unlike `guzzle6-adapter`, the one does not come with `guzzlehttp/psr7`, so you must install it as well):
+
+```sh
+$ composer require lmc/matej-client php-http/guzzle5-adapter guzzlehttp/psr7 # use lmc/matej-client-php5 instead for PHP 5.6 version
+```
+
 Or if you want to use cURL client:
 
 ```sh
