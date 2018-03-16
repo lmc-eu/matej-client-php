@@ -30,6 +30,7 @@ class UserMergeTest extends UnitTestCase
 
     /**
      * Execute asserts against user merge command
+     *
      * @param UserMerge $command
      */
     private function assertUserMergeCommand($command, string $sourceUserId, string $targetUserId): void

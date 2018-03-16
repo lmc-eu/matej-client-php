@@ -104,6 +104,7 @@ class SortingRequestBuilderTest extends TestCase
 
     /**
      * ([interaction], [user merge], [sorting]): (A, A -> B, B)
+     *
      * @test
      */
     public function shouldPassOnCorrectSequenceOfUsersWhenMerging(): void
@@ -120,6 +121,7 @@ class SortingRequestBuilderTest extends TestCase
 
     /**
      * ([interaction], [user merge], [sorting]): (A, B -> A, A)
+     *
      * @test
      */
     public function shouldFailOnIncorrectSequenceOfUsersWhenMerging(): void

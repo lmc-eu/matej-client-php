@@ -111,6 +111,7 @@ class RecommendationRequestBuilderTest extends TestCase
 
     /**
      * ([interaction], [user merge], [recommendation]): (A, A -> B, B)
+     *
      * @test
      */
     public function shouldPassOnCorrectSequenceOfUsersWhenMerging(): void
@@ -127,6 +128,7 @@ class RecommendationRequestBuilderTest extends TestCase
 
     /**
      * ([interaction], [user merge], [recommendation]): (A, B -> A, A)
+     *
      * @test
      */
     public function shouldFailOnIncorrectSequenceOfUsersWhenMerging(): void

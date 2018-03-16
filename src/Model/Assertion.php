@@ -18,6 +18,7 @@ class Assertion extends \Assert\Assertion
 
     /**
      * Assert value is valid Matej type identifier
+     *
      * @param mixed $value
      */
     public static function typeIdentifier($value): bool
@@ -54,8 +55,7 @@ class Assertion extends \Assert\Assertion
      */
     public static function isResponseClass(string $wantedClass): bool
     {
-        if (
-            !is_a($wantedClass, Response::class, true) &&
+        if (!is_a($wantedClass, Response::class, true) &&
             !is_subclass_of($wantedClass, Response::class)
         ) {
             throw LogicException::forClassNotExtendingOtherClass($wantedClass, Response::class);
