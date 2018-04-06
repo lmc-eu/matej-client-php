@@ -39,12 +39,12 @@
         "php-http/mock-client": "^1.0",
         "php-http/message": "^1.0",
         "phpunit/phpunit": "^5.7 || ^6.4 <6.5",
-        "friendsofphp/php-cs-fixer": "^2.7",
         "phpstan/phpstan-shim": "^0.9.0",
         "phpstan/phpstan-phpunit": "^0.9.0",
         "php-coveralls/php-coveralls": "^2.0",
         "symfony/var-dumper": "^3.3 || ^4.0",
-        "php-mock/php-mock-phpunit": "^1.0 || ^2.0"
+        "php-mock/php-mock-phpunit": "^1.0 || ^2.0",
+        "lmc/coding-standard": "^1.0"
     },
     "scripts": {
         "all": [
@@ -52,7 +52,7 @@
             "./vendor/bin/phpunit --colors=always"
         ],
         "analyze": [
-            "vendor/bin/php-cs-fixer fix -vvv --diff --diff-format=udiff --dry-run --ansi",
+            "vendor/bin/ecs check src/ tests/ -vvv --ansi",
             "vendor/bin/phpstan.phar analyze ./src ./tests -c phpstan.neon --level 7 --ansi"
         ]
     }
