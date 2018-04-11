@@ -14,11 +14,17 @@ class Sorting extends AbstractCommand implements UserAwareInterface
     private $userId;
     /** @var string[] */
     private $itemIds = [];
+    /** @var string|null */
+    private $modelName = null;
 
-    private function __construct(string $userId, array $itemIds)
+    private function __construct(string $userId, array $itemIds, string $modelName = null)
     {
         $this->setUserId($userId);
         $this->setItemIds($itemIds);
+
+        if ($modelName !== null) {
+            $this->setModelName($modelName);
+        }
     }
 
     /**
@@ -26,9 +32,23 @@ class Sorting extends AbstractCommand implements UserAwareInterface
      *
      * @return static
      */
-    public static function create(string $userId, array $itemIds): self
+    public static function create(string $userId, array $itemIds, string $modelName = null): self
     {
-        return new static($userId, $itemIds);
+        return new static($userId, $itemIds, $modelName);
+    }
+
+    /**
+     * Set A/B model name
+     *
+     * @return $this
+     */
+    public function setModelName(string $modelName): self
+    {
+        Assertion::typeIdentifier($modelName);
+
+        $this->modelName = $modelName;
+
+        return $this;
     }
 
     public function getUserId(): string
@@ -57,9 +77,15 @@ class Sorting extends AbstractCommand implements UserAwareInterface
 
     protected function getCommandParameters(): array
     {
-        return [
+        $parameters = [
             'user_id' => $this->userId,
             'item_ids' => $this->itemIds,
         ];
+
+        if ($this->modelName !== null) {
+            $parameters['model_name'] = $this->modelName;
+        }
+
+        return $parameters;
     }
 }

@@ -5,6 +5,8 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+### Added
+- A/B testing support for recommendation and sorting requests.
 
 ## 1.4.0 - 2018-02-23
 ### Added

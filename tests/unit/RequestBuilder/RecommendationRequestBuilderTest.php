@@ -23,7 +23,7 @@ class RecommendationRequestBuilderTest extends TestCase
     /** @test */
     public function shouldBuildRequestWithCommands(): void
     {
-        $recommendationsCommand = UserRecommendation::create('userId1', 5, 'test-scenario', 0.5, 3600);
+        $recommendationsCommand = UserRecommendation::create('userId1', 5, 'test-scenario', 0.5, 3600, 'test_model');
         $builder = new RecommendationRequestBuilder($recommendationsCommand);
 
         $interactionCommand = Interaction::detailView('sourceId1', 'itemId1');
