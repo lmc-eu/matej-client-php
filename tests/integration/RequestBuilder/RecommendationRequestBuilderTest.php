@@ -2,6 +2,7 @@
 
 namespace Lmc\Matej\IntegrationTests\RequestBuilder;
 
+use Lmc\Matej\Exception\RequestException;
 use Lmc\Matej\IntegrationTests\IntegrationTestCase;
 use Lmc\Matej\Model\Command\Interaction;
 use Lmc\Matej\Model\Command\UserMerge;
@@ -41,6 +42,19 @@ class RecommendationRequestBuilderTest extends IntegrationTestCase
         $this->assertInstanceOf(RecommendationsResponse::class, $response);
         $this->assertResponseCommandStatuses($response, 'OK', 'OK', 'OK');
         $this->assertShorthandResponse($response, 'OK', 'OK', 'OK');
+    }
+
+    /** @test */
+    public function shouldFailOnInvalidModelName(): void
+    {
+        $this->expectException(RequestException::class);
+        $this->expectExceptionCode(400);
+        $this->expectExceptionMessage('BAD REQUEST');
+
+        $this->createMatejInstance()
+            ->request()
+            ->recommendation($this->createRecommendationCommand('user-a')->setModelName('invalid-model-name'))
+            ->send();
     }
 
     private function createRecommendationCommand(string $username): UserRecommendation

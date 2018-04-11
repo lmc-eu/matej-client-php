@@ -24,6 +24,7 @@ class UserRecommendationTest extends TestCase
                     'hard_rotation' => false,
                     'min_relevance' => UserRecommendation::MINIMAL_RELEVANCE_LOW,
                     'filter' => 'valid_to >= NOW',
+                    // intentionally no model name ==> should be absent when not used
                 ],
             ],
             $command->jsonSerialize()
@@ -39,12 +40,14 @@ class UserRecommendationTest extends TestCase
         $scenario = 'scenario-' . md5(microtime());
         $rotationRate = mt_rand() / mt_getrandmax();
         $rotationTime = random_int(1, 86400);
+        $modelName = 'test-model-' . md5(microtime());
 
         $command = UserRecommendation::create($userId, $count, $scenario, $rotationRate, $rotationTime);
 
         $command->setMinimalRelevance(UserRecommendation::MINIMAL_RELEVANCE_HIGH)
             ->enableHardRotation()
-            ->setFilters(['foo = bar', 'baz = ban']);
+            ->setFilters(['foo = bar', 'baz = ban'])
+            ->setModelName($modelName);
 
         $this->assertInstanceOf(UserRecommendation::class, $command);
         $this->assertSame(
@@ -59,6 +62,7 @@ class UserRecommendationTest extends TestCase
                     'hard_rotation' => true,
                     'min_relevance' => UserRecommendation::MINIMAL_RELEVANCE_HIGH,
                     'filter' => 'foo = bar and baz = ban',
+                    'model_name' => $modelName,
                 ],
             ],
             $command->jsonSerialize()
