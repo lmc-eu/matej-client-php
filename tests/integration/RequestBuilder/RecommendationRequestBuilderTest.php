@@ -18,7 +18,7 @@ class RecommendationRequestBuilderTest extends IntegrationTestCase
     /** @test */
     public function shouldExecuteRecommendationRequestOnly(): void
     {
-        $response = $this->createMatejInstance()
+        $response = static::createMatejInstance()
             ->request()
             ->recommendation($this->createRecommendationCommand('user-a'))
             ->send();
@@ -31,7 +31,7 @@ class RecommendationRequestBuilderTest extends IntegrationTestCase
     /** @test */
     public function shouldExecuteRecommendationRequestWithUserMergeAndInteraction(): void
     {
-        $response = $this->createMatejInstance()
+        $response = static::createMatejInstance()
             ->request()
             ->recommendation($this->createRecommendationCommand('user-b'))
             ->setUserMerge(UserMerge::mergeInto('user-b', 'user-a'))

@@ -14,7 +14,7 @@ class ItemPropertiesGetRequestBuilderTest extends IntegrationTestCase
     /** @test */
     public function shouldGetListOfPropertiesFromMatej(): void
     {
-        $response = $this->createMatejInstance()
+        $response = static::createMatejInstance()
             ->request()
             ->getItemProperties()
             ->send();

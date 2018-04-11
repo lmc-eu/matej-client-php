@@ -18,7 +18,7 @@ class SortingRequestTest extends IntegrationTestCase
     /** @test */
     public function shouldExecuteSortingRequestOnly(): void
     {
-        $response = $this->createMatejInstance()
+        $response = static::createMatejInstance()
             ->request()
             ->sorting(Sorting::create('user-a', ['itemA', 'itemB', 'itemC']))
             ->send();
@@ -31,7 +31,7 @@ class SortingRequestTest extends IntegrationTestCase
     /** @test */
     public function shouldExecuteSortingRequestWithUserMergeAndInteraction(): void
     {
-        $response = $this->createMatejInstance()
+        $response = static::createMatejInstance()
             ->request()
             ->sorting(Sorting::create('user-b', ['item-a', 'item-b', 'itemC-c']))
             ->setUserMerge(UserMerge::mergeInto('user-b', 'user-a'))

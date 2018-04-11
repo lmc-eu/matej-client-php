@@ -8,20 +8,20 @@ use PHPUnit\Framework\TestCase;
 
 class IntegrationTestCase extends TestCase
 {
-    protected function markAsSkippedIfMatejIsNotAvailable(): void
+    protected static function markAsSkippedIfMatejIsNotAvailable(): void
     {
         if (!getenv('MATEJ_TEST_ACCOUNTID')) {
-            $this->markTestSkipped('Environment variable MATEJ_TEST_ACCOUNTID has to be defined');
+            self::markTestSkipped('Environment variable MATEJ_TEST_ACCOUNTID has to be defined');
         }
 
         if (!getenv('MATEJ_TEST_APIKEY')) {
-            $this->markTestSkipped('Environment variable MATEJ_TEST_APIKEY has to be defined');
+            self::markTestSkipped('Environment variable MATEJ_TEST_APIKEY has to be defined');
         }
     }
 
-    protected function createMatejInstance(): Matej
+    protected static function createMatejInstance(): Matej
     {
-        $this->markAsSkippedIfMatejIsNotAvailable();
+        self::markAsSkippedIfMatejIsNotAvailable();
 
         $instance = new Matej(getenv('MATEJ_TEST_ACCOUNTID'), getenv('MATEJ_TEST_APIKEY'));
 
@@ -46,7 +46,7 @@ class IntegrationTestCase extends TestCase
     }
 
     /** @return string[] */
-    protected function generateOkStatuses(int $amount): array
+    protected static function generateOkStatuses(int $amount): array
     {
         $data = explode(',', str_repeat('OK,', $amount));
         array_pop($data);

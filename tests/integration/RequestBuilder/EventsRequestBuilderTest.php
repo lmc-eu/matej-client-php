@@ -6,20 +6,40 @@ use Lmc\Matej\Exception\LogicException;
 use Lmc\Matej\IntegrationTests\IntegrationTestCase;
 use Lmc\Matej\Model\Command\Interaction;
 use Lmc\Matej\Model\Command\ItemProperty;
+use Lmc\Matej\Model\Command\ItemPropertySetup;
 use Lmc\Matej\Model\Command\UserMerge;
+use Lmc\Matej\RequestBuilder\ItemPropertiesSetupRequestBuilder;
 
 /**
  * @covers \Lmc\Matej\RequestBuilder\EventsRequestBuilder
  */
 class EventsRequestBuilderTest extends IntegrationTestCase
 {
+    public static function setUpBeforeClass(): void
+    {
+        $request = self::createMatejInstance()->request()->setupItemProperties();
+
+        self::addPropertiesToPropertySetupRequest($request);
+
+        $request->send();
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        $request = self::createMatejInstance()->request()->deleteItemProperties();
+
+        self::addPropertiesToPropertySetupRequest($request);
+
+        $request->send();
+    }
+
     /** @test */
     public function shouldThrowExceptionWhenSendingBlankRequest(): void
     {
         $this->expectException(LogicException::class);
         $this->expectExceptionMessage('At least one command must be added to the builder before sending the request');
 
-        $this->createMatejInstance()
+        static::createMatejInstance()
             ->request()
             ->events()
             ->send();
@@ -28,7 +48,7 @@ class EventsRequestBuilderTest extends IntegrationTestCase
     /** @test */
     public function shouldExecuteInteractionAndUserMergeAndItemPropertyCommands(): void
     {
-        $response = $this->createMatejInstance()
+        $response = static::createMatejInstance()
             ->request()
             ->events()
             ->addInteraction(Interaction::bookmark('user-a', 'item-a'))
@@ -50,5 +70,14 @@ class EventsRequestBuilderTest extends IntegrationTestCase
             ->send();
 
         $this->assertResponseCommandStatuses($response, ...$this->generateOkStatuses(10));
+    }
+
+    private static function addPropertiesToPropertySetupRequest(ItemPropertiesSetupRequestBuilder $builder): void
+    {
+        $builder->addProperties([
+            ItemPropertySetup::string('test_property_a'),
+            ItemPropertySetup::string('test_property_b'),
+            ItemPropertySetup::string('test_property_c'),
+        ]);
     }
 }

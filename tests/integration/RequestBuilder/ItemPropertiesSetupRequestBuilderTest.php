@@ -26,15 +26,15 @@ class ItemPropertiesSetupRequestBuilderTest extends IntegrationTestCase
     public function provideBuilders(): array
     {
         return [
-            'setup properties' => [$this->createMatejInstance()->request()->setupItemProperties()],
-            'delete properties' => [$this->createMatejInstance()->request()->deleteItemProperties()],
+            'setup properties' => [static::createMatejInstance()->request()->setupItemProperties()],
+            'delete properties' => [static::createMatejInstance()->request()->deleteItemProperties()],
         ];
     }
 
     /** @test */
     public function shouldCreateNewPropertiesInMatej(): void
     {
-        $response = $this->createMatejInstance()
+        $response = static::createMatejInstance()
             ->request()
             ->setupItemProperties()
             ->addProperty(Command\ItemPropertySetup::boolean('test_property_bool'))
@@ -59,7 +59,7 @@ class ItemPropertiesSetupRequestBuilderTest extends IntegrationTestCase
      */
     public function shouldDeleteCreatedPropertiesFromMatej(): void
     {
-        $response = $this->createMatejInstance()
+        $response = static::createMatejInstance()
             ->request()
             ->deleteItemProperties()
             ->addProperty(Command\ItemPropertySetup::boolean('test_property_bool'))
