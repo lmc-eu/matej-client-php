@@ -34,17 +34,14 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
     /** @var string|null */
     private $modelName = null;
 
-    private function __construct(string $userId, int $count, string $scenario, float $rotationRate, int $rotationTime, string $modelName = null)
+    private function __construct(string $userId, int $count, string $scenario, float $rotationRate, int $rotationTime, ?string $modelName = null)
     {
         $this->setUserId($userId);
         $this->setCount($count);
         $this->setScenario($scenario);
         $this->setRotationRate($rotationRate);
         $this->setRotationTime($rotationTime);
-
-        if ($modelName !== null) {
-            $this->setModelName($modelName);
-        }
+        $this->setModelName($modelName);
     }
 
     /**
@@ -134,9 +131,11 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
      *
      * @return $this
      */
-    public function setModelName(string $modelName): self
+    public function setModelName(?string $modelName): self
     {
-        Assertion::typeIdentifier($modelName);
+        if ($modelName !== null) {
+            Assertion::typeIdentifier($modelName);
+        }
 
         $this->modelName = $modelName;
 
