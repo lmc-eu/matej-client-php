@@ -23,7 +23,7 @@ class SortingRequestBuilderTest extends TestCase
     /** @test */
     public function shouldBuildRequestWithCommands(): void
     {
-        $sortingCommand = Sorting::create('userId1', ['itemId1', 'itemId2']);
+        $sortingCommand = Sorting::create('userId1', ['itemId1', 'itemId2'], 'test_model_name');
         $builder = new SortingRequestBuilder($sortingCommand);
 
         $interactionCommand = Interaction::detailView('sourceId1', 'itemId1');

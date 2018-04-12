@@ -2,6 +2,7 @@
 
 namespace Lmc\Matej\IntegrationTests\RequestBuilder;
 
+use Lmc\Matej\Exception\RequestException;
 use Lmc\Matej\IntegrationTests\IntegrationTestCase;
 use Lmc\Matej\Model\Command\Interaction;
 use Lmc\Matej\Model\Command\UserMerge;
@@ -20,7 +21,7 @@ class RecommendationRequestBuilderTest extends IntegrationTestCase
     {
         $response = $this->createMatejInstance()
             ->request()
-            ->recommendation($this->createRecommendationCommand('user-a'))
+            ->recommendation($this->createRecommendationCommand('user-a', null))
             ->send();
 
         $this->assertInstanceOf(RecommendationsResponse::class, $response);
@@ -33,7 +34,7 @@ class RecommendationRequestBuilderTest extends IntegrationTestCase
     {
         $response = $this->createMatejInstance()
             ->request()
-            ->recommendation($this->createRecommendationCommand('user-b'))
+            ->recommendation($this->createRecommendationCommand('user-b', 'default'))
             ->setUserMerge(UserMerge::mergeInto('user-b', 'user-a'))
             ->setInteraction(Interaction::bookmark('user-a', 'item-a'))
             ->send();
@@ -43,14 +44,28 @@ class RecommendationRequestBuilderTest extends IntegrationTestCase
         $this->assertShorthandResponse($response, 'OK', 'OK', 'OK');
     }
 
-    private function createRecommendationCommand(string $username): UserRecommendation
+    /** @test */
+    public function shouldFailOnInvalidModelName(): void
+    {
+        $this->expectException(RequestException::class);
+        $this->expectExceptionCode(400);
+        $this->expectExceptionMessage('BAD REQUEST');
+
+        $this->createMatejInstance()
+            ->request()
+            ->recommendation($this->createRecommendationCommand('user-a', 'invalid-model-name'))
+            ->send();
+    }
+
+    private function createRecommendationCommand(string $username, string $modelName = null): UserRecommendation
     {
         return UserRecommendation::create(
             $username,
             5,
             'integration-test-scenario',
             0.50,
-            3600
+            3600,
+            $modelName
         );
     }
 

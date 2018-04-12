@@ -251,6 +251,51 @@ $response = $matej->request()
     ->send();
 ```
 
+### A/B Testing support
+`Recommendation` and `Sorting` commands now support optional A/B testing of various models. This has to be set up in Matej first,
+but once available, you can specify which model you want to use when requesting recommendations:
+
+```php
+$response = $matej->request()
+    ->recommendation(UserRecommendation::create('user-id', 5, 'test-scenario', 1.0, 3600, 'custom_name_of_model_b'))
+    ->send();
+```
+
+Or, you can use `setModelName` setter, if you're specifying parameters granularly:
+
+```php
+$recommendation = UserRecommendation::create('user-id', 5, 'test-scenario', 1.0, 3600);
+$recommendation->setModelName('custom_name_of_model_b');
+
+$response = $matej->request()
+    ->recommendation($recommendation)
+    ->send();
+```
+
+Similarly, you can do that for `Sorting` request:
+
+```php
+$response =  $matej->request()
+    ->sorting(Sorting::create('user-id', ['item-id-1', 'item-id-2', 'item-id-3'], 'custom_name_of_model_b'))
+    ->send()
+;
+
+// ... or ...
+$sorting = Sorting::create('user-id', ['item-id-1', 'item-id-2', 'item-id-3']);
+$sorting->setModelName('custom_name_of_model_b');
+
+$response = $matej->request()
+    ->sorting($sorting)
+    ->send();
+```
+
+`custom_name_of_model_b` will be provided to you by LMC.
+
+If you use `NULL`, or `'default'`, the default model for your instance will be used.
+
+A/B testing is available in `/recommendation` and `/sorting` endpoints for individual requests,
+as well as in `/campaign` endpoint for batch requests.
+
 ### Exceptions and error handling
 
 Exceptions are thrown only if the whole Request to Matej failed (when sending, decoding, authenticating etc.) or if
