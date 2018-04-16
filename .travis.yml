@@ -11,7 +11,10 @@ matrix:
     - php: 7.1
       env: CHECK_CODESTYLE=1
       before_install: phpenv config-rm xdebug.ini
-      script: composer all
+      before_script: yarn add danger
+      script:
+        - composer all
+        - yarn danger ci
       after_success: ~
 
 install:
