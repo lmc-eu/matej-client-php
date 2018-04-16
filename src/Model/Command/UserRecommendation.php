@@ -135,6 +135,7 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
 
     protected function setCount(int $count): void
     {
+        Assertion::integer($count); // for PHP5 clients
         Assertion::greaterThan($count, 0);
 
         $this->count = $count;
