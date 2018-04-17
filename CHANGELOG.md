@@ -5,6 +5,8 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+### Added
+- Type hints and type assertions relevant only for PHP 5 version removed from codebase and are now added only to PHP 5 version of the library (in `RequestBuilderFactory`, `Command\Interaction`, `Command\UserRecommendation`).
 
 ## 1.4.0 - 2018-02-23
 ### Added

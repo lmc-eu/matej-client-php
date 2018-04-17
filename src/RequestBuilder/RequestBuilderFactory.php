@@ -26,8 +26,6 @@ class RequestBuilderFactory
 
     /**
      * Define new properties into the database. Those properties will be created and subsequently accepted by Matej.
-     *
-     * @return ItemPropertiesSetupRequestBuilder
      */
     public function setupItemProperties(): ItemPropertiesSetupRequestBuilder
     {
@@ -37,41 +35,27 @@ class RequestBuilderFactory
     /**
      * Added item properties will be IRREVERSIBLY removed from all items in the database and the item property will
      * from now be rejected by Matej.
-     *
-     * @return ItemPropertiesSetupRequestBuilder
      */
     public function deleteItemProperties(): ItemPropertiesSetupRequestBuilder
     {
         return $this->createConfiguredBuilder(ItemPropertiesSetupRequestBuilder::class, $shouldDelete = true);
     }
 
-    /**
-     * @return EventsRequestBuilder
-     */
     public function events(): EventsRequestBuilder
     {
         return $this->createConfiguredBuilder(EventsRequestBuilder::class);
     }
 
-    /**
-     * @return CampaignRequestBuilder
-     */
     public function campaign(): CampaignRequestBuilder
     {
         return $this->createConfiguredBuilder(CampaignRequestBuilder::class);
     }
 
-    /**
-     * @return SortingRequestBuilder
-     */
     public function sorting(Sorting $sorting): SortingRequestBuilder
     {
         return $this->createConfiguredBuilder(SortingRequestBuilder::class, $sorting);
     }
 
-    /**
-     * @return RecommendationRequestBuilder
-     */
     public function recommendation(UserRecommendation $recommendation): RecommendationRequestBuilder
     {
         return $this->createConfiguredBuilder(RecommendationRequestBuilder::class, $recommendation);
