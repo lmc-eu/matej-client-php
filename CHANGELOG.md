@@ -5,12 +5,14 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+
+## 1.5.0 - 2018-04-17
 ### Added
 - A/B testing support for recommendation and sorting requests.
-- Type hints and type assertions relevant only for PHP 5 version removed from codebase and are now added only to PHP 5 version of the library (in `RequestBuilderFactory`, `Command\Interaction`, `Command\UserRecommendation`).
 
 ### Changed
 - Allow users of commands passed to `$matej->request()->recommendation()` to be: (B [interaction], A -> B [user merge], B [recommendation]) in accordance with new Matej API behavior.
+- Type hints and type assertions relevant only for PHP 5 version removed from codebase and are now added only to PHP 5 version of the library (in `RequestBuilderFactory`, `Command\Interaction`, `Command\UserRecommendation`).
 
 ## 1.4.0 - 2018-02-23
 ### Added
