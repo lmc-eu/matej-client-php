@@ -31,6 +31,8 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
     private $minimalRelevance = self::MINIMAL_RELEVANCE_LOW;
     /** @var array */
     private $filters = ['valid_to >= NOW'];
+    /** @var string|null */
+    private $modelName = null;
 
     private function __construct(string $userId, int $count, string $scenario, float $rotationRate, int $rotationTime)
     {
@@ -121,6 +123,20 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
         return $this;
     }
 
+    /***
+     * Set A/B model name
+     *
+     * @return $this
+     */
+    public function setModelName(string $modelName): self
+    {
+        Assertion::typeIdentifier($modelName);
+
+        $this->modelName = $modelName;
+
+        return $this;
+    }
+
     public function getUserId(): string
     {
         return $this->userId;
@@ -173,7 +189,7 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
 
     protected function getCommandParameters(): array
     {
-        return [
+        $parameters = [
             'user_id' => $this->userId,
             'count' => $this->count,
             'scenario' => $this->scenario,
@@ -183,5 +199,11 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
             'min_relevance' => $this->minimalRelevance,
             'filter' => $this->assembleFiltersString(),
         ];
+
+        if ($this->modelName !== null) {
+            $parameters['model_name'] = $this->modelName;
+        }
+
+        return $parameters;
     }
 }

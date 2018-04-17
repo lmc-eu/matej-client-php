@@ -251,6 +251,51 @@ $response = $matej->request()
     ->send();
 ```
 
+### A/B Testing support
+`Recommendation` and `Sorting` commands support optional A/B testing of various models. This has to be set up in Matej first,
+but once available, you can specify which model you want to use when requesting recommendations or sortings.
+
+This is available for `recommendation`, `sorting` and `campaign` requests:
+
+```php
+$recommendationCommand = UserRecommendation::create('user-id', 5, 'test-scenario', 1.0, 3600);
+$recommendationCommand->setModelName('alpha');
+
+$sortingCommand = Sorting::create('user-id', ['item-id-1', 'item-id-2', 'item-id-3']);
+$sortingCommand->setModelName('beta')
+
+$response = $matej->request()
+    ->recommendation($recommendationCommand)
+    ->send();
+
+$response = $matej->request()
+    ->sorting($sortingCommand)
+    ->send();
+
+$response = $matej->request()
+    ->campaign()
+    ->addRecommendation($recommendationCommand->setModelName('gamma'))
+    ->addSorting($sortingCommand->setModelName('delta'))
+    ->send();
+```
+
+If you don't provide any model name, the request will be sent without it, and Matej will use default model for your instance.
+
+Typically, you'd select a random sample of users, to which you'd present recommendations and sortings from second model. This way, implementation
+in your code should look similar to this:
+
+```php
+$recommendation = UserRecommendation::create('user-id', 5, 'test-scenario', 1.0, 3600);
+
+if ($session->isUserInBucketB()) {
+    $recommendation->setModelName('alpha');
+}
+
+$response = $matej->request()->recommendation($recommendation)->send();
+```
+
+Model names will be provided to you by LMC.
+
 ### Exceptions and error handling
 
 Exceptions are thrown only if the whole Request to Matej failed (when sending, decoding, authenticating etc.) or if

@@ -6,6 +6,7 @@
 
 ## Unreleased
 ### Added
+- A/B testing support for recommendation and sorting requests.
 - Type hints and type assertions relevant only for PHP 5 version removed from codebase and are now added only to PHP 5 version of the library (in `RequestBuilderFactory`, `Command\Interaction`, `Command\UserRecommendation`).
 
 ### Changed
