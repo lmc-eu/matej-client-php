@@ -61,8 +61,10 @@ class RecommendationRequestBuilder extends AbstractRequestBuilder
 
     /**
      * Assert that interaction user ids are ok:
+     * ([interaction], [user merge (source -> target)], [recommendation]):
      * - (A,  null,  A)
      * - (A, A -> ?, ?)
+     * - (B, A -> B, B)
      */
     private function assertInteractionUserId(): void
     {
@@ -75,6 +77,13 @@ class RecommendationRequestBuilder extends AbstractRequestBuilder
         // (A, null, A)
         if ($this->userMergeCommand === null && $interactionUserId !== $this->userRecommendationCommand->getUserId()) {
             throw LogicException::forInconsistentUserId($this->userRecommendationCommand, $this->interactionCommand);
+        }
+
+        // allow (B, A -> B, B)
+        if ($this->userMergeCommand !== null
+            && $interactionUserId === $this->userMergeCommand->getUserId()
+            && $interactionUserId === $this->userRecommendationCommand->getUserId()) {
+            return;
         }
 
         // (A, A -> ?, ?)

@@ -8,6 +8,9 @@
 ### Added
 - Type hints and type assertions relevant only for PHP 5 version removed from codebase and are now added only to PHP 5 version of the library (in `RequestBuilderFactory`, `Command\Interaction`, `Command\UserRecommendation`).
 
+### Changed
+- Allow users of commands passed to `$matej->request()->recommendation()` to be: (B [interaction], A -> B [user merge], B [recommendation]) in accordance with new Matej API behavior.
+
 ## 1.4.0 - 2018-02-23
 ### Added
 - Endpoint to reset Matej test-databases (`$matej->request()->resetDatabase()`).
