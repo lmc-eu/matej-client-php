@@ -11,7 +11,7 @@ class MatejTest extends IntegrationTestCase
     {
         $requestId = uniqid('integration-test-php-client-request-id');
 
-        $response = $this->createMatejInstance()
+        $response = static::createMatejInstance()
             ->request()
             ->sorting(Sorting::create('integration-test-php-client-user-id-A', ['itemA', 'itemB']))
             ->setRequestId($requestId)

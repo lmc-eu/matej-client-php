@@ -14,7 +14,7 @@ class ResetDatabaseRequestBuilderTest extends IntegrationTestCase
     /** @test */
     public function shouldResetMatejDatabase(): void
     {
-        $response = $this->createMatejInstance()
+        $response = static::createMatejInstance()
             ->request()
             ->resetDatabase()
             ->send();

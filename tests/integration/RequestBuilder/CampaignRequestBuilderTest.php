@@ -18,7 +18,7 @@ class CampaignRequestBuilderTest extends IntegrationTestCase
         $this->expectException(LogicException::class);
         $this->expectExceptionMessage('At least one command must be added to the builder before sending the request');
 
-        $this->createMatejInstance()
+        static::createMatejInstance()
             ->request()
             ->campaign()
             ->send();
@@ -27,7 +27,7 @@ class CampaignRequestBuilderTest extends IntegrationTestCase
     /** @test */
     public function shouldExecuteRecommendationAndSortingCommands(): void
     {
-        $response = $this->createMatejInstance()
+        $response = static::createMatejInstance()
             ->request()
             ->campaign()
             ->addRecommendation($this->createRecommendationCommand('a'))
