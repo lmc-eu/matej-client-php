@@ -23,28 +23,28 @@
     },
     "require": {
         "php": "^7.1",
-        "ext-json": "*",
         "ext-hash": "*",
-        "php-http/httplug": "^1.1",
-        "php-http/message-factory": "^1.0",
-        "php-http/client-implementation": "^1.0",
-        "php-http/discovery": "^1.0",
+        "ext-json": "*",
+        "beberlei/assert": "^2.8",
         "fig/http-message-util": "^1.1",
         "php-http/client-common": "^1.6",
-        "beberlei/assert": "^2.8",
+        "php-http/client-implementation": "^1.0",
+        "php-http/discovery": "^1.0",
+        "php-http/httplug": "^1.1",
+        "php-http/message-factory": "^1.0",
         "ramsey/uuid": "^3.7"
     },
     "require-dev": {
-        "php-http/guzzle6-adapter": "^1.1",
-        "php-http/mock-client": "^1.0",
-        "php-http/message": "^1.0",
-        "phpunit/phpunit": "^6.4 || ^7.0",
-        "phpstan/phpstan-shim": "^0.9.0",
-        "phpstan/phpstan-phpunit": "^0.9.0",
+        "lmc/coding-standard": "^1.0",
         "php-coveralls/php-coveralls": "^2.0",
-        "symfony/var-dumper": "^3.3 || ^4.0",
+        "php-http/guzzle6-adapter": "^1.1",
+        "php-http/message": "^1.0",
+        "php-http/mock-client": "^1.0",
         "php-mock/php-mock-phpunit": "^1.0 || ^2.0",
-        "lmc/coding-standard": "^1.0"
+        "phpstan/phpstan-phpunit": "^0.9.0",
+        "phpstan/phpstan-shim": "^0.9.0",
+        "phpunit/phpunit": "^6.4 || ^7.0",
+        "symfony/var-dumper": "^3.3 || ^4.0"
     },
     "scripts": {
         "all": [
@@ -55,5 +55,8 @@
             "vendor/bin/ecs check src/ tests/ -vvv --ansi",
             "vendor/bin/phpstan.phar analyze ./src ./tests -c phpstan.neon --level 7 --ansi"
         ]
+    },
+    "config": {
+        "sort-packages": true
     }
 }
