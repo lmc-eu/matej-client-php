@@ -13,7 +13,7 @@ matrix:
       before_install: phpenv config-rm xdebug.ini
       before_script: yarn add danger
       script:
-        - composer all
+        - composer analyze
         - yarn danger ci
       after_success: ~
 
