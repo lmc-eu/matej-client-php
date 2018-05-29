@@ -45,4 +45,9 @@ class ResponseDecoder implements ResponseDecoderInterface
             $responseData->status
         );
     }
+
+    public function omg()
+    {
+        // TODO: Implement omg() method.
+    }
 }
