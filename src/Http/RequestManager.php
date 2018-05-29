@@ -62,7 +62,7 @@ class RequestManager
     }
 
     /** @codeCoverageIgnore */
-    public function setMessageFactory(MessageFactory $messageFactory): void
+    public function setMessageFactory(MessageFactoryDiscovery $messageFactory): void
     {
         $this->messageFactory = $messageFactory;
     }
