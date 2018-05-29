@@ -5,6 +5,8 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+### Changed
+- Declare missing direct dependencies (to `php-http/message`, `php-http/promise` and `psr/http-message`) in composer.json.
 
 ## 1.5.0 - 2018-04-17
 ### Added

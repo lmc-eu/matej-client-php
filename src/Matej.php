@@ -32,6 +32,11 @@ class Matej
         return new RequestBuilderFactory($this->getRequestManager());
     }
 
+    public function omg(int $foo)
+    {
+
+    }
+
     /** @return $this */
     public function setHttpClient(HttpClient $client): self
     {
@@ -55,18 +60,7 @@ class Matej
      * @codeCoverageIgnore
      * @return $this
      */
-    public function setHttpMessageFactory(MessageFactory $messageFactory): self
-    {
-        $this->getRequestManager()->setMessageFactory($messageFactory);
-
-        return $this;
-    }
-
-    /**
-     * @codeCoverageIgnore
-     * @return $this
-     */
-    public function setHttpResponseDecoder(ResponseDecoderInterface $responseDecoder): self
+    public function setHttpResponseDecoder(ResponseDecoderInterface $responseDecoder, bool $newParam): self
     {
         $this->getRequestManager()->setResponseDecoder($responseDecoder);
 
