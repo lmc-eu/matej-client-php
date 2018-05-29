@@ -296,6 +296,42 @@ $response = $matej->request()->recommendation($recommendation)->send();
 
 Model names will be provided to you by LMC.
 
+## Forgetting user data (GDPR)
+Matej can "forget" user data, either by anonymizing or by deleting them. The right to erasure ("right to be forgotten") is part of
+[General Data Protection Regulation in the European Union](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32016R0679#d1e2606-1-1)
+and can be implemented on your end using the `forget()` builder.
+
+There are two ways how to remove user data, but both of them aren't reversible and you will not be able to identify
+the user ever again:
+
+* Preferred way is to `anonymize` the user, which will randomly generate unique identifiers for all personal data,
+  and change that identifier across all databases and logfiles. This way the users behaviour will stay in Matej database,
+  and therefore **will continue to contribute to the recommendation model**, but you won't be able to identify the user.
+  Thus his profile will be effectively frozen (as no new interactions can come in.) **New user id is generated server-side**,
+  so there is no going back after issuing the request.
+* An alternate way is to `delete` the user, which will wipe their data from all databases in accordance
+  with the Data Protection laws. This may affect the quality of recommendations, as the users behavior will be completely
+  removed from all databases, and therefore their profile will not contribute to the recommendation model anymore.
+
+Usually, though, the user will identify whether they want their data anonymized or deleted, and you have to adhere to their request.
+
+To call the endpoint, use the `forget()` builder and append the users:
+
+```php
+$matej = new Matej('accountId', 'apikey');
+
+$matej->request()
+    ->forget()
+    ->addUser(UserForget::anonymize('anonymize-this-user-id'))
+    ->addUser(UserForget::anonymize('delete-this-user-id'))
+    ->addUsers([
+        UserForget::anonymize('anonymize-this-user-id-as-well'),
+        UserForget::delete('delete-this-user-id-as-well'),
+    ])
+    ->send()
+;
+```
+
 ### Exceptions and error handling
 
 Exceptions are thrown only if the whole Request to Matej failed (when sending, decoding, authenticating etc.) or if
