@@ -12,8 +12,8 @@ matrix:
       env: CHECK_CODESTYLE=1
       before_install: phpenv config-rm xdebug.ini
       before_script:
-        - composer require --dev roave/backward-compatibility-check:^1.0
-        - yarn add danger
+        - travis_retry composer require --dev roave/backward-compatibility-check:^1.0
+        - travis_retry yarn add danger
       script:
         - composer analyze
         - vendor/bin/roave-backward-compatibility-check --format=markdown >bc-changes.md
