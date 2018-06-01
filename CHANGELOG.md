@@ -5,6 +5,9 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+### Added
+- `UserForget` command to anonymize or completely delete all data belonging to specific user(s) (`$matej->request()->forget()`).
+
 ### Changed
 - Declare missing direct dependencies (to `php-http/message`, `php-http/promise` and `psr/http-message`) in composer.json.
 
