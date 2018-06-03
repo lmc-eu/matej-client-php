@@ -5,6 +5,8 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+### Fixed
+- Exceptions occurring during async request now generate rejected promise (as they should) and are no longer thrown directly.
 
 ## 1.6.0 - 2018-06-01
 ### Added
