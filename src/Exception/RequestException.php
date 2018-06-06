@@ -2,6 +2,7 @@
 
 namespace Lmc\Matej\Exception;
 
+use Http\Client\Exception;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -9,7 +10,7 @@ use Psr\Http\Message\ResponseInterface;
  * Generic exception thrown when error occurs during request execution.
  * Some more specific child exception could be thrown instead.
  */
-class RequestException extends \RuntimeException implements MatejExceptionInterface
+class RequestException extends \RuntimeException implements MatejExceptionInterface, Exception
 {
     /** @var RequestInterface */
     private $request;
