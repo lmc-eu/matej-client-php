@@ -15,8 +15,8 @@ use Lmc\Matej\Model\Response\RecommendationsResponse;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Lmc\Matej\RequestBuilder\RecommendationRequestBuilder
  * @covers \Lmc\Matej\RequestBuilder\AbstractRequestBuilder
+ * @covers \Lmc\Matej\RequestBuilder\RecommendationRequestBuilder
  */
 class RecommendationRequestBuilderTest extends TestCase
 {

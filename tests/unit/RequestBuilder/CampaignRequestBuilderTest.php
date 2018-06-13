@@ -13,8 +13,8 @@ use Lmc\Matej\Model\Response;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Lmc\Matej\RequestBuilder\CampaignRequestBuilder
  * @covers \Lmc\Matej\RequestBuilder\AbstractRequestBuilder
+ * @covers \Lmc\Matej\RequestBuilder\CampaignRequestBuilder
  */
 class CampaignRequestBuilderTest extends TestCase
 {

@@ -12,8 +12,8 @@ use Lmc\Matej\Model\Response;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Lmc\Matej\RequestBuilder\ItemPropertiesSetupRequestBuilder
  * @covers \Lmc\Matej\RequestBuilder\AbstractRequestBuilder
+ * @covers \Lmc\Matej\RequestBuilder\ItemPropertiesSetupRequestBuilder
  */
 class ItemPropertiesSetupRequestBuilderTest extends TestCase
 {

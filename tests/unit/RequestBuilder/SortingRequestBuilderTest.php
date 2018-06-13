@@ -14,9 +14,9 @@ use Lmc\Matej\Model\Response\SortingResponse;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Lmc\Matej\RequestBuilder\SortingRequestBuilder
- * @covers \Lmc\Matej\RequestBuilder\AbstractRequestBuilder
  * @covers \Lmc\Matej\Exception\LogicException
+ * @covers \Lmc\Matej\RequestBuilder\AbstractRequestBuilder
+ * @covers \Lmc\Matej\RequestBuilder\SortingRequestBuilder
  */
 class SortingRequestBuilderTest extends TestCase
 {

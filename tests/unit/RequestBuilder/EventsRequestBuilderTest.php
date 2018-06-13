@@ -14,8 +14,8 @@ use Lmc\Matej\Model\Response;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Lmc\Matej\RequestBuilder\EventsRequestBuilder
  * @covers \Lmc\Matej\RequestBuilder\AbstractRequestBuilder
+ * @covers \Lmc\Matej\RequestBuilder\EventsRequestBuilder
  */
 class EventsRequestBuilderTest extends TestCase
 {

@@ -6,8 +6,8 @@ use Lmc\Matej\Exception\ResponseDecodingException;
 use Lmc\Matej\UnitTestCase;
 
 /**
- * @covers \Lmc\Matej\Model\Response
  * @covers \Lmc\Matej\Exception\ResponseDecodingException
+ * @covers \Lmc\Matej\Model\Response
  */
 class ResponseTest extends UnitTestCase
 {
