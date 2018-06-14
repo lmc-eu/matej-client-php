@@ -16,7 +16,7 @@ matrix:
         - travis_retry yarn add danger
       script:
         - composer analyze
-        - vendor/bin/roave-backward-compatibility-check --format=markdown >bc-changes.md
+        - if [ `git tag | wc -l` -gt 0 ]; then vendor/bin/roave-backward-compatibility-check --format=markdown >bc-changes.md; fi
         - yarn danger ci
       after_success: ~
 
