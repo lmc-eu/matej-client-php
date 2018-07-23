@@ -4,3 +4,7 @@ imports:
 services:
     PhpCsFixer\Fixer\PhpUnit\PhpUnitTestAnnotationFixer:
         style: annotation
+parameters:
+    skip:
+        Symplify\CodingStandard\Sniffs\Naming\ClassNameSuffixByParentSniff:
+            - 'src/Model/Command/*.php'
