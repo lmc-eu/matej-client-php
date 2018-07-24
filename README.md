@@ -156,6 +156,12 @@ $response = $matej->request()
     ->send();
 ```
 
+**This endpoint has rate-limiting implemented.** We constantly monitor workload on backend systems,
+and when the number of events in the queue crosses certain threshold, Matej API will start returning `503` errors.
+If that happens, you should resend the entire request later, as no commands were processed.
+
+This has been implemented so that we don't lose any pushed data. Simple sleep of 100ms should be enough.
+
 ### Recommendations for single user
 
 You can get recommendations for a single user using `recommendation()` builder.
