@@ -24,6 +24,7 @@ class UserRecommendationTest extends TestCase
                     'hard_rotation' => false,
                     'min_relevance' => UserRecommendation::MINIMAL_RELEVANCE_LOW,
                     'filter' => 'valid_to >= NOW',
+                    'properties' => [],
                     // intentionally no model name ==> should be absent when not used
                 ],
             ],
@@ -62,6 +63,7 @@ class UserRecommendationTest extends TestCase
                     'hard_rotation' => true,
                     'min_relevance' => UserRecommendation::MINIMAL_RELEVANCE_HIGH,
                     'filter' => 'foo = bar and baz = ban',
+                    'properties' => [],
                     'model_name' => $modelName,
                 ],
             ],
@@ -90,5 +92,21 @@ class UserRecommendationTest extends TestCase
         $command->setFilters(['my_filter = 1', 'other_filter = foo']);
 
         $this->assertSame('my_filter = 1 and other_filter = foo', $command->jsonSerialize()['parameters']['filter']);
+    }
+
+    /** @test */
+    public function shouldAllowModificationOfResponseProperties(): void
+    {
+        $command = UserRecommendation::create('user-id', 333, 'test-scenario', 1.0, 3600, ['test']);
+        $this->assertSame(['test'], $command->jsonSerialize()['parameters']['properties']);
+
+        // Add some properties
+        $command->addResponseProperty('url');
+
+        $this->assertSame(['test', 'url'], $command->jsonSerialize()['parameters']['properties']);
+
+        // Overwrite all properties
+        $command->setResponseProperties(['position_title']);
+        $this->assertSame(['position_title'], $command->jsonSerialize()['parameters']['properties']);
     }
 }
