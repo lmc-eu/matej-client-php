@@ -23,9 +23,10 @@ class UserRecommendationTest extends TestCase
                     'rotation_time' => 3600,
                     'hard_rotation' => false,
                     'min_relevance' => UserRecommendation::MINIMAL_RELEVANCE_LOW,
-                    'filter' => 'valid_to >= NOW',
+                    'filter' => '',
+                    'filter_type' => UserRecommendation::FILTER_TYPE_MQL,
                     'properties' => [],
-                    // intentionally no model name ==> should be absent when not used
+                    // when using default model name, parameter "model_name" should be absent.
                 ],
             ],
             $command->jsonSerialize()
@@ -63,6 +64,7 @@ class UserRecommendationTest extends TestCase
                     'hard_rotation' => true,
                     'min_relevance' => UserRecommendation::MINIMAL_RELEVANCE_HIGH,
                     'filter' => 'foo = bar and baz = ban',
+                    'filter_type' => UserRecommendation::FILTER_TYPE_MQL,
                     'properties' => [],
                     'model_name' => $modelName,
                 ],
@@ -72,26 +74,35 @@ class UserRecommendationTest extends TestCase
     }
 
     /** @test */
-    public function shouldAssembleFilters(): void
+    public function shouldAssembleMqlFilters(): void
     {
         $command = UserRecommendation::create('user-id', 333, 'test-scenario', 1.0, 3600);
 
         // Default filter
-        $this->assertSame('valid_to >= NOW', $command->jsonSerialize()['parameters']['filter']);
+        $this->assertSame('', $command->jsonSerialize()['parameters']['filter']);
 
         // Add custom filters to the default one
-        $command->addFilter('foo = bar')
-            ->addFilter('bar = baz');
+        $command->addFilter("first_string_property = 'bar'")
+            ->addFilter("second_string_property LIKE 'bar%'")
+            ->addFilter("third_string_property NOT LIKE '%bar'")
+            ->addFilter('bool_property = true')
+            ->addFilter('nullable_property IS NULL')
+            ->addFilter("'some_value' in set_property");
 
         $this->assertSame(
-            'valid_to >= NOW and foo = bar and bar = baz',
+            "first_string_property = 'bar' and " .
+            "second_string_property LIKE 'bar%' and " .
+            "third_string_property NOT LIKE '%bar' and " .
+            'bool_property = true and ' .
+            'nullable_property IS NULL and ' .
+            "'some_value' in set_property",
             $command->jsonSerialize()['parameters']['filter']
         );
 
         // Overwrite all filters
-        $command->setFilters(['my_filter = 1', 'other_filter = foo']);
+        $command->setFilters(['my_filter = 1', 'other_filter IS NULL']);
 
-        $this->assertSame('my_filter = 1 and other_filter = foo', $command->jsonSerialize()['parameters']['filter']);
+        $this->assertSame('my_filter = 1 and other_filter IS NULL', $command->jsonSerialize()['parameters']['filter']);
     }
 
     /** @test */
