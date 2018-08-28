@@ -24,6 +24,8 @@ class UserRecommendationTest extends TestCase
                     'hard_rotation' => false,
                     'min_relevance' => UserRecommendation::MINIMAL_RELEVANCE_LOW,
                     'filter' => 'valid_to >= NOW',
+                    'filter_type' => UserRecommendation::FILTER_TYPE_MQL,
+                    'properties' => ['item_id'],
                     // intentionally no model name ==> should be absent when not used
                 ],
             ],
@@ -47,6 +49,7 @@ class UserRecommendationTest extends TestCase
         $command->setMinimalRelevance(UserRecommendation::MINIMAL_RELEVANCE_HIGH)
             ->enableHardRotation()
             ->setFilters(['foo = bar', 'baz = ban'])
+            ->setFilterType(UserRecommendation::FILTER_TYPE_RGX)
             ->setModelName($modelName);
 
         $this->assertInstanceOf(UserRecommendation::class, $command);
@@ -62,7 +65,9 @@ class UserRecommendationTest extends TestCase
                     'hard_rotation' => true,
                     'min_relevance' => UserRecommendation::MINIMAL_RELEVANCE_HIGH,
                     'filter' => 'foo = bar and baz = ban',
+                    'filter_type' => UserRecommendation::FILTER_TYPE_RGX,
                     'model_name' => $modelName,
+                    'properties' => ['item_id'],
                 ],
             ],
             $command->jsonSerialize()
@@ -90,5 +95,22 @@ class UserRecommendationTest extends TestCase
         $command->setFilters(['my_filter = 1', 'other_filter = foo']);
 
         $this->assertSame('my_filter = 1 and other_filter = foo', $command->jsonSerialize()['parameters']['filter']);
+    }
+
+    /** @test */
+    public function shouldAllowModificationOfResponseProperties(): void
+    {
+        $command = UserRecommendation::create('user-id', 333, 'test-scenario', 1.0, 3600, ['test']);
+        $this->assertSame(['test'], $command->jsonSerialize()['parameters']['properties']);
+
+        // Add some properties
+        $command->addResponseProperty('item_id')
+            ->addResponseProperty('url');
+
+        $this->assertSame(['test', 'item_id', 'url'], $command->jsonSerialize()['parameters']['properties']);
+
+        // Overwrite all properties
+        $command->setResponseProperties(['item_id', 'position_title']);
+        $this->assertSame(['item_id', 'position_title'], $command->jsonSerialize()['parameters']['properties']);
     }
 }

@@ -88,7 +88,7 @@ foreach ($response->getCommandResponses() as $commandResponse) {
 and [Item Properties](#item-properties-setup-to-setup-you-matej-database) endpoints have syntax sugar shortcuts,
 which makes processing responses easier. See below for detailed examples.
 
-### Item properties setup (to setup you Matej database)
+### Item properties setup (to setup your Matej's database)
 
 ```php
 $matej = new Matej('accountId', 'apikey');
@@ -184,7 +184,7 @@ You can also set more granular options of the recommendation command:
 
 ```php
 $recommendation = UserRecommendation::create('user-id', 5, 'test-scenario', 1.0, 3600);
-$recommendation->setFilters(['valid_to >= NOW']) // Note this filter is present by default
+$recommendation->setFilters(['for_recommendation = 1'])
     ->setMinimalRelevance(UserRecommendation::MINIMAL_RELEVANCE_HIGH)
     ->enableHardRotation();
 
@@ -205,7 +205,60 @@ echo $response->getUserMerge()->getStatus();      // SKIPPED
 echo $response->getRecommendation()->getStatus(); // OK
 
 $recommendations = $response->getRecommendation()->getData();
+
+// var_dump($recommendations):
+// array(2) {
+//     [0] => object(stdClass)#1 (2) {
+//         ["item_id"]  => string(9) "item_id_1"
+//     }
+//     [1] => object(stdClass)#2 (2) {
+//         ["item_id"]  => string(9)  "item_id_2"
+//     }
+// }
 ```
+
+#### Recommendation response properties
+
+Every item in matej has it's id, and optionally other item properties. These properties can be set up in [item properties setup](#item-properties-setup-to-setup-you-matej-database),
+and you can upload item data in the [events](#send-events-data-to-matej) request. This has major benefit, because you can request
+these properties to be returned as part of your Recommendation Request.
+
+We call them response properties, and they can be specified either as last parameter of `UserRecommendation::create` function,
+by calling `->addResponseProperty()` method, or by calling `->setResponseProperties()` method. Following will request an `item_id`,
+`item_url` and `item_title`:
+
+```php
+$recommendation = UserRecommendation::create('user-id', 5, 'test-scenario', 1.0, 3600, ['item_id', 'item_url')
+    ->addProperty('item_title')
+;
+
+$response = $matej->request()
+    ->recommendation($recommendation)
+    ->send();
+
+$recommendedItems = $response->getRecommendation()->getData();
+
+// $recommendedItems is an array of stdClass instances:
+//
+// array(2) {
+//     [0] => object(stdClass)#1 (2) {
+//         ["item_id"]  => string(9) "item_id_1"
+//         ["item_url"] => string(5) "url_1"
+//         ["item_title"] => string(5) "title_1"
+//     }
+//     [1] => object(stdClass)#2 (2) {
+//         ["item_id"]  => string(9)  "item_id_2"
+//         ["item_url"] => string(10) "url_2"
+//         ["item_title"] => string(10) "title_2"
+//     }
+// }
+```
+
+Matej will always return `item_id`, even if you don't ask for it explicitly.
+
+This way, when you receive recommendations from Matej, you don't need to loop the `item_id` and retrieve further information
+from your local database. It means however, that you'll have to keep all items up to date within Matej,
+which can be done through [events](#send-events-data-to-matej) request.
 
 ### Request item sorting for single user
 

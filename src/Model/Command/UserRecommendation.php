@@ -12,6 +12,8 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
     public const MINIMAL_RELEVANCE_LOW = 'low';
     public const MINIMAL_RELEVANCE_MEDIUM = 'medium';
     public const MINIMAL_RELEVANCE_HIGH = 'high';
+    public const FILTER_TYPE_RGX = 'rgx';
+    public const FILTER_TYPE_MQL = 'mql';
 
     /** @var string */
     protected $filterOperator = 'and';
@@ -29,18 +31,29 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
     private $hardRotation = false;
     /** @var string */
     private $minimalRelevance = self::MINIMAL_RELEVANCE_LOW;
-    /** @var array */
-    private $filters = ['valid_to >= NOW'];
+    /** @var string[] */
+    private $filters = [];
+    /** @var bool */
+    private $filterType = self::FILTER_TYPE_MQL;
     /** @var string|null */
     private $modelName = null;
+    /** @var string[] */
+    private $responseProperties;
 
-    private function __construct(string $userId, int $count, string $scenario, float $rotationRate, int $rotationTime)
-    {
+    private function __construct(
+        string $userId,
+        int $count,
+        string $scenario,
+        float $rotationRate,
+        int $rotationTime,
+        array $responseProperties
+    ) {
         $this->setUserId($userId);
         $this->setCount($count);
         $this->setScenario($scenario);
         $this->setRotationRate($rotationRate);
         $this->setRotationTime($rotationTime);
+        $this->setResponseProperties($responseProperties);
     }
 
     /**
@@ -53,6 +66,7 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
      * Set from 0.0 for no rotation (same items will be recommended) up to 1.0 (same items should not be recommended).
      * @param int $rotationTime Specify for how long will the item's rotationRate be taken in account and so the item
      * is penalized for recommendations.
+     * @param string[] $responseProperties Specify which properties you want to retrieve from matej alongside the item_id.
      * @return static
      */
     public static function create(
@@ -60,9 +74,10 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
         int $count,
         string $scenario,
         float $rotationRate,
-        int $rotationTime
+        int $rotationTime,
+        array $responseProperties = ['item_id']
     ): self {
-        return new static($userId, $count, $scenario, $rotationRate, $rotationTime);
+        return new static($userId, $count, $scenario, $rotationRate, $rotationTime, $responseProperties);
     }
 
     /**
@@ -119,6 +134,42 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
         Assertion::allString($filters);
 
         $this->filters = $filters;
+
+        return $this;
+    }
+
+    public function setFilterType(string $filterType): self
+    {
+        Assertion::typeIdentifier($filterType);
+
+        $this->filterType = $filterType;
+
+        return $this;
+    }
+
+    /**
+     * Specify which item property you want returned.
+     */
+    public function addResponseProperty(string $property): self
+    {
+        Assertion::typeIdentifier($property);
+
+        $this->responseProperties[] = $property;
+
+        return $this;
+    }
+
+    /**
+     * Overwrite all properties by custom specified list. Note that this will overried the defaults.
+     *
+     * @param string[] $properties
+     * @return $this
+     */
+    public function setResponseProperties(?array $properties): self
+    {
+        Assertion::allTypeIdentifier($properties);
+
+        $this->responseProperties = $properties;
 
         return $this;
     }
@@ -200,8 +251,16 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
             'filter' => $this->assembleFiltersString(),
         ];
 
+        if ($this->filterType !== self::FILTER_TYPE_RGX) {
+            $parameters['filter_type'] = $this->filterType;
+        }
+
         if ($this->modelName !== null) {
             $parameters['model_name'] = $this->modelName;
+        }
+
+        if ($this->responseProperties !== null) {
+            $parameters['properties'] = $this->responseProperties;
         }
 
         return $parameters;

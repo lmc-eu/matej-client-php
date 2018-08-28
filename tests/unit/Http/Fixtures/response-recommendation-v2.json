@@ -1,0 +1,38 @@
+{
+  "commands": {
+    "number_of_commands": 3,
+    "number_of_failed_commands": 0,
+    "number_of_skipped_commands": 2,
+    "number_of_successful_commands": 1,
+    "responses": [
+      {
+        "data": [],
+        "message": "",
+        "status": "SKIPPED"
+      },
+      {
+        "data": [],
+        "message": "",
+        "status": "SKIPPED"
+      },
+      {
+        "data": [
+          {"item_id": "jd-5a2ebcb2fc13ae1fdb00016d", "item_url": "http://test-url/5a2ebcb2fc13ae1fdb00016d"},
+          {"item_id": "jd-5a2ebcb1fc13ae1fdb0000e3", "item_url": "http://test-url/5a2ebcb1fc13ae1fdb0000e3"},
+          {"item_id": "jd-5a2ebcb2fc13ae1fdb000295", "item_url": "http://test-url/5a2ebcb2fc13ae1fdb000295"},
+          {"item_id": "jd-5a2ebcb2fc13ae1fdb00022d", "item_url": "http://test-url/5a2ebcb2fc13ae1fdb00022d"},
+          {"item_id": "jd-5a2ebcb1fc13ae1fdb00010a", "item_url": "http://test-url/5a2ebcb1fc13ae1fdb00010a"},
+          {"item_id": "jd-5a2ebcb1fc13ae1fdb00010d", "item_url": "http://test-url/5a2ebcb1fc13ae1fdb00010d"},
+          {"item_id": "jd-5a2ebcb3fc13ae1fdb000389", "item_url": "http://test-url/5a2ebcb3fc13ae1fdb000389"},
+          {"item_id": "jd-5a2ebcb3fc13ae1fdb000367", "item_url": "http://test-url/5a2ebcb3fc13ae1fdb000367"},
+          {"item_id": "jd-5a2ebcb2fc13ae1fdb000285", "item_url": "http://test-url/5a2ebcb2fc13ae1fdb000285"},
+          {"item_id": "jd-5a2ebcb2fc13ae1fdb0002cb", "item_url": "http://test-url/5a2ebcb2fc13ae1fdb0002cb"}
+        ],
+        "message": "",
+        "status": "OK"
+      }
+    ]
+  },
+  "message": "",
+  "status": "OK"
+}

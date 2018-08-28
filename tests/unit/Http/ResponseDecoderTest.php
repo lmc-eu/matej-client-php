@@ -6,6 +6,7 @@ use Fig\Http\Message\StatusCodeInterface;
 use GuzzleHttp\Psr7\Response;
 use Lmc\Matej\Exception\ResponseDecodingException;
 use Lmc\Matej\Model\CommandResponse;
+use Lmc\Matej\Model\Response\RecommendationsResponse;
 use Lmc\Matej\UnitTestCase;
 
 class ResponseDecoderTest extends UnitTestCase
@@ -95,5 +96,35 @@ class ResponseDecoderTest extends UnitTestCase
         $this->expectExceptionMessage('Error decoding Matej response: required data missing.');
         $this->expectExceptionMessage('"invalid": [],');
         $this->decoder->decode($response);
+    }
+
+    /** @test */
+    public function shouldDecodeVersionOneRecommendationResponse(): void
+    {
+        $response = $this->createJsonResponseFromFile(__DIR__ . '/Fixtures/response-recommendation-v1.json');
+
+        /** @var RecommendationsResponse */
+        $decodedResponse = $this->decoder->decode($response, RecommendationsResponse::class);
+
+        $this->assertNotEmpty($decodedResponse->getRecommendation()->getData());
+        $this->assertContainsOnly('string', $decodedResponse->getRecommendation()->getData());
+    }
+
+    /** @test */
+    public function shouldDecodeVersionTwoRecommendationResponse(): void
+    {
+        $response = $this->createJsonResponseFromFile(__DIR__ . '/Fixtures/response-recommendation-v2.json');
+
+        /** @var RecommendationsResponse */
+        $decodedResponse = $this->decoder->decode($response, RecommendationsResponse::class);
+
+        // Recommended items should be stdClasses
+        $this->assertNotEmpty($decodedResponse->getRecommendation()->getData());
+        $this->assertContainsOnlyInstancesOf(\stdClass::class, $decodedResponse->getRecommendation()->getData());
+
+        foreach ($decodedResponse->getRecommendation()->getData() as $recommendedItem) {
+            $this->assertObjectHasAttribute('item_id', $recommendedItem);
+            $this->assertObjectHasAttribute('item_url', $recommendedItem);
+        }
     }
 }
