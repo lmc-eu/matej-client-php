@@ -358,7 +358,7 @@ $response = $matej->request()->recommendation($recommendation)->send();
 
 Model names will be provided to you by LMC.
 
-## Forgetting user data (GDPR)
+### Forgetting user data (GDPR)
 Matej can "forget" user data, either by anonymizing or by deleting them. The right to erasure ("right to be forgotten") is part of
 [General Data Protection Regulation in the European Union](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32016R0679#d1e2606-1-1)
 and can be implemented on your end using the `forget()` builder.
