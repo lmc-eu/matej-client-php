@@ -5,8 +5,14 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+### Changed
+- **BC BREAK** | `UserRecommendation` now returns new format of response in `->getData()`, which is a list of `stdClass` instances.
+
 ### Fixed
 - Exceptions occurring during async request now generate rejected promise (as they should) and are no longer thrown directly.
+
+### Added
+- Ability to request item properties in `UserRecommendation` command, which are then returned by Matej alongside with `item_id`.
 
 ## 1.6.0 - 2018-06-01
 ### Added
