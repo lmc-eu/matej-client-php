@@ -2,6 +2,7 @@
 
 namespace Lmc\Matej\Model\Command;
 
+use Lmc\Matej\Model\Command\Constants\MinimalRelevance;
 use PHPUnit\Framework\TestCase;
 
 class UserRecommendationTest extends TestCase
@@ -22,7 +23,7 @@ class UserRecommendationTest extends TestCase
                     'rotation_rate' => 1.0,
                     'rotation_time' => 3600,
                     'hard_rotation' => false,
-                    'min_relevance' => UserRecommendation::MINIMAL_RELEVANCE_LOW,
+                    'min_relevance' => MinimalRelevance::LOW,
                     'filter' => '',
                     'filter_type' => UserRecommendation::FILTER_TYPE_MQL,
                     'properties' => [],
@@ -46,7 +47,7 @@ class UserRecommendationTest extends TestCase
 
         $command = UserRecommendation::create($userId, $count, $scenario, $rotationRate, $rotationTime);
 
-        $command->setMinimalRelevance(UserRecommendation::MINIMAL_RELEVANCE_HIGH)
+        $command->setMinimalRelevance(MinimalRelevance::HIGH())
             ->enableHardRotation()
             ->setFilters(['foo = bar', 'baz = ban'])
             ->setModelName($modelName);
@@ -62,7 +63,7 @@ class UserRecommendationTest extends TestCase
                     'rotation_rate' => $rotationRate,
                     'rotation_time' => $rotationTime,
                     'hard_rotation' => true,
-                    'min_relevance' => UserRecommendation::MINIMAL_RELEVANCE_HIGH,
+                    'min_relevance' => MinimalRelevance::HIGH,
                     'filter' => 'foo = bar and baz = ban',
                     'filter_type' => UserRecommendation::FILTER_TYPE_MQL,
                     'properties' => [],

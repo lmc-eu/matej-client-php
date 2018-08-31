@@ -3,6 +3,7 @@
 namespace Lmc\Matej\Model\Command;
 
 use Lmc\Matej\Model\Assertion;
+use Lmc\Matej\Model\Command\Constants\UserForgetMethod;
 
 /**
  * UserForget any user in Matej, either by anonymizing or by deleting their entries.
@@ -11,18 +12,15 @@ use Lmc\Matej\Model\Assertion;
  */
 class UserForget extends AbstractCommand implements UserAwareInterface
 {
-    public const ANONYMIZE = 'anonymize';
-    public const DELETE = 'delete';
-
     /** @var string */
     private $userId;
-    /** @var string */
+    /** @var UserForgetMethod */
     private $method;
 
-    private function __construct(string $userId, string $method)
+    private function __construct(string $userId, UserForgetMethod $method)
     {
         $this->setUserId($userId);
-        $this->setForgetMethod($method);
+        $this->method = $method;
     }
 
     /**
@@ -30,7 +28,7 @@ class UserForget extends AbstractCommand implements UserAwareInterface
      */
     public static function anonymize(string $userId): self
     {
-        return new static($userId, self::ANONYMIZE);
+        return new static($userId, UserForgetMethod::ANONYMIZE());
     }
 
     /**
@@ -38,7 +36,7 @@ class UserForget extends AbstractCommand implements UserAwareInterface
      */
     public static function delete(string $userId): self
     {
-        return new static($userId, self::DELETE);
+        return new static($userId, UserForgetMethod::DELETE());
     }
 
     public function getUserId(): string
@@ -46,7 +44,7 @@ class UserForget extends AbstractCommand implements UserAwareInterface
         return $this->userId;
     }
 
-    public function getForgetMethod(): string
+    public function getForgetMethod(): UserForgetMethod
     {
         return $this->method;
     }
@@ -58,13 +56,6 @@ class UserForget extends AbstractCommand implements UserAwareInterface
         $this->userId = $userId;
     }
 
-    protected function setForgetMethod(string $method): void
-    {
-        Assertion::choice($method, [self::ANONYMIZE, self::DELETE]);
-
-        $this->method = $method;
-    }
-
     protected function getCommandType(): string
     {
         return 'user-forget';
@@ -74,7 +65,7 @@ class UserForget extends AbstractCommand implements UserAwareInterface
     {
         return [
             'user_id' => $this->userId,
-            'method' => $this->method,
+            'method' => $this->method->jsonSerialize(),
         ];
     }
 }

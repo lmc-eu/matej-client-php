@@ -27,6 +27,7 @@
         "ext-json": "*",
         "beberlei/assert": "^2.8",
         "fig/http-message-util": "^1.1",
+        "myclabs/php-enum": "^1.6",
         "php-http/client-common": "^1.6",
         "php-http/client-implementation": "^1.0",
         "php-http/discovery": "^1.0",

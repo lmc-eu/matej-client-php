@@ -15,7 +15,7 @@ class Sorting extends AbstractCommand implements UserAwareInterface
     /** @var string[] */
     private $itemIds = [];
     /** @var string|null */
-    private $modelName = null;
+    private $modelName;
 
     private function __construct(string $userId, array $itemIds)
     {
