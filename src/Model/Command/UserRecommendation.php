@@ -12,6 +12,7 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
     public const MINIMAL_RELEVANCE_LOW = 'low';
     public const MINIMAL_RELEVANCE_MEDIUM = 'medium';
     public const MINIMAL_RELEVANCE_HIGH = 'high';
+    public const FILTER_TYPE_MQL = 'mql';
 
     /** @var string */
     protected $filterOperator = 'and';
@@ -30,7 +31,9 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
     /** @var string */
     private $minimalRelevance = self::MINIMAL_RELEVANCE_LOW;
     /** @var string[] */
-    private $filters = ['valid_to >= NOW'];
+    private $filters = [];
+    /** @var string */
+    private $filterType = self::FILTER_TYPE_MQL;
     /** @var string|null */
     private $modelName = null;
     /** @var string[] */
@@ -236,6 +239,7 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
             'hard_rotation' => $this->hardRotation,
             'min_relevance' => $this->minimalRelevance,
             'filter' => $this->assembleFiltersString(),
+            'filter_type' => $this->filterType,
             'properties' => $this->responseProperties,
         ];
 

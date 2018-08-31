@@ -7,6 +7,8 @@
 ## Unreleased
 ### Changed
 - **BC BREAK** | `UserRecommendation` now returns new format of response in `->getData()`, which is a list of `stdClass` instances.
+- **BC BREAK** | `UserRecommendation` does not have default filter (was previously set to: `valid_to >= NOW`).
+- **BC BREAK** | `UserRecommendation` now uses MQL query language by default for filtering.
 
 ### Fixed
 - Exceptions occurring during async request now generate rejected promise (as they should) and are no longer thrown directly.

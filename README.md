@@ -184,7 +184,7 @@ You can also set more granular options of the recommendation command:
 
 ```php
 $recommendation = UserRecommendation::create('user-id', 5, 'test-scenario', 1.0, 3600);
-$recommendation->setFilters(['valid_to >= NOW']) // Note this filter is present by default
+$recommendation->setFilters(['for_recommendation = 1'])
     ->setMinimalRelevance(UserRecommendation::MINIMAL_RELEVANCE_HIGH)
     ->enableHardRotation();
 
