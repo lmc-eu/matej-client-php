@@ -17,18 +17,18 @@ class EventsRequestBuilderTest extends IntegrationTestCase
 {
     public static function setUpBeforeClass(): void
     {
-        $request = self::createMatejInstance()->request()->setupItemProperties();
+        $request = static::createMatejInstance()->request()->setupItemProperties();
 
-        self::addPropertiesToPropertySetupRequest($request);
+        static::addPropertiesToPropertySetupRequest($request);
 
         $request->send();
     }
 
     public static function tearDownAfterClass(): void
     {
-        $request = self::createMatejInstance()->request()->deleteItemProperties();
+        $request = static::createMatejInstance()->request()->deleteItemProperties();
 
-        self::addPropertiesToPropertySetupRequest($request);
+        static::addPropertiesToPropertySetupRequest($request);
 
         $request->send();
     }

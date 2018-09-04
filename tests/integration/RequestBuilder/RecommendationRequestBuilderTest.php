@@ -54,7 +54,7 @@ class RecommendationRequestBuilderTest extends IntegrationTestCase
         $recommendation = $this->createRecommendationCommand('user-a')
             ->setModelName('invalid-model-name');
 
-        $this->createMatejInstance()
+        static::createMatejInstance()
             ->request()
             ->recommendation($recommendation)
             ->send();
@@ -70,7 +70,7 @@ class RecommendationRequestBuilderTest extends IntegrationTestCase
         $recommendation = $this->createRecommendationCommand('user-a')
             ->addResponseProperty('unknown-property');
 
-        $this->createMatejInstance()
+        static::createMatejInstance()
             ->request()
             ->recommendation($recommendation)
             ->send();

@@ -51,7 +51,7 @@ class SortingRequestTest extends IntegrationTestCase
         $this->expectExceptionCode(400);
         $this->expectExceptionMessage('BAD REQUEST');
 
-        $this->createMatejInstance()
+        static::createMatejInstance()
             ->request()
             ->sorting(Sorting::create('user-b', ['item-a', 'item-b', 'itemC-c'])->setModelName('invalid-model-name'))
             ->send();
