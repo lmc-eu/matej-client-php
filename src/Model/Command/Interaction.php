@@ -3,6 +3,7 @@
 namespace Lmc\Matej\Model\Command;
 
 use Lmc\Matej\Model\Assertion;
+use Lmc\Matej\Model\Command\Constants\InteractionType;
 
 /**
  * Interaction command allows to send one interaction between a user and item.
@@ -10,12 +11,7 @@ use Lmc\Matej\Model\Assertion;
  */
 class Interaction extends AbstractCommand implements UserAwareInterface
 {
-    private const INTERACTION_TYPE_DETAILVIEWS = 'detailviews';
-    private const INTERACTION_TYPE_PURCHASES = 'purchases';
-    private const INTERACTION_TYPE_BOOKMARKS = 'bookmarks';
-    private const INTERACTION_TYPE_RATINGS = 'ratings';
-
-    /** @var string */
+    /** @var InteractionType */
     private $interactionType;
     /** @var string */
     private $userId;
@@ -29,7 +25,7 @@ class Interaction extends AbstractCommand implements UserAwareInterface
     private $timestamp;
 
     private function __construct(
-        string $interactionType,
+        InteractionType $interactionType,
         string $userId,
         string $itemId,
         float $value = 1.0,
@@ -57,7 +53,7 @@ class Interaction extends AbstractCommand implements UserAwareInterface
         string $context = 'default',
         int $timestamp = null
     ): self {
-        return new static(self::INTERACTION_TYPE_DETAILVIEWS, $userId, $itemId, $value, $context, $timestamp);
+        return new static(InteractionType::DETAILVIEWS(), $userId, $itemId, $value, $context, $timestamp);
     }
 
     /**
@@ -74,7 +70,7 @@ class Interaction extends AbstractCommand implements UserAwareInterface
         string $context = 'default',
         int $timestamp = null
     ): self {
-        return new static(self::INTERACTION_TYPE_PURCHASES, $userId, $itemId, $value, $context, $timestamp);
+        return new static(InteractionType::PURCHASES(), $userId, $itemId, $value, $context, $timestamp);
     }
 
     /**
@@ -95,7 +91,7 @@ class Interaction extends AbstractCommand implements UserAwareInterface
         string $context = 'default',
         int $timestamp = null
     ): self {
-        return new static(self::INTERACTION_TYPE_BOOKMARKS, $userId, $itemId, $value, $context, $timestamp);
+        return new static(InteractionType::BOOKMARKS(), $userId, $itemId, $value, $context, $timestamp);
     }
 
     /**
@@ -112,7 +108,7 @@ class Interaction extends AbstractCommand implements UserAwareInterface
         string $context = 'default',
         int $timestamp = null
     ): self {
-        return new static(self::INTERACTION_TYPE_RATINGS, $userId, $itemId, $value, $context, $timestamp);
+        return new static(InteractionType::RATINGS(), $userId, $itemId, $value, $context, $timestamp);
     }
 
     public function getUserId(): string
@@ -128,7 +124,7 @@ class Interaction extends AbstractCommand implements UserAwareInterface
     public function getCommandParameters(): array
     {
         return [
-            'interaction_type' => $this->interactionType,
+            'interaction_type' => $this->interactionType->jsonSerialize(),
             'user_id' => $this->userId,
             'item_id' => $this->itemId,
             'timestamp' => $this->timestamp,

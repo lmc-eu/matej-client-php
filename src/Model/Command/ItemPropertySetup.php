@@ -3,25 +3,19 @@
 namespace Lmc\Matej\Model\Command;
 
 use Lmc\Matej\Model\Assertion;
+use Lmc\Matej\Model\Command\Constants\PropertyType;
 
 /**
  * Command to add or delete item property in the database.
  */
 class ItemPropertySetup extends AbstractCommand
 {
-    const PROPERTY_TYPE_INT = 'int';
-    const PROPERTY_TYPE_DOUBLE = 'double';
-    const PROPERTY_TYPE_STRING = 'string';
-    const PROPERTY_TYPE_BOOLEAN = 'boolean';
-    const PROPERTY_TYPE_TIMESTAMP = 'timestamp';
-    const PROPERTY_TYPE_SET = 'set';
-
     /** @var string */
     private $propertyName;
-    /** @var string */
+    /** @var PropertyType */
     private $propertyType;
 
-    private function __construct(string $propertyName, string $propertyType)
+    private function __construct(string $propertyName, PropertyType $propertyType)
     {
         $this->setPropertyName($propertyName);
         $this->propertyType = $propertyType;
@@ -30,37 +24,37 @@ class ItemPropertySetup extends AbstractCommand
     /** @return static */
     public static function int(string $propertyName): self
     {
-        return new static($propertyName, static::PROPERTY_TYPE_INT);
+        return new static($propertyName, PropertyType::INT());
     }
 
     /** @return static */
     public static function double(string $propertyName): self
     {
-        return new static($propertyName, static::PROPERTY_TYPE_DOUBLE);
+        return new static($propertyName, PropertyType::DOUBLE());
     }
 
     /** @return static */
     public static function string(string $propertyName): self
     {
-        return new static($propertyName, static::PROPERTY_TYPE_STRING);
+        return new static($propertyName, PropertyType::STRING());
     }
 
     /** @return static */
     public static function boolean(string $propertyName): self
     {
-        return new static($propertyName, static::PROPERTY_TYPE_BOOLEAN);
+        return new static($propertyName, PropertyType::BOOLEAN());
     }
 
     /** @return static */
     public static function timestamp(string $propertyName): self
     {
-        return new static($propertyName, static::PROPERTY_TYPE_TIMESTAMP);
+        return new static($propertyName, PropertyType::TIMESTAMP());
     }
 
     /** @return static */
     public static function set(string $propertyName): self
     {
-        return new static($propertyName, static::PROPERTY_TYPE_SET);
+        return new static($propertyName, PropertyType::SET());
     }
 
     protected function setPropertyName(string $propertyName): void
@@ -84,7 +78,7 @@ class ItemPropertySetup extends AbstractCommand
     {
         return [
             'property_name' => $this->propertyName,
-            'property_type' => $this->propertyType,
+            'property_type' => $this->propertyType->jsonSerialize(),
         ];
     }
 }

@@ -3,15 +3,13 @@
 namespace Lmc\Matej\Model\Command;
 
 use Lmc\Matej\Model\Assertion;
+use Lmc\Matej\Model\Command\Constants\MinimalRelevance;
 
 /**
  * Deliver personalized recommendations for the given user.
  */
 class UserRecommendation extends AbstractCommand implements UserAwareInterface
 {
-    public const MINIMAL_RELEVANCE_LOW = 'low';
-    public const MINIMAL_RELEVANCE_MEDIUM = 'medium';
-    public const MINIMAL_RELEVANCE_HIGH = 'high';
     public const FILTER_TYPE_MQL = 'mql';
 
     /** @var string */
@@ -28,14 +26,14 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
     private $rotationTime;
     /** @var bool */
     private $hardRotation = false;
-    /** @var string */
-    private $minimalRelevance = self::MINIMAL_RELEVANCE_LOW;
+    /** @var MinimalRelevance */
+    private $minimalRelevance;
     /** @var string[] */
     private $filters = [];
     /** @var string */
     private $filterType = self::FILTER_TYPE_MQL;
     /** @var string|null */
-    private $modelName = null;
+    private $modelName;
     /** @var string[] */
     private $responseProperties = [];
 
@@ -47,6 +45,8 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
         int $rotationTime,
         array $responseProperties
     ) {
+        $this->minimalRelevance = MinimalRelevance::LOW();
+
         $this->setUserId($userId);
         $this->setCount($count);
         $this->setScenario($scenario);
@@ -99,13 +99,8 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
      *
      * @return $this
      */
-    public function setMinimalRelevance(string $minimalRelevance): self
+    public function setMinimalRelevance(MinimalRelevance $minimalRelevance): self
     {
-        Assertion::choice(
-            $minimalRelevance,
-            [static::MINIMAL_RELEVANCE_LOW, static::MINIMAL_RELEVANCE_MEDIUM, static::MINIMAL_RELEVANCE_HIGH]
-        );
-
         $this->minimalRelevance = $minimalRelevance;
 
         return $this;
@@ -237,7 +232,7 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
             'rotation_rate' => $this->rotationRate,
             'rotation_time' => $this->rotationTime,
             'hard_rotation' => $this->hardRotation,
-            'min_relevance' => $this->minimalRelevance,
+            'min_relevance' => $this->minimalRelevance->jsonSerialize(),
             'filter' => $this->assembleFiltersString(),
             'filter_type' => $this->filterType,
             'properties' => $this->responseProperties,

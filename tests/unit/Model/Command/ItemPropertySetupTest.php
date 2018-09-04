@@ -3,6 +3,7 @@
 namespace Lmc\Matej\Model\Command;
 
 use Lmc\Matej\Exception\DomainException;
+use Lmc\Matej\Model\Command\Constants\PropertyType;
 use PHPUnit\Framework\TestCase;
 
 class ItemPropertySetupTest extends TestCase
@@ -50,12 +51,12 @@ class ItemPropertySetupTest extends TestCase
     public function provideConstructorName(): array
     {
         return [
-            ['int', ItemPropertySetup::PROPERTY_TYPE_INT],
-            ['double', ItemPropertySetup::PROPERTY_TYPE_DOUBLE],
-            ['string', ItemPropertySetup::PROPERTY_TYPE_STRING],
-            ['boolean', ItemPropertySetup::PROPERTY_TYPE_BOOLEAN],
-            ['timestamp', ItemPropertySetup::PROPERTY_TYPE_TIMESTAMP],
-            ['set', ItemPropertySetup::PROPERTY_TYPE_SET],
+            ['int', PropertyType::INT],
+            ['double', PropertyType::DOUBLE],
+            ['string', PropertyType::STRING],
+            ['boolean', PropertyType::BOOLEAN],
+            ['timestamp', PropertyType::TIMESTAMP],
+            ['set', PropertyType::SET],
         ];
     }
 }
