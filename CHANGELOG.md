@@ -6,6 +6,7 @@
 
 ## Unreleased
 
+## 2.0.0 - 2018-09-04
 See [UPGRADE-2.0.md](UPGRADE-2.0.md) for upgrade instructions.
 
 ### Changed
