@@ -103,7 +103,7 @@ class ResponseDecoderTest extends UnitTestCase
     {
         $response = $this->createJsonResponseFromFile(__DIR__ . '/Fixtures/response-recommendation.json');
 
-        /** @var RecommendationsResponse */
+        /** @var RecommendationsResponse $decodedResponse */
         $decodedResponse = $this->decoder->decode($response, RecommendationsResponse::class);
 
         // Recommended items should be stdClasses
