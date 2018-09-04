@@ -5,6 +5,9 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+
+See [UPGRADE-2.0.md](UPGRADE-2.0.md) for upgrade instructions.
+
 ### Changed
 - **BC BREAK** | `UserRecommendation` now returns new format of response in `->getData()`, which is a list of `stdClass` instances.
 - **BC BREAK** | `UserRecommendation` does not have default filter (was previously set to: `valid_to >= NOW`).
