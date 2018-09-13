@@ -6,6 +6,9 @@
 
 ## Unreleased
 
+### Added
+- `UserRecommendation` has new method `setAllowSeen(true|false)`, which allows recommending of already visited items.
+
 ## 2.0.0 - 2018-09-04
 See [UPGRADE-2.0.md](UPGRADE-2.0.md) for upgrade instructions.
 

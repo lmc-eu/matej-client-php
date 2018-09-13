@@ -28,6 +28,7 @@ class UserRecommendationTest extends TestCase
                     'filter_type' => UserRecommendation::FILTER_TYPE_MQL,
                     'properties' => [],
                     // when using default model name, parameter "model_name" should be absent.
+                    // by default, allow_seen is absent
                 ],
             ],
             $command->jsonSerialize()
@@ -50,7 +51,8 @@ class UserRecommendationTest extends TestCase
         $command->setMinimalRelevance(MinimalRelevance::HIGH())
             ->enableHardRotation()
             ->setFilters(['foo = bar', 'baz = ban'])
-            ->setModelName($modelName);
+            ->setModelName($modelName)
+            ->setAllowSeen(true);
 
         $this->assertInstanceOf(UserRecommendation::class, $command);
         $this->assertSame(
@@ -68,6 +70,7 @@ class UserRecommendationTest extends TestCase
                     'filter_type' => UserRecommendation::FILTER_TYPE_MQL,
                     'properties' => [],
                     'model_name' => $modelName,
+                    'allow_seen' => true,
                 ],
             ],
             $command->jsonSerialize()

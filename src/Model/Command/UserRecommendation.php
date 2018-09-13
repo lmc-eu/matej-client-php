@@ -36,6 +36,8 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
     private $modelName;
     /** @var string[] */
     private $responseProperties = [];
+    /** @var bool */
+    private $allowSeen = false;
 
     private function __construct(
         string $userId,
@@ -173,6 +175,20 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
         return $this;
     }
 
+    /**
+     * Allow items, that the user has already "seen"
+     *
+     * By default user won't see any items, that it has visitted (and we have recorded DetailView interaction.)
+     * If you want to circumvent this, and get recommendations including the ones, that the user has already visitted,
+     * you can set the "seen" allowance here.
+     */
+    public function setAllowSeen(bool $seen): self
+    {
+        $this->allowSeen = $seen;
+
+        return $this;
+    }
+
     public function getUserId(): string
     {
         return $this->userId;
@@ -240,6 +256,10 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
 
         if ($this->modelName !== null) {
             $parameters['model_name'] = $this->modelName;
+        }
+
+        if ($this->allowSeen !== false) {
+            $parameters['allow_seen'] = $this->allowSeen;
         }
 
         return $parameters;
