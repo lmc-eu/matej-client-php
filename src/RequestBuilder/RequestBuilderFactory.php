@@ -71,11 +71,6 @@ class RequestBuilderFactory
         return $this->createConfiguredBuilder(ResetDatabaseRequestBuilder::class);
     }
 
-    /**
-     * @param string $builderClass
-     * @param array ...$args
-     * @return mixed
-     */
     private function createConfiguredBuilder(string $builderClass, ...$args)
     {
         /** @var AbstractRequestBuilder $requestBuilder */

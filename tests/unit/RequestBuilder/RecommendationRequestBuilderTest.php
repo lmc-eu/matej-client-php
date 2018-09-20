@@ -114,10 +114,6 @@ class RecommendationRequestBuilderTest extends TestCase
      *
      * @test
      * @dataProvider provideCorrectSequenceOfUsers
-     * @param string $interactionUser
-     * @param string $sourceUserToBeDeleted
-     * @param string $targetUserId
-     * @param string $recommendationUser
      */
     public function shouldPassOnCorrectSequenceOfUsersWhenMerging(
         string $interactionUser,
