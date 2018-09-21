@@ -6,6 +6,10 @@
 
 ## Unreleased
 
+## 2.1.0 - 2018-09-21
+### Fixed
+- Client version information sent in request header.
+
 ## 2.1.0 - 2018-09-20
 ### Added
 - `UserRecommendation` has new method `setAllowSeen(true|false)`, which allows recommending of already visited items.
