@@ -32,9 +32,6 @@ class DomainException extends LogicException implements AssertionFailedException
         return $this->propertyPath;
     }
 
-    /**
-     * @return mixed
-     */
     public function getValue()
     {
         return $this->value;

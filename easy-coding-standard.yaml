@@ -6,5 +6,10 @@ services:
         style: annotation
 parameters:
     skip:
+        # Skip class suffix sniff for Matej Commands
         Symplify\CodingStandard\Sniffs\Naming\ClassNameSuffixByParentSniff:
             - 'src/Model/Command/*.php'
+        # Intentional superfluous annotations making PHP5 version easier to use
+        PhpCsFixer\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixer:
+            - 'src/Model/Command/UserRecommendation.php'
+            - 'src/RequestBuilder/AbstractRequestBuilder.php'

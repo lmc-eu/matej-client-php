@@ -39,7 +39,7 @@
         "ramsey/uuid": "^3.7"
     },
     "require-dev": {
-        "lmc/coding-standard": "^1.0",
+        "lmc/coding-standard": "^1.2",
         "php-coveralls/php-coveralls": "^2.0",
         "php-http/guzzle6-adapter": "^1.1",
         "php-http/mock-client": "^1.0",
