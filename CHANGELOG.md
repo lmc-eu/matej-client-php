@@ -6,7 +6,7 @@
 
 ## Unreleased
 ### Added
-- New item property type `geolocation`
+- New item property type `geolocation`.
 
 ## 2.1.0 - 2018-09-21
 ### Fixed
