@@ -5,6 +5,8 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+### Added
+- New item property type `geolocation`.
 
 ## 2.1.0 - 2018-09-21
 ### Fixed

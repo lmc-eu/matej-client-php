@@ -57,6 +57,7 @@ class ItemPropertySetupTest extends TestCase
             ['boolean', PropertyType::BOOLEAN],
             ['timestamp', PropertyType::TIMESTAMP],
             ['set', PropertyType::SET],
+            ['geolocation', PropertyType::GEOLOCATION],
         ];
     }
 }
