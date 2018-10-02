@@ -5,10 +5,12 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+
+## 2.2.0 - 2018-10-02
 ### Added
 - New item property type `geolocation`.
 
-## 2.1.0 - 2018-09-21
+## 2.1.1 - 2018-09-21
 ### Fixed
 - Client version information sent in request header.
 
