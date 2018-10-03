@@ -420,6 +420,9 @@ exceptions when HTTP request fails. So please make sure this behavior is disable
 ## Changelog
 For latest changes see [CHANGELOG.md](CHANGELOG.md) file. We follow [Semantic Versioning](http://semver.org/).
 
+## Releasing new version
+See [RELEASE.md](RELEASE.md) for step-by-step how to release new client version.
+
 ## Running Tests
 
 For each pull-request, unit tests, as well as static analysis and codestyle checks, must pass.
