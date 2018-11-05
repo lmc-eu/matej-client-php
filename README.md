@@ -402,7 +402,7 @@ if any (or maybe all) of the submitted commands (which were part of the request)
 This means to make sure any individual CommandResponse was successful, you need to check its status
 (eg. using `isSuccessful()` method) or compare value of `getNumberOfSuccessfulCommands()` - see usage examples above.
 
-Exceptions occurring inside Matej API client implements `Lmc\Matej\Exception̈́\MatejExceptionInterface`.
+Exceptions occurring inside Matej API client implements `Lmc\Matej\Exception\MatejExceptionInterface`.
 The exception tree is:
 
 | Exception                                         | Thrown when                                                   |
