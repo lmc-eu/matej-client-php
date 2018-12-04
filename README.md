@@ -13,6 +13,7 @@ Please note the PHP 5.6 version is just transpiled copy of this library - exampl
 ## Installation
 
 Matej API client library is installed using [Composer](https://getcomposer.org/).
+**Please be aware you must properly set-up [autoloading](https://getcomposer.org/doc/01-basic-usage.md#autoloading) in your project first.**
 
 We use [HTTPlug](https://github.com/php-http/httplug) abstraction so that the library is not hard coupled to
 any specific HTTP library, allowing you to use HTTP library which fits your needs (or maybe HTTP library you already use).
@@ -45,6 +46,8 @@ from LMC R&D team.
 
 First create an instance of `Matej` object:
 ```php
+use Lmc\Matej\Matej; // in all following examples namespaces and use statements are ommited from the code samples
+
 $matej = new Matej('accountId', 'apikey');
 ```
 
