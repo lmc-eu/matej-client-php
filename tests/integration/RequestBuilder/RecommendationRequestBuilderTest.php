@@ -2,7 +2,6 @@
 
 namespace Lmc\Matej\IntegrationTests\RequestBuilder;
 
-use Lmc\Matej\Exception\RequestException;
 use Lmc\Matej\IntegrationTests\IntegrationTestCase;
 use Lmc\Matej\Model\Command\Interaction;
 use Lmc\Matej\Model\Command\UserMerge;
@@ -45,35 +44,35 @@ class RecommendationRequestBuilderTest extends IntegrationTestCase
     }
 
     /** @test */
-    public function shouldFailOnInvalidModelName(): void
+    public function shouldReturnInvalidCommandOnInvalidModelName(): void
     {
-        $this->expectException(RequestException::class);
-        $this->expectExceptionCode(400);
-        $this->expectExceptionMessage('BAD REQUEST');
-
         $recommendation = $this->createRecommendationCommand('user-a')
             ->setModelName('invalid-model-name');
 
-        static::createMatejInstance()
+        $response = static::createMatejInstance()
             ->request()
             ->recommendation($recommendation)
             ->send();
+
+        $this->assertInstanceOf(RecommendationsResponse::class, $response);
+        $this->assertResponseCommandStatuses($response, 'SKIPPED', 'SKIPPED', 'INVALID');
+        $this->assertShorthandResponse($response, 'SKIPPED', 'SKIPPED', 'INVALID');
     }
 
     /** @test */
-    public function shouldFailOnInvalidPropertyName(): void
+    public function shouldReturnInvalidCommandOnInvalidPropertyName(): void
     {
-        $this->expectException(RequestException::class);
-        $this->expectExceptionCode(400);
-        $this->expectExceptionMessage('BAD REQUEST');
-
         $recommendation = $this->createRecommendationCommand('user-a')
             ->addResponseProperty('unknown-property');
 
-        static::createMatejInstance()
+        $response = static::createMatejInstance()
             ->request()
             ->recommendation($recommendation)
             ->send();
+
+        $this->assertInstanceOf(RecommendationsResponse::class, $response);
+        $this->assertResponseCommandStatuses($response, 'SKIPPED', 'SKIPPED', 'INVALID');
+        $this->assertShorthandResponse($response, 'SKIPPED', 'SKIPPED', 'INVALID');
     }
 
     private function createRecommendationCommand(string $username): UserRecommendation

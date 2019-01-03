@@ -52,7 +52,7 @@ class ResponseTest extends UnitTestCase
     public function provideResponseData(): array
     {
         $okCommandResponse = (object) ['status' => CommandResponse::STATUS_OK, 'message' => '', 'data' => []];
-        $failedCommandResponse = (object) ['status' => CommandResponse::STATUS_ERROR, 'message' => 'KO', 'data' => []];
+        $failedCommandResponse = (object) ['status' => CommandResponse::STATUS_INVALID, 'message' => 'KO', 'data' => []];
         $skippedCommandResponse = (object) ['status' => CommandResponse::STATUS_SKIPPED, 'message' => '', 'data' => []];
 
         return [

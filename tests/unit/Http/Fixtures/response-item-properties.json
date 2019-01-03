@@ -13,7 +13,7 @@
       {
         "data": [],
         "message": "DuplicateKeyError(u'E11000 duplicate key error collection: foo.data_items_properties index: property_1 dup key: { : \"title\" }',)",
-        "status": "ERROR"
+        "status": "INVALID"
       },
       {
         "data": [],

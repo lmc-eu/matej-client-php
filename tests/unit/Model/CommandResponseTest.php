@@ -54,8 +54,8 @@ class CommandResponseTest extends UnitTestCase
                 [['foo' => 'bar'], ['baz' => 'bak']],
             ],
             'Invalid error response with status and message' => [
-                (object) ['status' => CommandResponse::STATUS_ERROR, 'message' => 'Internal unhandled error'],
-                CommandResponse::STATUS_ERROR,
+                (object) ['status' => CommandResponse::STATUS_INVALID, 'message' => 'Internal unhandled error'],
+                CommandResponse::STATUS_INVALID,
                 'Internal unhandled error',
                 [],
             ],
@@ -80,7 +80,6 @@ class CommandResponseTest extends UnitTestCase
     {
         return [
             ['status' => CommandResponse::STATUS_OK, 'isSuccessful' => true],
-            ['status' => CommandResponse::STATUS_ERROR, 'isSuccessful' => false],
             ['status' => CommandResponse::STATUS_INVALID, 'isSuccessful' => false],
             ['status' => CommandResponse::STATUS_SKIPPED, 'isSuccessful' => false]  ,
         ];

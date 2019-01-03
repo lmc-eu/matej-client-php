@@ -5,6 +5,9 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+### Changed
+- Invalid command inside recommendation/sorting request does not cause whole request to fail, rather the specific command response is marked as invalid.
+- Deprecated `CommandResponse::STATUS_ERROR`, because Matej no longer uses it (`CommandResponse::STATUS_INVALID` is instead used everywhere).
 
 ## 2.2.0 - 2018-10-02
 ### Added

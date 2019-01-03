@@ -10,6 +10,7 @@ use Lmc\Matej\Exception\ResponseDecodingException;
 class CommandResponse
 {
     public const STATUS_OK = 'OK';
+    /** @deprecated */
     public const STATUS_ERROR = 'ERROR';
     public const STATUS_SKIPPED = 'SKIPPED';
     public const STATUS_INVALID = 'INVALID';
