@@ -411,7 +411,7 @@ The exception tree is:
 | Exception                                         | Thrown when                                                   |
 |---------------------------------------------------|---------------------------------------------------------------|
 | MatejExceptionInterface                           | Common interface of all Matej exceptions                      |
-| └ RequestException                                | Request to Matej errored                                      |
+| └ RequestException                                | Request to Matej errored (see below for troubleshooting howto)|
 | &nbsp;&nbsp;└ AuthorizationException              | Request errored as unauthorized                               |
 | └ ResponseDecodingException                       | Response contains invalid or inconsistent data                |
 | └ LogicException                                  | Incorrect library use - no data passed to request etc.        |
@@ -419,6 +419,32 @@ The exception tree is:
 
 Please note if you inject custom HTTP client (via `$matej->setHttpClient()`), it may be configured to throw custom
 exceptions when HTTP request fails. So please make sure this behavior is disabled (eg. `http_errors` option in Guzzle 6).
+
+#### Troubleshooting `RequestException`
+
+If `RequestException` is thrown when doing request to Matej, you may want to read the response body from the server
+to see the full error originating from Matej, so that you can troubleshoot the cause of the exception.
+
+You can do it like this:
+
+```php
+$matej = new Matej('accountId', 'apikey');
+
+try {
+    $response = $matej
+        ->request()
+        ->sorting(/* ... */)
+        // ...
+        ->send();
+} catch (\Lmc\Matej\Exception\RequestException $exception) {
+    echo $e->getMessage(); // this will output just HTTP reason phrase, like "Bad Request"
+    $serverResponseContents = $exception->getResponse()
+        ->getBody()
+        ->getContents();
+
+    echo $serverResponseContents; // this will output the full response body which Matej server gave
+}
+```
 
 ## Changelog
 For latest changes see [CHANGELOG.md](CHANGELOG.md) file. We follow [Semantic Versioning](http://semver.org/).
