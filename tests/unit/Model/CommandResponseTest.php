@@ -81,7 +81,7 @@ class CommandResponseTest extends UnitTestCase
         return [
             ['status' => CommandResponse::STATUS_OK, 'isSuccessful' => true],
             ['status' => CommandResponse::STATUS_INVALID, 'isSuccessful' => false],
-            ['status' => CommandResponse::STATUS_SKIPPED, 'isSuccessful' => false]  ,
+            ['status' => CommandResponse::STATUS_SKIPPED, 'isSuccessful' => true]  ,
         ];
     }
 

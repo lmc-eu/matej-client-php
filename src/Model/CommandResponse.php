@@ -56,8 +56,15 @@ class CommandResponse
         return $this->data;
     }
 
+    /**
+     * Use this method to check whether this command response did not fail. Note both OK and SKIPPED statuses
+     * are in fact marked as successful to provide this "command did not fail" detection.
+     * This also means `Response::getNumberOfSuccessfulCommands()` don't necessarily return the same number of
+     * command responses that return true on `CommandResponse::isSuccessful()` (as skipped command responses are
+     * reported separately in `Response::getNumberOfSkippedCommands()`).
+     */
     public function isSuccessful(): bool
     {
-        return $this->getStatus() === static::STATUS_OK;
+        return $this->getStatus() === static::STATUS_OK || $this->getStatus() === static::STATUS_SKIPPED;
     }
 }
