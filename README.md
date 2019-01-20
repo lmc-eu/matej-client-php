@@ -69,12 +69,17 @@ $response = $matej->request()
 
 See below for examples of building request for each endpoint.
 
-To process the response:
+To **process the response**:
 
 ```php
 echo 'Number of commands: ' . $response->getNumberOfCommands() . "\n";
 echo 'Number of successful commands: ' . $response->getNumberOfSuccessfulCommands() . "\n";
-echo 'Number of failed commands: ' . $response->NumberOfFailedCommands()() . "\n";
+echo 'Number of failed commands: ' . $response->getNumberOfFailedCommands()() . "\n";
+
+// Use $response->isSuccessful() to check whether all of the commands send in request were successful or not:
+if (!$response->isSuccessful()) {
+    echo 'At least one command response was not succesful!';
+}
 
 // Iterate over getCommandResponses() to get response for each command passed to the builder.
 // Commands in the response are present in the same order as they were added to the requets builder.
@@ -402,8 +407,11 @@ $matej->request()
 Exceptions are thrown only if the whole Request to Matej failed (when sending, decoding, authenticating etc.) or if
 the library is used incorrectly. If the request is successfully delivered to Matej, **exception is not thrown** even
 if any (or maybe all) of the submitted commands (which were part of the request) were rejected by Matej.
-This means to make sure any individual CommandResponse was successful, you need to check its status
-(eg. using `isSuccessful()` method) or compare value of `getNumberOfSuccessfulCommands()` - see usage examples above.
+
+To check whether the whole Response (ie. all contained command responses) is successful, you thus MUST NOT rely on exceptions
+(because they won't be thrown - as stated above) but rather use `Response::isSuccessful()` method - see [usage examples](#usage) above.
+
+If you want to check which individual CommandResponse was successful, you can check its status using `CommandResponse::isSuccessful()` method.
 
 Exceptions occurring inside Matej API client implements `Lmc\Matej\Exception\MatejExceptionInterface`.
 The exception tree is:

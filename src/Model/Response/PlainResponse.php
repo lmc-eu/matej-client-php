@@ -9,11 +9,6 @@ use Lmc\Matej\Model\Response;
  */
 class PlainResponse extends Response
 {
-    public function isSuccessful(): bool
-    {
-        return $this->getCommandResponse(0)->isSuccessful();
-    }
-
     public function getData(): array
     {
         return $this->getCommandResponse(0)->getData();

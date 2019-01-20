@@ -20,7 +20,8 @@ class ResponseTest extends UnitTestCase
         int $numberOfSuccessful,
         int $numberOfFailed,
         int $numberOfSkipped,
-        array $commandResponses
+        array $commandResponses,
+        bool $shouldBeSuccessful
     ): void {
         $responseId = uniqid((string) time());
         $response = new Response(
@@ -39,6 +40,8 @@ class ResponseTest extends UnitTestCase
 
         $this->assertSame($responseId, $response->getResponseId());
 
+        $this->assertSame($shouldBeSuccessful, $response->isSuccessful());
+
         $this->assertCount(count($commandResponses), $response->getCommandResponses());
         $this->assertContainsOnlyInstancesOf(CommandResponse::class, $response->getCommandResponses());
         for ($i = 0; $i < count($commandResponses); $i++) {
@@ -56,10 +59,13 @@ class ResponseTest extends UnitTestCase
         $skippedCommandResponse = (object) ['status' => CommandResponse::STATUS_SKIPPED, 'message' => '', 'data' => []];
 
         return [
-            'empty response data' => [0, 0, 0, 0, []],
-            'multiple successful commands' => [2, 2, 0, 0, [$okCommandResponse, $okCommandResponse]],
-            'multiple failed commands' => [2, 0, 2, 0, [$failedCommandResponse, $failedCommandResponse]],
-            'multiple skipped commands' => [2, 0, 0, 2, [$skippedCommandResponse, $skippedCommandResponse]],
+            'empty response data' => [0, 0, 0, 0, [], true],
+            'multiple ok commands' => [2, 2, 0, 0, [$okCommandResponse, $okCommandResponse], true],
+            'multiple failed commands' => [2, 0, 2, 0, [$failedCommandResponse, $failedCommandResponse], false],
+            'multiple skipped commands' => [2, 0, 0, 2, [$skippedCommandResponse, $skippedCommandResponse], true],
+            'ok and skipped command' => [2, 1, 0, 1, [$okCommandResponse, $skippedCommandResponse], true],
+            'ok and failed commands' => [2, 1, 1, 0, [$okCommandResponse, $failedCommandResponse], false],
+            'skipped and failed command' => [2, 0, 1, 1, [$skippedCommandResponse, $skippedCommandResponse], false],
             'multiple successful , failed and skipped commands' => [
                 5,
                 2,
@@ -72,6 +78,7 @@ class ResponseTest extends UnitTestCase
                     $skippedCommandResponse,
                     $failedCommandResponse,
                 ],
+                false,
             ],
         ];
     }

@@ -101,4 +101,9 @@ class Response
     {
         return $this->responseId;
     }
+
+    public function isSuccessful(): bool
+    {
+        return $this->getNumberOfFailedCommands() === 0;
+    }
 }

@@ -5,6 +5,10 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+### Added
+- Method `isSuccessfull()` to `Response` providing simple check whether the whole response (all of contained command responses) are successful (ie. none of them is invalid).
+This is also recommended way how to validate response successfulness.
+
 ### Changed
 - Invalid command inside recommendation/sorting request does not cause whole request to fail, rather the specific command response is marked as invalid.
 - Deprecated `CommandResponse::STATUS_ERROR`, because Matej no longer uses it (`CommandResponse::STATUS_INVALID` is instead used everywhere).
