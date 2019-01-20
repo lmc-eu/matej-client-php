@@ -67,9 +67,11 @@ $response = $matej->request()
     ->send();
 ```
 
-See below for examples of building request for each endpoint.
+See further below for examples of building request for each endpoint.
 
-To **process the response**:
+### Processing the response
+
+Once `$response` is filled with data from Matej (as in example above), you can now work with the response like this:
 
 ```php
 echo 'Number of commands: ' . $response->getNumberOfCommands() . "\n";
@@ -409,7 +411,7 @@ the library is used incorrectly. If the request is successfully delivered to Mat
 if any (or maybe all) of the submitted commands (which were part of the request) were rejected by Matej.
 
 To check whether the whole Response (ie. all contained command responses) is successful, you thus MUST NOT rely on exceptions
-(because they won't be thrown - as stated above) but rather use `Response::isSuccessful()` method - see [usage examples](#usage) above.
+(because they won't be thrown - as stated above) but rather use `Response::isSuccessful()` method - see [usage examples](#processing-the-response) above.
 
 If you want to check which individual CommandResponse was successful, you can check its status using `CommandResponse::isSuccessful()` method.
 
