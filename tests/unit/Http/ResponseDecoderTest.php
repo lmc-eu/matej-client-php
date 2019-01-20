@@ -69,7 +69,7 @@ class ResponseDecoderTest extends UnitTestCase
         $this->assertCount(3, $commandResponses);
         $this->assertContainsOnlyInstancesOf(CommandResponse::class, $commandResponses);
         $this->assertSame(CommandResponse::STATUS_OK, $commandResponses[0]->getStatus());
-        $this->assertSame(CommandResponse::STATUS_ERROR, $commandResponses[1]->getStatus());
+        $this->assertSame(CommandResponse::STATUS_INVALID, $commandResponses[1]->getStatus());
         $this->assertSame(CommandResponse::STATUS_OK, $commandResponses[2]->getStatus());
     }
 
