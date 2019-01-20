@@ -5,6 +5,8 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+
+## 2.3.0 - 2019-01-21
 ### Added
 - Method `isSuccessfull()` to `Response` providing simple check whether the whole response (all of contained command responses) are successful (ie. none of them is invalid).
 This is also recommended way how to validate response successfulness.
