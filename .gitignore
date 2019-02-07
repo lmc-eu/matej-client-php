@@ -3,3 +3,4 @@ composer.phar
 /vendor/
 coverage-clover.xml
 bc-changes.md
+roave-backward-compatibility-check.phar
