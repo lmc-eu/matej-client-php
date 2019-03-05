@@ -25,7 +25,7 @@
         "php": "^7.1",
         "ext-hash": "*",
         "ext-json": "*",
-        "beberlei/assert": "^2.8",
+        "beberlei/assert": "^2.8 || ^3.0",
         "fig/http-message-util": "^1.1",
         "myclabs/php-enum": "^1.6",
         "php-http/client-common": "^1.6",
@@ -55,7 +55,7 @@
             "./vendor/bin/phpunit --colors=always"
         ],
         "analyze": [
-            "vendor/bin/ecs check src/ tests/ -vvv --ansi",
+            "vendor/bin/ecs check src/ tests/ -vv --ansi",
             "vendor/bin/phpstan.phar analyze ./src ./tests -c phpstan.neon --level 7 --ansi"
         ]
     },

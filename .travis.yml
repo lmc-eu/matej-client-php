@@ -12,11 +12,11 @@ matrix:
       env: CHECK_CODESTYLE=1
       before_install: phpenv config-rm xdebug.ini
       before_script:
-        - travis_retry composer require --dev roave/backward-compatibility-check:^1.0
+        - travis_retry wget -q https://github.com/Roave/BackwardCompatibilityCheck/releases/download/2.0.0/roave-backward-compatibility-check.phar -O ./roave-backward-compatibility-check.phar
         - travis_retry yarn add danger
       script:
         - composer analyze
-        - if [ `git tag | wc -l` -gt 0 ]; then vendor/bin/roave-backward-compatibility-check --format=markdown >bc-changes.md; fi
+        - if [ `git tag | wc -l` -gt 0 ]; then php ./roave-backward-compatibility-check.phar --format=markdown >bc-changes.md; fi
         - yarn danger ci
       after_success: ~
 
