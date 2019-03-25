@@ -71,7 +71,7 @@ class RequestBuilderFactory
         return $this->createConfiguredBuilder(ResetDatabaseRequestBuilder::class);
     }
 
-    private function createConfiguredBuilder(string $builderClass, ...$args)
+    private function createConfiguredBuilder(string $builderClass, ...$args): AbstractRequestBuilder
     {
         /** @var AbstractRequestBuilder $requestBuilder */
         $requestBuilder = new $builderClass(...$args);
