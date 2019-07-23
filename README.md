@@ -95,7 +95,7 @@ foreach ($response->getCommandResponses() as $commandResponse) {
 ```
 
 [Recommendation](#recommendations-for-single-user), [Sorting](#request-item-sorting-for-single-user)
-and [Item Properties](#item-properties-setup-to-setup-you-matej-database) endpoints have syntax sugar shortcuts,
+and [Item Properties](#item-properties-setup-to-setup-your-matejs-database) endpoints have syntax sugar shortcuts,
 which makes processing responses easier. See below for detailed examples.
 
 ### Item properties setup (to setup your Matej's database)
