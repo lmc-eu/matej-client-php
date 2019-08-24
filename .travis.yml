@@ -1,17 +1,21 @@
 language: php
 
 php:
-  - 7.1
-  - 7.2
-  - 7.3
+  - '7.1'
+  - '7.2'
+  - '7.3'
 
 matrix:
   include:
-    - php: 7.1
-      env: dependencies="--prefer-lowest"
-    - php: 7.3
+    - name: 'Lowest dependencies'
+      php: '7.1'
+      env: DEPENDENCIES="--prefer-lowest"
+    - name: 'Static analysis and codestyle check'
+      php: '7.3'
       env: CHECK_CODESTYLE=1
-      before_install: phpenv config-rm xdebug.ini
+      before_install:
+        - phpenv config-rm xdebug.ini
+        - nvm install 12.9 # New node is required by Danger bot
       before_script:
         - travis_retry wget -q https://github.com/Roave/BackwardCompatibilityCheck/releases/download/2.0.0/roave-backward-compatibility-check.phar -O ./roave-backward-compatibility-check.phar
         - travis_retry yarn add danger
