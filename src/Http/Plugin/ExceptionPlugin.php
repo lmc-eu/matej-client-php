@@ -10,6 +10,9 @@ use Lmc\Matej\Exception\RequestException;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * @internal
+ */
 final class ExceptionPlugin implements Plugin
 {
     public function handleRequest(RequestInterface $request, callable $next, callable $first): Promise

@@ -8,6 +8,7 @@ use Lmc\Matej\Model\Command\AbstractCommand;
 
 /**
  * @method static bool allTypeIdentifier(mixed $value) Assert value is valid Matej type identifier for all values
+ * @internal
  */
 class Assertion extends \Assert\Assertion
 {
