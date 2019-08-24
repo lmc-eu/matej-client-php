@@ -7,6 +7,7 @@ use Psr\Http\Message\RequestInterface;
 
 /**
  * Use api key to sign request with hmac_timestamp and hmac_sign query parameters.
+ * @internal
  */
 class HmacAuthentication implements Authentication
 {

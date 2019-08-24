@@ -55,7 +55,7 @@
             "./vendor/bin/phpunit --colors=always"
         ],
         "analyze": [
-            "vendor/bin/ecs check src/ tests/ -vv --ansi",
+            "vendor/bin/ecs check src/ tests/ --ansi",
             "vendor/bin/phpstan.phar analyze ./src ./tests -c phpstan.neon --level 7 --ansi"
         ]
     },
