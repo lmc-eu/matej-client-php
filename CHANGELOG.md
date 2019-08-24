@@ -5,6 +5,9 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+### Changed
+- Allow httplug 2.0 dependency.
+- Mark some internal classes `@internal`.
 
 ## 2.3.0 - 2019-01-21
 ### Added
