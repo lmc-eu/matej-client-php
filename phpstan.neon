@@ -1,2 +1,10 @@
-includes:
-	- vendor/phpstan/phpstan-phpunit/extension.neon
+parameters:
+    ignoreErrors:
+        - message: '#Parameter \#3 \$body of class GuzzleHttp\\Psr7\\Response constructor expects#'
+          path: tests/
+        - message: '#Parameter .+ of class Lmc\\Matej\\Matej constructor expects string#'
+          path: tests/integration/IntegrationTestCase.php
+        - message: '#Parameter .+ of function forward_static_call_array#'
+          path: tests/unit/Model/Command/InteractionTest.php
+        - message: '#Parameter \#4 \$body of method Http\\Message\\RequestFactory::createRequest\(\) expects#'
+          path: src/Http/RequestManager.php

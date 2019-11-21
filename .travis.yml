@@ -17,7 +17,7 @@ matrix:
         - phpenv config-rm xdebug.ini
         - nvm install 12.9 # New node is required by Danger bot
       before_script:
-        - travis_retry wget -q https://github.com/Roave/BackwardCompatibilityCheck/releases/download/4.0.0/roave-backward-compatibility-check.phar -O ./roave-backward-compatibility-check.phar
+        - travis_retry wget -q https://github.com/Roave/BackwardCompatibilityCheck/releases/download/4.1.0/roave-backward-compatibility-check.phar -O ./roave-backward-compatibility-check.phar
         - travis_retry yarn add danger
       script:
         - composer analyze
