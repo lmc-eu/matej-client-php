@@ -74,15 +74,28 @@ class RequestBuilderFactoryTest extends TestCase
         $userRecommendation = UserRecommendation::create('user-id', 1, 'test-scenario', 0.5, 3600);
 
         return [
-            ['getItemProperties', ItemPropertiesGetRequestBuilder::class, $voidInit],
-            ['setupItemProperties', ItemPropertiesSetupRequestBuilder::class, $itemPropertiesSetupInit],
-            ['deleteItemProperties', ItemPropertiesSetupRequestBuilder::class, $itemPropertiesSetupInit],
-            ['events', EventsRequestBuilder::class, $eventInit],
-            ['campaign', CampaignRequestBuilder::class, $campaignInit],
-            ['sorting', SortingRequestBuilder::class, $voidInit, Sorting::create('user-a', ['item-a', 'item-b', 'item-c'])],
-            ['recommendation', RecommendationRequestBuilder::class, $voidInit, $userRecommendation],
-            ['forget', ForgetRequestBuilder::class, $forgetInit],
-            ['resetDatabase', ResetDatabaseRequestBuilder::class, $voidInit],
+            'getItemProperties' => ['getItemProperties', ItemPropertiesGetRequestBuilder::class, $voidInit],
+            'setupItemProperties' => [
+                'setupItemProperties',
+                ItemPropertiesSetupRequestBuilder::class,
+                $itemPropertiesSetupInit,
+            ],
+            'deleteItemProperties' => [
+                'deleteItemProperties',
+                ItemPropertiesSetupRequestBuilder::class,
+                $itemPropertiesSetupInit,
+            ],
+            'events' => ['events', EventsRequestBuilder::class, $eventInit],
+            'campaign' => ['campaign', CampaignRequestBuilder::class, $campaignInit],
+            'sorting' => [
+                'sorting',
+                SortingRequestBuilder::class,
+                $voidInit,
+                Sorting::create('user-a', ['item-a', 'item-b', 'item-c']),
+            ],
+            'recommendation' => ['recommendation', RecommendationRequestBuilder::class, $voidInit, $userRecommendation],
+            'forget' => ['forget', ForgetRequestBuilder::class, $forgetInit],
+            'resetDatabase' => ['resetDatabase', ResetDatabaseRequestBuilder::class, $voidInit],
         ];
     }
 }

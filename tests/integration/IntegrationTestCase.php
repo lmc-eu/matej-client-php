@@ -32,7 +32,7 @@ class IntegrationTestCase extends TestCase
         return $instance;
     }
 
-    protected function assertResponseCommandStatuses(Response $response, ...$expectedCommandStatuses): void
+    protected function assertResponseCommandStatuses(Response $response, string ...$expectedCommandStatuses): void
     {
         $this->assertSame(count($expectedCommandStatuses), $response->getNumberOfCommands());
         $this->assertSame(count(array_intersect($expectedCommandStatuses, ['OK'])), $response->getNumberOfSuccessfulCommands());

@@ -56,8 +56,12 @@ class SortingRequestTest extends IntegrationTestCase
         $this->assertShorthandResponse($response, 'SKIPPED', 'SKIPPED', 'INVALID');
     }
 
-    private function assertShorthandResponse(SortingResponse $response, $interactionStatus, $userMergeStatus, $sortingStatus): void
-    {
+    private function assertShorthandResponse(
+        SortingResponse $response,
+        string $interactionStatus,
+        string $userMergeStatus,
+        string $sortingStatus
+    ): void {
         $this->assertInstanceOf(CommandResponse::class, $response->getInteraction());
         $this->assertInstanceOf(CommandResponse::class, $response->getUserMerge());
         $this->assertInstanceOf(CommandResponse::class, $response->getSorting());

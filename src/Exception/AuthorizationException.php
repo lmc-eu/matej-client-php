@@ -10,7 +10,6 @@ use Psr\Http\Message\ResponseInterface;
  */
 class AuthorizationException extends RequestException
 {
-    /** @return static */
     public static function fromRequestAndResponse(
         RequestInterface $request,
         ResponseInterface $response,
@@ -24,6 +23,6 @@ class AuthorizationException extends RequestException
             isset($responseData->message) ? ' (' . $responseData->message . ')' : ''
         );
 
-        return new static($message, $request, $response, $previous);
+        return new self($message, $request, $response, $previous);
     }
 }
