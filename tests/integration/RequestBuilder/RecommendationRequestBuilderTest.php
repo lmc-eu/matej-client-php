@@ -86,8 +86,12 @@ class RecommendationRequestBuilderTest extends IntegrationTestCase
         );
     }
 
-    private function assertShorthandResponse(RecommendationsResponse $response, $interactionStatus, $userMergeStatus, $recommendationStatus): void
-    {
+    private function assertShorthandResponse(
+        RecommendationsResponse $response,
+        string $interactionStatus,
+        string $userMergeStatus,
+        string $recommendationStatus
+    ): void {
         $this->assertInstanceOf(CommandResponse::class, $response->getInteraction());
         $this->assertInstanceOf(CommandResponse::class, $response->getUserMerge());
         $this->assertInstanceOf(CommandResponse::class, $response->getRecommendation());

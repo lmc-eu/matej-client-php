@@ -18,6 +18,9 @@ class DomainException extends LogicException implements AssertionFailedException
     /** @var array */
     private $constraints;
 
+    /**
+     * @param mixed $value
+     */
     public function __construct(string $message, int $code, ?string $propertyPath, $value, array $constraints = [])
     {
         parent::__construct($message, $code);

@@ -9,9 +9,10 @@ use Lmc\Matej\Model\Command\UserAwareInterface;
  */
 class LogicException extends \LogicException implements MatejExceptionInterface
 {
-    /** @return static */
-    public static function forInconsistentUserId(UserAwareInterface $mainCommand, UserAwareInterface $additionalCommand)
-    {
+    public static function forInconsistentUserId(
+        UserAwareInterface $mainCommand,
+        UserAwareInterface $additionalCommand
+    ): self {
         $message = sprintf(
             'User in %s command ("%s") must be the same as user in %s command ("%s")',
             (new \ReflectionClass($additionalCommand))->getShortName(),
@@ -20,11 +21,13 @@ class LogicException extends \LogicException implements MatejExceptionInterface
             $mainCommand->getUserId()
         );
 
-        return new static($message);
+        return new self($message);
     }
 
-    public static function forInconsistentUserMergeAndInteractionCommand($userMergeId, $interactionUserId)
-    {
+    public static function forInconsistentUserMergeAndInteractionCommand(
+        string $userMergeId,
+        string $interactionUserId
+    ): self {
         $message = sprintf(
             'Source user in UserMerge command ("%s") must be the same as user in Interaction command ("%s")',
             $userMergeId,
@@ -34,7 +37,7 @@ class LogicException extends \LogicException implements MatejExceptionInterface
         return new self($message);
     }
 
-    public static function forClassNotExtendingOtherClass($class, $wantedClass)
+    public static function forClassNotExtendingOtherClass(string $class, string $wantedClass): self
     {
         return new self(sprintf('Class %s has to be instance or subclass of %s.', $class, $wantedClass));
     }

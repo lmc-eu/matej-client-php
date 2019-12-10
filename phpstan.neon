@@ -8,3 +8,12 @@ parameters:
           path: tests/unit/Model/Command/InteractionTest.php
         - message: '#Parameter \#4 \$body of method Http\\Message\\RequestFactory::createRequest\(\) expects#'
           path: src/Http/RequestManager.php
+        - '#Unsafe usage of new static\(\)#'
+        - message: '#expects class-string#'
+          path: tests/
+        - message: '#Unable to resolve the template type ExpectedType#'
+          path: tests/unit/RequestBuilder/RequestBuilderFactoryTest.php
+        - message: '#parameter \$factoryArguments with no typehint specified#'
+          path: tests/unit/RequestBuilder/RequestBuilderFactoryTest.php
+
+    checkMissingIterableValueType: false

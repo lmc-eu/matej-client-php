@@ -4,3 +4,4 @@ composer.phar
 coverage-clover.xml
 bc-changes.md
 roave-backward-compatibility-check.phar
+.phpunit.result.cache
