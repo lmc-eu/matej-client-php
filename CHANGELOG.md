@@ -6,6 +6,10 @@
 
 ## Unreleased
 
+## 2.3.2 - 2019-12-10
+### Changed
+- Internal codestyle improvements.
+
 ## 2.3.1 - 2019-08-24
 ### Changed
 - Allow httplug 2.0 dependency.
