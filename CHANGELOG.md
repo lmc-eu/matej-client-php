@@ -6,6 +6,9 @@
 
 ## Unreleased
 
+## 2.4.0 - 2020-01-21
+- No changes in the library, new version released because of adjustments of PHP 5.6 compatible fork.
+
 ## 2.3.2 - 2019-12-10
 ### Changed
 - Internal codestyle improvements.
