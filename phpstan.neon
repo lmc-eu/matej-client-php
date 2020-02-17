@@ -16,6 +16,7 @@ parameters:
         - message: '#parameter \$factoryArguments with no typehint specified#'
           path: tests/unit/RequestBuilder/RequestBuilderFactoryTest.php
 
+    checkGenericClassInNonGenericObjectType: false
     checkMissingIterableValueType: false
     level: 7
     paths:
