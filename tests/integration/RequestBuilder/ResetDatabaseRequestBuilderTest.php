@@ -24,6 +24,6 @@ class ResetDatabaseRequestBuilderTest extends IntegrationTestCase
         $this->assertTrue($response->isSuccessful());
         $this->assertSame('', $response->getMessage());
         $this->assertSame('OK', $response->getStatus());
-        $this->assertInternalType('array', $response->getData());
+        $this->assertIsArray($response->getData());
     }
 }

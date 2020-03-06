@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class InteractionTest extends TestCase
 {
-    const TIMESTAMP = 1511524333;
+    private const TIMESTAMP = 1511524333;
 
     use PHPMock;
 

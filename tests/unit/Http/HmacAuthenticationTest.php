@@ -7,8 +7,8 @@ use phpmock\phpunit\PHPMock;
 
 class HmacAuthenticationTest extends UnitTestCase
 {
-    const TIMESTAMP = 1510230813;
-    const APIKEY = 'foobar';
+    private const TIMESTAMP = 1510230813;
+    private const APIKEY = 'foobar';
 
     use PHPMock;
 
