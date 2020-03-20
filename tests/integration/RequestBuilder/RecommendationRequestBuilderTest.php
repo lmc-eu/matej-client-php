@@ -3,6 +3,7 @@
 namespace Lmc\Matej\IntegrationTests\RequestBuilder;
 
 use Lmc\Matej\IntegrationTests\IntegrationTestCase;
+use Lmc\Matej\Model\Command\Boost;
 use Lmc\Matej\Model\Command\Interaction;
 use Lmc\Matej\Model\Command\UserMerge;
 use Lmc\Matej\Model\Command\UserRecommendation;
@@ -20,8 +21,9 @@ class RecommendationRequestBuilderTest extends IntegrationTestCase
     {
         $response = static::createMatejInstance()
             ->request()
-            ->recommendation($this->createRecommendationCommand('user-a'))
-            ->send();
+            ->recommendation($this->createRecommendationCommand('user-a')
+                ->addBoost(Boost::create('test', 1.2))
+            )->send();
 
         $this->assertInstanceOf(RecommendationsResponse::class, $response);
         $this->assertResponseCommandStatuses($response, 'SKIPPED', 'SKIPPED', 'OK');

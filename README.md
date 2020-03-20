@@ -227,6 +227,15 @@ $recommendations = $response->getRecommendation()->getData();
 // }
 ```
 
+You can further modify which items will be reccomended by providing boosting rules. Priority of items matching the
+MQL `$criteria` will be multiplied by the value of `multiplier`:
+
+```php
+$reccomendation = UserRecommendation::create('user-id', 5, 'test-scenario', 1.0, 3600)
+    ->addBoost(Boost::create('valid_to >= NOW()', 2))
+    ->addBoost(Boost::create('for_recommendation = 1', 3.5))
+```
+
 #### Recommendation response properties
 
 Every item in Matej has its id, and optionally other item properties. These properties can be set up in [item properties setup](#item-properties-setup-to-setup-you-matej-database),

@@ -52,7 +52,9 @@ class UserRecommendationTest extends TestCase
             ->enableHardRotation()
             ->setFilters(['foo = bar', 'baz = ban'])
             ->setModelName($modelName)
-            ->setAllowSeen(true);
+            ->setAllowSeen(true)
+            ->addBoost(Boost::create('valid_to >= NOW()', 1.0))
+            ->addBoost(Boost::create('custom = argument', 2.0));
 
         $this->assertInstanceOf(UserRecommendation::class, $command);
         $this->assertSame(
@@ -71,6 +73,10 @@ class UserRecommendationTest extends TestCase
                     'properties' => [],
                     'model_name' => $modelName,
                     'allow_seen' => true,
+                    'boost_rules' => [
+                        ['query' => 'valid_to >= NOW()', 'multiplier' => 1.0],
+                        ['query' => 'custom = argument', 'multiplier' => 2.0],
+                    ],
                 ],
             ],
             $command->jsonSerialize()
@@ -123,5 +129,34 @@ class UserRecommendationTest extends TestCase
         // Overwrite all properties
         $command->setResponseProperties(['position_title']);
         $this->assertSame(['position_title'], $command->jsonSerialize()['parameters']['properties']);
+    }
+
+    /** @test */
+    public function shouldResetBoostRules(): void
+    {
+        $command = UserRecommendation::create('user-id', 333, 'test-scenario', 1.0, 3600)
+            ->addBoost(Boost::create('valid_to >= NOW()', 1.0));
+
+        $command->setBoosts([
+            Boost::create('foo = bar', 1.2),
+            Boost::create('baz = ban', 3.4),
+        ]);
+
+        $this->assertSame(
+            [
+                ['query' => 'foo = bar', 'multiplier' => 1.2],
+                ['query' => 'baz = ban', 'multiplier' => 3.4],
+            ],
+            $command->jsonSerialize()['parameters']['boost_rules']
+        );
+    }
+
+    /** @test */
+    public function shouldNotIncludeEmptyBoosts(): void
+    {
+        $command = UserRecommendation::create('user-id', 333, 'test-scenario', 1.0, 3600)
+            ->setBoosts([]);
+
+        $this->assertArrayNotHasKey('boost_rules', $command->jsonSerialize()['parameters']);
     }
 }
