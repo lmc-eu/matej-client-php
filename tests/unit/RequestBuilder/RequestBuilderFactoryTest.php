@@ -71,7 +71,10 @@ class RequestBuilderFactoryTest extends TestCase
 
         $voidInit = function ($builder): void {};
 
-        $userRecommendation = UserRecommendation::create('user-id', 1, 'test-scenario', 0.5, 3600);
+        $userRecommendation = UserRecommendation::create('user-id', 'test-scenario')
+            ->setCount(5)
+            ->setRotationRate(0.5)
+            ->setRotationTime(3600);
 
         return [
             'getItemProperties' => ['getItemProperties', ItemPropertiesGetRequestBuilder::class, $voidInit],

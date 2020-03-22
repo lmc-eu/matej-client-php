@@ -10,25 +10,15 @@ class UserRecommendationTest extends TestCase
     /** @test */
     public function shouldBeInstantiableViaNamedConstructorWithDefaultValues(): void
     {
-        $command = UserRecommendation::create('user-id', 333, 'test-scenario', 1.0, 3600);
+        $command = UserRecommendation::create('user-id', 'test-scenario');
 
         $this->assertInstanceOf(UserRecommendation::class, $command);
-        $this->assertSame(
+        $this->assertEquals(
             [
                 'type' => 'user-based-recommendations',
                 'parameters' => [
                     'user_id' => 'user-id',
-                    'count' => 333,
                     'scenario' => 'test-scenario',
-                    'rotation_rate' => 1.0,
-                    'rotation_time' => 3600,
-                    'hard_rotation' => false,
-                    'min_relevance' => MinimalRelevance::LOW,
-                    'filter' => '',
-                    'filter_type' => UserRecommendation::FILTER_TYPE_MQL,
-                    'properties' => [],
-                    // when using default model name, parameter "model_name" should be absent.
-                    // by default, allow_seen is absent
                 ],
             ],
             $command->jsonSerialize()
@@ -46,18 +36,23 @@ class UserRecommendationTest extends TestCase
         $rotationTime = random_int(1, 86400);
         $modelName = 'test-model-' . md5(microtime());
 
-        $command = UserRecommendation::create($userId, $count, $scenario, $rotationRate, $rotationTime);
+        $command = UserRecommendation::create($userId, $scenario)
+            ->setCount($count)
+            ->setRotationRate($rotationRate)
+            ->setRotationTime($rotationTime);
 
         $command->setMinimalRelevance(MinimalRelevance::HIGH())
             ->enableHardRotation()
             ->setFilters(['foo = bar', 'baz = ban'])
             ->setModelName($modelName)
             ->setAllowSeen(true)
+            ->addResponseProperty('item_url')
             ->addBoost(Boost::create('valid_to >= NOW()', 1.0))
             ->addBoost(Boost::create('custom = argument', 2.0));
 
         $this->assertInstanceOf(UserRecommendation::class, $command);
-        $this->assertSame(
+
+        $this->assertEquals(
             [
                 'type' => 'user-based-recommendations',
                 'parameters' => [
@@ -70,7 +65,7 @@ class UserRecommendationTest extends TestCase
                     'min_relevance' => MinimalRelevance::HIGH,
                     'filter' => 'foo = bar and baz = ban',
                     'filter_type' => UserRecommendation::FILTER_TYPE_MQL,
-                    'properties' => [],
+                    'properties' => ['item_url'],
                     'model_name' => $modelName,
                     'allow_seen' => true,
                     'boost_rules' => [
@@ -86,10 +81,10 @@ class UserRecommendationTest extends TestCase
     /** @test */
     public function shouldAssembleMqlFilters(): void
     {
-        $command = UserRecommendation::create('user-id', 333, 'test-scenario', 1.0, 3600);
+        $command = UserRecommendation::create('user-id', 'test-scenario');
 
         // Default filter
-        $this->assertSame('', $command->jsonSerialize()['parameters']['filter']);
+        $this->assertArrayNotHasKey('filter', $command->jsonSerialize()['parameters']);
 
         // Add custom filters to the default one
         $command->addFilter("first_string_property = 'bar'")
@@ -118,12 +113,12 @@ class UserRecommendationTest extends TestCase
     /** @test */
     public function shouldAllowModificationOfResponseProperties(): void
     {
-        $command = UserRecommendation::create('user-id', 333, 'test-scenario', 1.0, 3600, ['test']);
+        $command = UserRecommendation::create('user-id', 'test-scenario');
+        $command->addResponseProperty('test');
         $this->assertSame(['test'], $command->jsonSerialize()['parameters']['properties']);
 
         // Add some properties
         $command->addResponseProperty('url');
-
         $this->assertSame(['test', 'url'], $command->jsonSerialize()['parameters']['properties']);
 
         // Overwrite all properties
@@ -134,7 +129,7 @@ class UserRecommendationTest extends TestCase
     /** @test */
     public function shouldResetBoostRules(): void
     {
-        $command = UserRecommendation::create('user-id', 333, 'test-scenario', 1.0, 3600)
+        $command = UserRecommendation::create('user-id', 'test-scenario')
             ->addBoost(Boost::create('valid_to >= NOW()', 1.0));
 
         $command->setBoosts([
@@ -154,7 +149,7 @@ class UserRecommendationTest extends TestCase
     /** @test */
     public function shouldNotIncludeEmptyBoosts(): void
     {
-        $command = UserRecommendation::create('user-id', 333, 'test-scenario', 1.0, 3600)
+        $command = UserRecommendation::create('user-id', 'test-scenario')
             ->setBoosts([]);
 
         $this->assertArrayNotHasKey('boost_rules', $command->jsonSerialize()['parameters']);
