@@ -22,7 +22,7 @@ class RecommendationRequestBuilderTest extends IntegrationTestCase
         $response = static::createMatejInstance()
             ->request()
             ->recommendation($this->createRecommendationCommand('user-a')
-                ->addBoost(Boost::create('test', 1.2))
+                ->addBoost(Boost::create('age > 1', 1.2))
             )->send();
 
         $this->assertInstanceOf(RecommendationsResponse::class, $response);
@@ -37,9 +37,10 @@ class RecommendationRequestBuilderTest extends IntegrationTestCase
             ->request()
             ->recommendation($this->createRecommendationCommand('user-b'))
             ->setUserMerge(UserMerge::mergeInto('user-b', 'user-a'))
-            ->setInteraction(Interaction::bookmark('user-a', 'item-a'))
+            ->setInteraction(
+                Interaction::withItem('detailviews', 'user-a', 'item-a')
+            )
             ->send();
-
         $this->assertInstanceOf(RecommendationsResponse::class, $response);
         $this->assertResponseCommandStatuses($response, 'OK', 'OK', 'OK');
         $this->assertShorthandResponse($response, 'OK', 'OK', 'OK');

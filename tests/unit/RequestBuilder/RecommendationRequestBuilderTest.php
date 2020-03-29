@@ -29,7 +29,7 @@ class RecommendationRequestBuilderTest extends TestCase
             ->setRotationTime(3600);
         $builder = new RecommendationRequestBuilder($recommendationsCommand);
 
-        $interactionCommand = Interaction::detailView('sourceId1', 'itemId1');
+        $interactionCommand = Interaction::withItem('detailviews', 'sourceId1', 'itemId1');
         $builder->setInteraction($interactionCommand);
 
         $userMergeCommand = UserMerge::mergeFromSourceToTargetUser('sourceId1', 'userId1');
@@ -91,7 +91,7 @@ class RecommendationRequestBuilderTest extends TestCase
                 ->setRotationTime(3600)
         );
 
-        $builder->setInteraction(Interaction::purchase('different-user', 'itemId1'));
+        $builder->setInteraction(Interaction::withItem('purchases', 'different-user', 'itemId1'));
 
         $this->expectException(LogicException::class);
         $this->expectExceptionMessage(
@@ -133,7 +133,7 @@ class RecommendationRequestBuilderTest extends TestCase
         string $targetUserId,
         string $recommendationUser
     ): void {
-        $interactionCommand = Interaction::purchase($interactionUser, 'test-item-id');
+        $interactionCommand = Interaction::withItem('purchases', $interactionUser, 'test-item-id');
         $userMergeCommand = UserMerge::mergeFromSourceToTargetUser($sourceUserToBeDeleted, $targetUserId);
         $recommendationsCommand = UserRecommendation::create($recommendationUser, 'scenario')
             ->setCount(5)
@@ -153,7 +153,7 @@ class RecommendationRequestBuilderTest extends TestCase
      */
     public function shouldFailOnIncorrectSequenceOfUsersWhenMerging(): void
     {
-        $interactionCommand = Interaction::purchase('test-user-a', 'test-item-id');
+        $interactionCommand = Interaction::withItem('purchases', 'test-user-a', 'test-item-id');
         $userMergeCommand = UserMerge::mergeFromSourceToTargetUser('test-user-b', 'test-user-a');
         $recommendationsCommand = UserRecommendation::create('test-user-b', 'scenario')
             ->setCount(5)
