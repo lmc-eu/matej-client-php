@@ -2,8 +2,8 @@
 
 namespace Lmc\Matej\Model\Command;
 
+use ArrayObject;
 use Lmc\Matej\Model\Assertion;
-use Lmc\Matej\Model\Command\Constants\InteractionType;
 
 /**
  * Interaction command allows to send one interaction between a user and item.
@@ -11,104 +11,65 @@ use Lmc\Matej\Model\Command\Constants\InteractionType;
  */
 class Interaction extends AbstractCommand implements UserAwareInterface
 {
-    /** @var InteractionType */
+    private const DEFAULT_ITEM_ID_ALIAS = 'item_id';
+
+    /** @var string */
     private $interactionType;
     /** @var string */
     private $userId;
     /** @var string */
     private $itemId;
-    /** @var float */
-    private $value;
     /** @var string */
-    private $context;
+    private $itemIdAlias;
     /** @var int */
     private $timestamp;
+    /** @var ArrayObject */
+    private $attributes;
 
     private function __construct(
-        InteractionType $interactionType,
+        string $interactionType,
         string $userId,
+        string $itemIdAlias,
         string $itemId,
-        float $value = 1.0,
-        string $context = 'default',
         int $timestamp = null
     ) {
-        $this->interactionType = $interactionType;
+        $this->attributes = new ArrayObject();
+        $this->setInteractionType($interactionType);
         $this->setUserId($userId);
+        $this->setItemIdAlias($itemIdAlias);
         $this->setItemId($itemId);
-        $this->setValue($value);
-        $this->setContext($context);
         $this->setTimestamp($timestamp ?? time());
     }
 
     /**
-     * Detail view interaction occurs when a user views an information page with detailed description of given item
-     * (if there is such a feature available in your system).
-     *
-     * @return static
+     * Construct Interaction between user and item identified by ID.
      */
-    public static function detailView(
+    public static function withItem(
+        string $interactionType,
         string $userId,
         string $itemId,
-        float $value = 1.0,
-        string $context = 'default',
         int $timestamp = null
     ): self {
-        return new static(InteractionType::DETAILVIEWS(), $userId, $itemId, $value, $context, $timestamp);
+        $interaction = new static(
+            $interactionType, $userId, self::DEFAULT_ITEM_ID_ALIAS, $itemId, $timestamp
+        );
+
+        return $interaction;
     }
 
     /**
-     * Purchase interaction generally refer to buying or downloading a specific item by a user, suggesting that the user
-     * believes the item to be of high value for her at the time of purchase. For example in the domain of job boards,
-     * the purchase interaction stands for a reply of the user on specific Job Description.
-     *
-     * @return static
+     * Construct Interaction between user and item identified by aliased ID.
      */
-    public static function purchase(
+    public static function withAliasedItem(
+        string $interactionType,
         string $userId,
+        string $itemIdAlias,
         string $itemId,
-        float $value = 1.0,
-        string $context = 'default',
         int $timestamp = null
     ): self {
-        return new static(InteractionType::PURCHASES(), $userId, $itemId, $value, $context, $timestamp);
-    }
-
-    /**
-     * If your applications supports bookmarks, eg. flagging items as favorite, you may submit the interactions as well.
-     * Depending on the nature of your application, bookmarking an item by a user may mean that the user has found the
-     * item interesting based on:
-     *  - viewing its details, and has added the item to her future "wishlist",
-     *  - viewing its contents, and would like to view it once more in the future.
-     * In both cases, bookmarking indicates positive relationship of the user to the item, allowing Matej to refine
-     * recommendations.
-     *
-     * @return static
-     */
-    public static function bookmark(
-        string $userId,
-        string $itemId,
-        float $value = 1.0,
-        string $context = 'default',
-        int $timestamp = null
-    ): self {
-        return new static(InteractionType::BOOKMARKS(), $userId, $itemId, $value, $context, $timestamp);
-    }
-
-    /**
-     * Ratings are the most valuable type of interaction user may provide to the Matej recommender – they allow users
-     * to submit explicit evaluations of items. These may be expressed as a number of stars (1-5), 👍/👎 voting etc.
-     * For the recommendation API, the ratings must be scaled to real-valued interval [0, 1].
-     *
-     * @return static
-     */
-    public static function rating(
-        string $userId,
-        string $itemId,
-        float $value = 1.0,
-        string $context = 'default',
-        int $timestamp = null
-    ): self {
-        return new static(InteractionType::RATINGS(), $userId, $itemId, $value, $context, $timestamp);
+        return new static(
+            $interactionType, $userId, $itemIdAlias, $itemId, $timestamp
+        );
     }
 
     public function getUserId(): string
@@ -121,16 +82,50 @@ class Interaction extends AbstractCommand implements UserAwareInterface
         return 'interaction';
     }
 
+    /**
+     * Set all Interaction attributes. All previously set attributes are removed.
+     */
+    public function setAttributes(array $attributes): self
+    {
+        $this->attributes = new ArrayObject();
+        foreach ($attributes as $name => $value) {
+            $this->setAttribute($name, $value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set Interaction attribute and its value. If attribute with the same name
+     * already exists, it's replaced.
+     *
+     * @param mixed $value
+     */
+    public function setAttribute(string $name, $value): self
+    {
+        Assertion::typeIdentifier($name);
+
+        $this->attributes[$name] = $value;
+
+        return $this;
+    }
+
     public function getCommandParameters(): array
     {
         return [
-            'interaction_type' => $this->interactionType->jsonSerialize(),
+            'interaction_type' => $this->interactionType,
             'user_id' => $this->userId,
-            'item_id' => $this->itemId,
             'timestamp' => $this->timestamp,
-            'value' => $this->value,
-            'context' => $this->context,
+            'attributes' => $this->attributes,
+            $this->itemIdAlias => $this->itemId,
         ];
+    }
+
+    protected function setInteractionType(string $interactionType): void
+    {
+        Assertion::typeIdentifier($interactionType);
+
+        $this->interactionType = $interactionType;
     }
 
     protected function setUserId(string $userId): void
@@ -147,18 +142,11 @@ class Interaction extends AbstractCommand implements UserAwareInterface
         $this->itemId = $itemId;
     }
 
-    protected function setValue(float $value): void
+    protected function setItemIdAlias(string $itemIdAlias): void
     {
-        Assertion::between($value, 0, 1);
+        Assertion::typeIdentifier($itemIdAlias);
 
-        $this->value = $value;
-    }
-
-    protected function setContext(string $context): void
-    {
-        Assertion::typeIdentifier($context);
-
-        $this->context = $context;
+        $this->itemIdAlias = $itemIdAlias;
     }
 
     protected function setTimestamp(int $timestamp): void

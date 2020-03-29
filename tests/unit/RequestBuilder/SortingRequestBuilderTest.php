@@ -26,7 +26,7 @@ class SortingRequestBuilderTest extends TestCase
         $sortingCommand = Sorting::create('userId1', ['itemId1', 'itemId2']);
         $builder = new SortingRequestBuilder($sortingCommand);
 
-        $interactionCommand = Interaction::detailView('sourceId1', 'itemId1');
+        $interactionCommand = Interaction::withItem('detailviews', 'sourceId1', 'itemId1');
         $builder->setInteraction($interactionCommand);
 
         $userMergeCommand = UserMerge::mergeFromSourceToTargetUser('sourceId1', 'userId1');
@@ -79,7 +79,7 @@ class SortingRequestBuilderTest extends TestCase
     {
         $builder = new SortingRequestBuilder(Sorting::create('userId1', ['itemId1', 'itemId2']));
 
-        $builder->setInteraction(Interaction::purchase('different-user', 'itemId1'));
+        $builder->setInteraction(Interaction::withItem('purchases', 'different-user', 'itemId1'));
 
         $this->expectException(LogicException::class);
         $this->expectExceptionMessage(
@@ -109,7 +109,7 @@ class SortingRequestBuilderTest extends TestCase
      */
     public function shouldPassOnCorrectSequenceOfUsersWhenMerging(): void
     {
-        $interactionCommand = Interaction::purchase('test-user-a', 'test-item-id');
+        $interactionCommand = Interaction::withItem('purchase', 'test-user-a', 'test-item-id');
         $userMergeCommand = UserMerge::mergeFromSourceToTargetUser('test-user-a', 'test-user-b');
         $sortingCommand = Sorting::create('test-user-b', ['itemId1', 'itemId2']);
 
@@ -126,7 +126,7 @@ class SortingRequestBuilderTest extends TestCase
      */
     public function shouldFailOnIncorrectSequenceOfUsersWhenMerging(): void
     {
-        $interactionCommand = Interaction::purchase('test-user-a', 'test-item-id');
+        $interactionCommand = Interaction::withItem('purchase', 'test-user-a', 'test-item-id');
         $userMergeCommand = UserMerge::mergeFromSourceToTargetUser('test-user-b', 'test-user-a');
         $sortingCommand = Sorting::create('test-user-a', ['itemId1', 'itemId2']);
 
