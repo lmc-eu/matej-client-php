@@ -231,7 +231,7 @@ You can further modify which items will be reccomended by providing boosting rul
 MQL `$criteria` will be multiplied by the value of `multiplier`:
 
 ```php
-$reccomendation = UserRecommendation::create('user-id', 5, 'test-scenario', 1.0, 3600)
+$recommendation = UserRecommendation::create('user-id', 5, 'test-scenario', 1.0, 3600)
     ->addBoost(Boost::create('valid_to >= NOW()', 2))
     ->addBoost(Boost::create('for_recommendation = 1', 3.5))
 ```
