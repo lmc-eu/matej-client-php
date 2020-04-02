@@ -268,7 +268,10 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
     protected function serializeBoosts(): array
     {
         return array_map(
-            function($boost) {return $boost->jsonSerialize(); }, $this->boosts
+        function (Boost $boost) {
+            return $boost->jsonSerialize();
+        },
+        $this->boosts
         );
     }
 
