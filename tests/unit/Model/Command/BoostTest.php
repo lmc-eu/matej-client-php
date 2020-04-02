@@ -26,6 +26,7 @@ class BoostTest extends TestCase
     {
         $this->expectException(DomainException::class);
         $this->expectExceptionMessage('Provided "-1" is not greater than "0".');
-        $boost = Boost::create('valid_to >= NOW()', -1);
+
+        Boost::create('valid_to >= NOW()', -1);
     }
 }
