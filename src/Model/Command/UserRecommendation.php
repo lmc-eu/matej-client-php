@@ -265,7 +265,7 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
         return 'user-based-recommendations';
     }
 
-    protected function serializeBoosts(): array
+    protected function getSerializedBoosts(): array
     {
         return array_map(
         function (Boost $boost) {
@@ -299,7 +299,7 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
         }
 
         if (!empty($this->boosts)) {
-            $parameters['boost_rules'] = $this->serializeBoosts();
+            $parameters['boost_rules'] = $this->getSerializedBoosts();
         }
 
         return $parameters;
