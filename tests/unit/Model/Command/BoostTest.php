@@ -22,7 +22,7 @@ class BoostTest extends TestCase
     /**
      * @test
      */
-    public function multiplierHasToBeGreaterThan0(): void
+    public function shouldNotAllowMultiplierLessThan0(): void
     {
         $this->expectException(DomainException::class);
         $this->expectExceptionMessage('Provided "-1" is not greater than "0".');
