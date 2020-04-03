@@ -193,10 +193,12 @@ $recommendations = $response->getRecommendation()->getData();
 You can also set more granular options of the recommendation command:
 
 ```php
-$recommendation = UserRecommendation::create('user-id', 5, 'test-scenario', 1.0, 3600);
+$recommendation = UserRecommendation::create('user-id', 5, 'test-scenario', 1.0, 3600)
+
 $recommendation->setFilters(['for_recommendation = 1'])
     ->setMinimalRelevance(MinimalRelevance::HIGH())
-    ->enableHardRotation();
+    ->enableHardRotation()
+    ->addBoost(Boost::create('valid_to >= NOW()', 2));
 
 $response = $matej->request()
     ->recommendation($recommendation)
@@ -225,15 +227,6 @@ $recommendations = $response->getRecommendation()->getData();
 //         ["item_id"]  => string(9)  "item_id_2"
 //     }
 // }
-```
-
-You can further modify which items will be reccomended by providing boosting rules. Priority of items matching the
-MQL `$criteria` will be multiplied by the value of `multiplier`:
-
-```php
-$recommendation = UserRecommendation::create('user-id', 5, 'test-scenario', 1.0, 3600)
-    ->addBoost(Boost::create('valid_to >= NOW()', 2))
-    ->addBoost(Boost::create('for_recommendation = 1', 3.5))
 ```
 
 #### Recommendation response properties
