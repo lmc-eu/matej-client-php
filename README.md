@@ -193,7 +193,7 @@ $recommendations = $response->getRecommendation()->getData();
 You can also set more granular options of the recommendation command:
 
 ```php
-$recommendation = UserRecommendation::create('user-id', 5, 'test-scenario', 1.0, 3600)
+$recommendation = UserRecommendation::create('user-id', 5, 'test-scenario', 1.0, 3600);
 
 $recommendation->setFilters(['for_recommendation = 1'])
     ->setMinimalRelevance(MinimalRelevance::HIGH())
