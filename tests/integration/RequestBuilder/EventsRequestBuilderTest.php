@@ -53,8 +53,8 @@ class EventsRequestBuilderTest extends IntegrationTestCase
             ->events()
             ->addInteraction(Interaction::withItem('search', 'user-a', 'item-a'))
             ->addInteractions([
-                Interaction::withItem('detailviews', 'user-b', 'item-a'),
-                Interaction::withItem('purchases', 'user-d', 'item-a'),
+                Interaction::withItem('detailview', 'user-b', 'item-a'),
+                Interaction::withItem('purchase', 'user-d', 'item-a'),
             ])
             ->addUserMerge(UserMerge::mergeInto('user-a', 'user-b'))
             ->addUserMerges([

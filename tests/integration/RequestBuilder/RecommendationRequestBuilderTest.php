@@ -38,7 +38,7 @@ class RecommendationRequestBuilderTest extends IntegrationTestCase
             ->recommendation($this->createRecommendationCommand('user-b'))
             ->setUserMerge(UserMerge::mergeInto('user-b', 'user-a'))
             ->setInteraction(
-                Interaction::withItem('detailviews', 'user-a', 'item-a')
+                Interaction::withItem('detailview', 'user-a', 'item-a')
             )
             ->send();
         $this->assertInstanceOf(RecommendationsResponse::class, $response);
