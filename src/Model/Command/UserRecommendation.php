@@ -38,6 +38,8 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
     private $responseProperties = [];
     /** @var bool */
     private $allowSeen = false;
+    /** @var Boost[] */
+    private $boosts = [];
 
     private function __construct(
         string $userId,
@@ -189,6 +191,30 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
         return $this;
     }
 
+    /**
+     * Add a boost rule to already added rules.
+     *
+     * @return $this
+     */
+    public function addBoost(Boost $boost): self
+    {
+        $this->boosts[] = $boost;
+
+        return $this;
+    }
+
+    /**
+     * Set boosts. Removes all previously set rules.
+     *
+     * @return $this
+     */
+    public function setBoosts(array $boosts): self
+    {
+        $this->boosts = $boosts;
+
+        return $this;
+    }
+
     public function getUserId(): string
     {
         return $this->userId;
@@ -239,6 +265,16 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
         return 'user-based-recommendations';
     }
 
+    protected function getSerializedBoosts(): array
+    {
+        return array_map(
+        function (Boost $boost) {
+            return $boost->jsonSerialize();
+        },
+        $this->boosts
+        );
+    }
+
     protected function getCommandParameters(): array
     {
         $parameters = [
@@ -260,6 +296,10 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
 
         if ($this->allowSeen !== false) {
             $parameters['allow_seen'] = $this->allowSeen;
+        }
+
+        if (!empty($this->boosts)) {
+            $parameters['boost_rules'] = $this->getSerializedBoosts();
         }
 
         return $parameters;

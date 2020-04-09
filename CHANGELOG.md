@@ -5,6 +5,8 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+### Added
+- Add support for recommendation boosting rules.
 
 ## 2.4.0 - 2020-01-21
 - No changes in the library, new version released because of adjustments of PHP 5.6 compatible fork.
