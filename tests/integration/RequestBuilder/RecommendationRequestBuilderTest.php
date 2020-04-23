@@ -79,13 +79,10 @@ class RecommendationRequestBuilderTest extends IntegrationTestCase
 
     private function createRecommendationCommand(string $username): UserRecommendation
     {
-        return UserRecommendation::create(
-            $username,
-            5,
-            'integration-test-scenario',
-            0.50,
-            3600
-        );
+        return UserRecommendation::create($username, 'integration-test-scenario')
+            ->setCount(5)
+            ->setRotationRate(0.50)
+            ->setRotationTime(3600);
     }
 
     private function assertShorthandResponse(

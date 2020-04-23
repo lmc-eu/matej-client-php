@@ -23,7 +23,10 @@ class RecommendationRequestBuilderTest extends TestCase
     /** @test */
     public function shouldBuildRequestWithCommands(): void
     {
-        $recommendationsCommand = UserRecommendation::create('userId1', 5, 'test-scenario', 0.5, 3600);
+        $recommendationsCommand = UserRecommendation::create('userId1', 'test-scenario')
+            ->setCount(5)
+            ->setRotationRate(0.5)
+            ->setRotationTime(3600);
         $builder = new RecommendationRequestBuilder($recommendationsCommand);
 
         $interactionCommand = Interaction::detailView('sourceId1', 'itemId1');
@@ -53,7 +56,10 @@ class RecommendationRequestBuilderTest extends TestCase
     /** @test */
     public function shouldThrowExceptionWhenSendingCommandsWithoutRequestManager(): void
     {
-        $recommendationsCommand = UserRecommendation::create('userId1', 5, 'test-scenario', 0.5, 3600);
+        $recommendationsCommand = UserRecommendation::create('userId1', 'test-scenario')
+            ->setCount(5)
+            ->setRotationRate(0.5)
+            ->setRotationTime(3600);
         $builder = new RecommendationRequestBuilder($recommendationsCommand);
 
         $this->expectException(LogicException::class);
@@ -79,7 +85,10 @@ class RecommendationRequestBuilderTest extends TestCase
     public function shouldThrowExceptionWhenInteractionIsForUnrelatedUser(): void
     {
         $builder = new RecommendationRequestBuilder(
-            $recommendationsCommand = UserRecommendation::create('userId1', 5, 'scenario', 0.5, 3600)
+            $recommendationsCommand = UserRecommendation::create('userId1', 'scenario')
+                ->setCount(5)
+                ->setRotationRate(0.5)
+                ->setRotationTime(3600)
         );
 
         $builder->setInteraction(Interaction::purchase('different-user', 'itemId1'));
@@ -96,7 +105,10 @@ class RecommendationRequestBuilderTest extends TestCase
     public function shouldThrowExceptionWhenMergeIsForUnrelatedUser(): void
     {
         $builder = new RecommendationRequestBuilder(
-            $recommendationsCommand = UserRecommendation::create('userId1', 5, 'scenario', 0.5, 3600)
+            $recommendationsCommand = UserRecommendation::create('userId1', 'scenario')
+                ->setCount(5)
+                ->setRotationRate(0.5)
+                ->setRotationTime(3600)
         );
 
         $builder->setUserMerge(UserMerge::mergeInto('different-user', 'userId1'));
@@ -123,7 +135,10 @@ class RecommendationRequestBuilderTest extends TestCase
     ): void {
         $interactionCommand = Interaction::purchase($interactionUser, 'test-item-id');
         $userMergeCommand = UserMerge::mergeFromSourceToTargetUser($sourceUserToBeDeleted, $targetUserId);
-        $recommendationsCommand = UserRecommendation::create($recommendationUser, 5, 'scenario', 0.5, 3600);
+        $recommendationsCommand = UserRecommendation::create($recommendationUser, 'scenario')
+            ->setCount(5)
+            ->setRotationRate(0.5)
+            ->setRotationTime(3600);
 
         $builder = new RecommendationRequestBuilder($recommendationsCommand);
         $builder->setUserMerge($userMergeCommand);
@@ -140,7 +155,10 @@ class RecommendationRequestBuilderTest extends TestCase
     {
         $interactionCommand = Interaction::purchase('test-user-a', 'test-item-id');
         $userMergeCommand = UserMerge::mergeFromSourceToTargetUser('test-user-b', 'test-user-a');
-        $recommendationsCommand = UserRecommendation::create('test-user-b', 5, 'scenario', 0.5, 3600);
+        $recommendationsCommand = UserRecommendation::create('test-user-b', 'scenario')
+            ->setCount(5)
+            ->setRotationRate(0.5)
+            ->setRotationTime(3600);
 
         $this->expectException(LogicException::class);
         $this->expectExceptionMessage(

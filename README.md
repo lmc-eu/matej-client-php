@@ -182,7 +182,7 @@ when providing recommendations.
 $matej = new Matej('accountId', 'apikey');
 
 $response = $matej->request()
-    ->recommendation(UserRecommendation::create('user-id', 5, 'test-scenario', 1.0, 3600))
+    ->recommendation(UserRecommendation::create('user-id', 'test-scenario'))
     ->setInteraction(Interaction::purchase('user-id', 'item-id')) // optional
     ->setUserMerge(UserMerge::mergeInto('user-id', 'source-id')) // optional
     ->send();
@@ -190,12 +190,14 @@ $response = $matej->request()
 $recommendations = $response->getRecommendation()->getData();
 ```
 
-You can also set more granular options of the recommendation command:
+You can also set more granular options of the recommendation command and overwrite Matej default behavior on per-request basis:
 
 ```php
-$recommendation = UserRecommendation::create('user-id', 5, 'test-scenario', 1.0, 3600);
-
-$recommendation->setFilters(['for_recommendation = 1'])
+$recommendation = UserRecommendation::create('user-id', 'test-scenario')
+    ->setCount(5)
+    ->setRotationRate(1.0)
+    ->setRotationTime(3600)
+    ->setFilters(['for_recommendation = 1'])
     ->setMinimalRelevance(MinimalRelevance::HIGH())
     ->enableHardRotation()
     ->addBoost(Boost::create('valid_to >= NOW()', 2));
@@ -235,13 +237,12 @@ Every item in Matej has its id, and optionally other item properties. These prop
 and you can upload item data in the [events](#send-events-data-to-matej) request. This has major benefit because you can request
 these properties to be returned as part of your Recommendation Request.
 
-We call them response properties, and they can be specified either as the last parameter of `UserRecommendation::create` function,
-by calling `->addResponseProperty()` method, or by calling `->setResponseProperties()` method. Following will request an `item_id`,
-`item_url` and `item_title`:
+We call them response properties. They can be specified by calling `->addResponseProperty()` method or by calling `->setResponseProperties()` method. Following will request an `item_id`, `item_url`, `item_title`:
 
 ```php
-$recommendation = UserRecommendation::create('user-id', 5, 'test-scenario', 1.0, 3600, ['item_url'])
-    ->addResponseProperty('item_title');
+$recommendation = UserRecommendation::create('user-id', 'test-scenario')
+    ->addResponseProperty('item_title')
+    ->addResponseProperty('item_url');
 
 $response = $matej->request()
     ->recommendation($recommendation)
@@ -320,7 +321,7 @@ $response = $matej->request()
     ->addSorting(Sorting::create('user-id', ['item-id-1', 'item-id-2', 'item-id-3']))
     ->addSortings([/* array of Sorting objects */])
     // Request user-based recommendations
-    ->addRecommendation(UserRecommendation::create('user-id', 10, 'emailing', 1.0, 3600))
+    ->addRecommendation(UserRecommendation::create('user-id', 'emailing'))
     ->addRecommendations([/* array of UserRecommendation objects */])
     ->send();
 ```
@@ -332,11 +333,11 @@ but once available, you can specify which model you want to use when requesting 
 This is available for `recommendation`, `sorting` and `campaign` requests:
 
 ```php
-$recommendationCommand = UserRecommendation::create('user-id', 5, 'test-scenario', 1.0, 3600);
-$recommendationCommand->setModelName('alpha');
+$recommendationCommand = UserRecommendation::create('user-id', 'test-scenario')
+    ->setModelName('alpha');
 
 $sortingCommand = Sorting::create('user-id', ['item-id-1', 'item-id-2', 'item-id-3']);
-$sortingCommand->setModelName('beta')
+$sortingCommand->setModelName('beta');
 
 $response = $matej->request()
     ->recommendation($recommendationCommand)
@@ -359,7 +360,7 @@ Typically, you'd select a random sample of users, to which you'd present recomme
 in your code should look similar to this:
 
 ```php
-$recommendation = UserRecommendation::create('user-id', 5, 'test-scenario', 1.0, 3600);
+$recommendation = UserRecommendation::create('user-id', 'test-scenario');
 
 if ($session->isUserInBucketB()) {
     $recommendation->setModelName('alpha');
