@@ -26,9 +26,9 @@ class InteractionTest extends TestCase
     public function shouldRaiseExceptionWithInvalidAttributeName(): void
     {
         $command = Interaction::withItem('bookmarks', 'user-id', 'item-id');
+
         $this->expectException(DomainException::class);
-        $this->expectExceptionMessage(
-            'invalid^*!@" does not match type identifier format requirement');
+        $this->expectExceptionMessage('invalid^*!@" does not match type identifier format requirement');
         $command->setAttribute('invalid^*!@', 'value');
     }
 
@@ -38,9 +38,9 @@ class InteractionTest extends TestCase
     public function shouldRaiseExceptionWithInvalidAttributeNameInBatch(): void
     {
         $command = Interaction::withItem('bookmarks', 'user-id', 'item-id');
+
         $this->expectException(DomainException::class);
-        $this->expectExceptionMessage(
-            '"invalid^*!@" does not match type identifier format requirement');
+        $this->expectExceptionMessage('"invalid^*!@" does not match type identifier format requirement');
         $command->setAttributes([
             'valid' => 'value1',
             'invalid^*!@' => 'value2',
@@ -53,8 +53,7 @@ class InteractionTest extends TestCase
     public function shouldRaiseExceptionWithInvalidInteractionType(): void
     {
         $this->expectException(DomainException::class);
-        $this->expectExceptionMessage(
-            '"invalid^*!@" does not match type identifier format requirement');
+        $this->expectExceptionMessage('"invalid^*!@" does not match type identifier format requirement');
         Interaction::withItem('invalid^*!@', 'user-id', 'item-id');
     }
 
@@ -64,8 +63,8 @@ class InteractionTest extends TestCase
     public function shouldRaiseExceptionWithInvalidUserId(): void
     {
         $this->expectException(DomainException::class);
-        $this->expectExceptionMessage(
-            '"invalid^*!@" does not match type identifier format requirement');
+        $this->expectExceptionMessage('"invalid^*!@" does not match type identifier format requirement');
+        Interaction::withItem('bookmarks', 'invalid^*!@', 'item-id');
     }
 
     /**
@@ -74,8 +73,7 @@ class InteractionTest extends TestCase
     public function shouldRaiseExceptionWithInvalidItemId(): void
     {
         $this->expectException(DomainException::class);
-        $this->expectExceptionMessage(
-            '"invalid^*!@" does not match type identifier format requirement');
+        $this->expectExceptionMessage('"invalid^*!@" does not match type identifier format requirement');
         Interaction::withItem('bookmarks', 'user-id', 'invalid^*!@');
     }
 
@@ -85,8 +83,7 @@ class InteractionTest extends TestCase
     public function shouldRaiseExceptionWithInvalidItemIdAliasName(): void
     {
         $this->expectException(DomainException::class);
-        $this->expectExceptionMessage(
-            '"invalid^*!@" does not match type identifier format requirement');
+        $this->expectExceptionMessage('"invalid^*!@" does not match type identifier format requirement');
         Interaction::withAliasedItem('bookmarks', 'user-id', 'invalid^*!@', 'item-id');
     }
 
