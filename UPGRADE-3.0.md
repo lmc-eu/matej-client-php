@@ -95,18 +95,18 @@ Its real name might have changed as well. For example, for interaction type `rat
 
 #### Before
 ```php
-$interaction = Interaction::rating('user-id', 'item_id', 0.5);
+$interaction = Interaction::rating('user-id', 'item-id', 0.5);
 ```
 
 #### After
 ```php
-$interaction = Interaction::create('ratings', 'user-id', 'item_id')
-    ->setAttribute('stars', 0.5)
+$interaction = Interaction::withItem('ratings', 'user-id', 'item-id')
+    ->setAttribute('stars', 0.5);
 ```
 
 which is equivalent to
 
 ```php
-$interaction = Interaction::create('ratings', 'user-id', 'item_id')
-$interaction->setAttribute('stars', 0.5)
+$interaction = Interaction::withItem('ratings', 'user-id', 'item-id');
+$interaction->setAttribute('stars', 0.5);
 ```

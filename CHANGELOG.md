@@ -6,7 +6,12 @@
 
 ## Unreleased
 ### Added
-- Add support for recommendation boosting rules.
+- Add support for recommendation boosting rules (via `addBoost()`).
+- Custom attributes which can be send as part of `Interaction` using `setAttribute()`/`setAttributes()` methods. See [UPGRADE-3.0.md](UPGRADE-3.0.md).
+
+### Changed
+- **BC BREAK** | `UserRecommendation::create()` now accepts only `$user_id` and `$scenario` parameters, all other arguments are optional and are set using setter methods. See [UPGRADE-3.0.md](UPGRADE-3.0.md) for details.
+- **BC BREAK** | Interaction types are now defined via string parameter (and not named constructors) and can be created using new `withItem()` or `withAliasedItem()` methods. See [UPGRADE-3.0.md](UPGRADE-3.0.md).
 
 ## 2.4.0 - 2020-01-21
 - No changes in the library, new version released because of adjustments of PHP 5.6 compatible fork.
