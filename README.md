@@ -199,6 +199,8 @@ $recommendation = UserRecommendation::create('user-id', 'test-scenario')
     ->setFilters(['for_recommendation = 1'])
     ->setMinimalRelevance(MinimalRelevance::HIGH())
     ->enableHardRotation()
+    // You can further modify which items will be recommended by providing boosting rules.
+    // Priority of items matching the query will be multiplied by the value of multiplier:
     ->addBoost(Boost::create('valid_to >= NOW()', 2));
 
 $response = $matej->request()
