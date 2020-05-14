@@ -24,9 +24,9 @@ class EventsRequestBuilderTest extends TestCase
     {
         $builder = new EventsRequestBuilder();
 
-        $interactionCommand1 = Interaction::detailView('userId1', 'itemId1');
-        $interactionCommand2 = Interaction::bookmark('userId1', 'itemId1');
-        $interactionCommand3 = Interaction::purchase('userId1', 'itemId1');
+        $interactionCommand1 = Interaction::withItem('detailviews', 'userId1', 'itemId1');
+        $interactionCommand2 = Interaction::withItem('bookmarks', 'userId1', 'itemId1');
+        $interactionCommand3 = Interaction::withItem('purchases', 'userId1', 'itemId1');
         $builder->addInteraction($interactionCommand1);
         $builder->addInteractions([$interactionCommand2, $interactionCommand3]);
 
@@ -81,7 +81,7 @@ class EventsRequestBuilderTest extends TestCase
         $builder = new EventsRequestBuilder();
 
         for ($i = 0; $i < 334; $i++) {
-            $builder->addInteraction(Interaction::detailView('userId1', 'itemId1'));
+            $builder->addInteraction(Interaction::withItem('detailview', 'userId1', 'itemId1'));
             $builder->addItemProperty(ItemProperty::create('itemId1', ['key1' => 'value1']));
             $builder->addUserMerge(UserMerge::mergeFromSourceToTargetUser('sourceId1', 'targetId1'));
         }

@@ -35,7 +35,7 @@ class SortingRequestTest extends IntegrationTestCase
             ->request()
             ->sorting(Sorting::create('user-b', ['item-a', 'item-b', 'itemC-c']))
             ->setUserMerge(UserMerge::mergeInto('user-b', 'user-a'))
-            ->setInteraction(Interaction::bookmark('user-a', 'item-a'))
+            ->setInteraction(Interaction::withItem('detailviews', 'user-a', 'item-a'))
             ->send();
 
         $this->assertInstanceOf(SortingResponse::class, $response);

@@ -8,7 +8,7 @@
 
 This library requires PHP 7.1+. However, we provide also PHP 5.6-compatible version [`matej-client-php5`](https://github.com/lmc-eu/matej-client-php5).
 
-Please note the PHP 5.6 version is just transpiled copy of this library - examples, pull requests, issues, changelog etc. are placed in this repository.
+Please note that the PHP 5.6 version is just transpiled copy of this library - examples, pull requests, issues, changelog etc. are placed in this repository.
 
 ## Installation
 
@@ -41,8 +41,7 @@ $ composer require lmc/matej-client php-http/curl-client guzzlehttp/psr7 # use l
 
 ## Usage
 
-To start using Matej you will need your account id (database name) and secret API key - both of them must be obtained
-from LMC R&D team.
+To start using Matej you will need your account id (database name) and secret API key - both of them must be obtained from LMC R&D team.
 
 First create an instance of `Matej` object:
 ```php
@@ -61,7 +60,7 @@ Once finished with building the request, use `send()` method to execute it and r
 ```php
 $response = $matej->request()
     ->events()
-    ->addInteraction(\Lmc\Matej\Model\Command\Interaction::purchase('user-id', 'item-id'))
+    ->addInteraction(\Lmc\Matej\Model\Command\Interaction::withItem('purchases', 'user-id', 'item-id'))
     ->addUserMerge(...)
     ...
     ->send();
@@ -155,7 +154,7 @@ $matej = new Matej('accountId', 'apikey');
 $response = $matej->request()
     ->events()
     // Add interaction between user and item
-    ->addInteraction(Interaction::purchase('user-id', 'item-id'))
+    ->addInteraction(Interaction::withItem('purchases', 'user-id', 'item-id'))
     ->addInteractions([/* array of Interaction objects */])
     // Update item data
     ->addItemProperty(ItemProperty::create('item-id', ['valid_from' => time(), 'title' => 'Title']))
@@ -183,7 +182,7 @@ $matej = new Matej('accountId', 'apikey');
 
 $response = $matej->request()
     ->recommendation(UserRecommendation::create('user-id', 'test-scenario'))
-    ->setInteraction(Interaction::purchase('user-id', 'item-id')) // optional
+    ->setInteraction(Interaction::withItem('purchases', 'user-id', 'item-id')) // optional
     ->setUserMerge(UserMerge::mergeInto('user-id', 'source-id')) // optional
     ->send();
 
@@ -267,7 +266,7 @@ $recommendedItems = $response->getRecommendation()->getData();
 ```
 
 If you don't specify any response properties, Matej will return an array of `stdClass` instances, which contain only `item_id` property.
-If you do request at least one response property, you don't need to metion `item_id`, as Matej will always return it regardless of the
+If you do request at least one response property, you don't need to mention `item_id`, as Matej will always return it regardless of the
 properties requested.
 
 If you request an unknown property, Matej will return a `BAD REQUEST` with HTTP status code `400`.
@@ -286,7 +285,7 @@ $matej = new Matej('accountId', 'apikey');
 
 $response =  $matej->request()
     ->sorting(Sorting::create('user-id', ['item-id-1', 'item-id-2', 'item-id-3']))
-    ->setInteraction(Interaction::purchase('user-id', 'item-id')) // optional
+    ->setInteraction(Interaction::withItem('purchases', 'user-id', 'item-id')) // optional
     ->setUserMerge(UserMerge::mergeInto('user-id', 'source-id')) // optional
     ->send();
 
@@ -328,7 +327,7 @@ $response = $matej->request()
 
 ### A/B Testing support
 `Recommendation` and `Sorting` commands support optional A/B testing of various models. This has to be set up in Matej first,
-but once available, you can specify which model you want to use when requesting recommendations or sortings.
+but once available, you can specify which model you want to use when requesting recommendations or sorting.
 
 This is available for `recommendation`, `sorting` and `campaign` requests:
 
@@ -356,7 +355,7 @@ $response = $matej->request()
 
 If you don't provide any model name, the request will be sent without it, and Matej will use default model for your instance.
 
-Typically, you'd select a random sample of users, to which you'd present recommendations and sortings from second model. This way, implementation
+Typically, you'd select a random sample of users, to which you'd present recommendations and sorting from second model. This way, implementation
 in your code should look similar to this:
 
 ```php

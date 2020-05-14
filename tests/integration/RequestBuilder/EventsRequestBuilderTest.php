@@ -51,11 +51,10 @@ class EventsRequestBuilderTest extends IntegrationTestCase
         $response = static::createMatejInstance()
             ->request()
             ->events()
-            ->addInteraction(Interaction::bookmark('user-a', 'item-a'))
+            ->addInteraction(Interaction::withItem('search', 'user-a', 'item-a'))
             ->addInteractions([
-                Interaction::detailView('user-b', 'item-a'),
-                Interaction::rating('user-c', 'item-a'),
-                Interaction::purchase('user-d', 'item-a'),
+                Interaction::withItem('detailviews', 'user-b', 'item-a'),
+                Interaction::withItem('purchases', 'user-d', 'item-a'),
             ])
             ->addUserMerge(UserMerge::mergeInto('user-a', 'user-b'))
             ->addUserMerges([
@@ -69,7 +68,7 @@ class EventsRequestBuilderTest extends IntegrationTestCase
             ])
             ->send();
 
-        $this->assertResponseCommandStatuses($response, ...$this->generateOkStatuses(10));
+        $this->assertResponseCommandStatuses($response, ...$this->generateOkStatuses(9));
     }
 
     private static function addPropertiesToPropertySetupRequest(ItemPropertiesSetupRequestBuilder $builder): void
