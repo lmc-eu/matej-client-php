@@ -5,6 +5,8 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+
+## 3.0.0 - 2020-05-14
 ### Added
 - Add support for recommendation boosting rules (via `addBoost()`).
 - Custom attributes which can be send as part of `Interaction` using `setAttribute()`/`setAttributes()` methods. See [UPGRADE-3.0.md](UPGRADE-3.0.md).
