@@ -5,6 +5,8 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+
+## 3.0.1 - 2020-08-18
 ### Changed
 - Client doesn't send no longer used parameter `filter_type`.
 
