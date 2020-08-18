@@ -64,7 +64,6 @@ class UserRecommendationTest extends TestCase
                     'hard_rotation' => true,
                     'min_relevance' => MinimalRelevance::HIGH,
                     'filter' => 'foo = bar and baz = ban',
-                    'filter_type' => UserRecommendation::FILTER_TYPE_MQL,
                     'properties' => ['item_url'],
                     'model_name' => $modelName,
                     'allow_seen' => true,

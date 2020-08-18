@@ -10,8 +10,6 @@ use Lmc\Matej\Model\Command\Constants\MinimalRelevance;
  */
 class UserRecommendation extends AbstractCommand implements UserAwareInterface
 {
-    public const FILTER_TYPE_MQL = 'mql';
-
     /** @var string */
     protected $filterOperator = 'and';
     /** @var string */
@@ -30,8 +28,6 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
     private $minimalRelevance;
     /** @var string[] */
     private $filters;
-    /** @var string */
-    private $filterType = self::FILTER_TYPE_MQL;
     /** @var string|null */
     private $modelName;
     /** @var string[] */
@@ -330,7 +326,6 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
 
         if ($this->filters !== null) {
             $parameters['filter'] = $this->assembleFiltersString();
-            $parameters['filter_type'] = $this->filterType;
         }
 
         if ($this->responseProperties !== null) {
