@@ -39,7 +39,7 @@
         "phpstan/phpstan-phpunit": "^0.12.1",
         "phpunit/phpunit": "^6.4 || ^7.0 || ^8.0",
         "symfony/var-dumper": "^3.3 || ^4.0 || ^5.0",
-        "symplify/easy-coding-standard": "*"
+        "symplify/easy-coding-standard": "7.2.19"
     },
     "config": {
         "sort-packages": true
