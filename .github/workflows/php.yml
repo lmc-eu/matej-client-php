@@ -34,4 +34,8 @@ jobs:
       run: composer install --prefer-dist --no-progress --no-suggest
 
     - name: Run test suite
+      env:
+        MATEJ_TEST_ACCOUNTID: ${{ secrets.MATEJ_TEST_ACCOUNTID }}
+        MATEJ_TEST_APIKEY: ${{ secrets.MATEJ_TEST_APIKEY }}
+        MATEJ_TEST_BASE_URL: ${{ secrets.MATEJ_TEST_BASE_URL }}
       run: composer all
