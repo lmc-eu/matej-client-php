@@ -7,6 +7,7 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Http\Client\Promise\HttpFulfilledPromise;
 use Http\Client\Promise\HttpRejectedPromise;
+use Http\Promise\Promise;
 use Lmc\Matej\Exception\AuthorizationException;
 use Lmc\Matej\Exception\RequestException;
 use PHPUnit\Framework\TestCase;
@@ -30,7 +31,9 @@ class ExceptionPluginTest extends TestCase
         };
 
         $plugin = new ExceptionPlugin();
-        $promise = $plugin->handleRequest($request, $next, function (): void {});
+        $promise = $plugin->handleRequest($request, $next, function() use ($response): Promise {
+            return new HttpFulfilledPromise($response);
+        });
         $this->assertInstanceOf(HttpFulfilledPromise::class, $promise);
         $this->assertSame($response, $promise->wait());
     }
@@ -63,7 +66,10 @@ class ExceptionPluginTest extends TestCase
 
         $plugin = new ExceptionPlugin();
 
-        $promise = $plugin->handleRequest($request, $next, function (): void {});
+        $promise = $plugin->handleRequest($request, $next, function() use ($response): Promise {
+            return new HttpFulfilledPromise($response);
+        });
+
         $this->assertInstanceOf(HttpRejectedPromise::class, $promise);
 
         $this->expectException($expectedExceptionClass);
