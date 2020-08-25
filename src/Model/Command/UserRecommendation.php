@@ -10,6 +10,9 @@ use Lmc\Matej\Model\Command\Constants\MinimalRelevance;
  */
 class UserRecommendation extends AbstractCommand implements UserAwareInterface
 {
+    /** @deprecated No longer used, will be removed in next major release. */
+    public const FILTER_TYPE_MQL = 'mql';
+
     /** @var string */
     protected $filterOperator = 'and';
     /** @var string */

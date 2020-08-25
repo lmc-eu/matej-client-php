@@ -5,6 +5,7 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+- Mark `UserRecommendation::FILTER_TYPE_MQL` deprecated.
 
 ## 3.0.1 - 2020-08-18
 ### Changed
