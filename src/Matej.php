@@ -13,17 +13,11 @@ class Matej
     public const CLIENT_ID = 'php-client';
     public const VERSION = '3.0.1';
 
-    /** @var string */
-    private $accountId;
-    /** @var string */
-    private $apiKey;
     /** @var RequestManager */
     private $requestManager;
 
     public function __construct(string $accountId, string $apiKey)
     {
-        $this->accountId = $accountId;
-        $this->apiKey = $apiKey;
         $this->requestManager = new RequestManager($accountId, $apiKey);
     }
 
