@@ -88,7 +88,7 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
      */
     public function addFilter(string $filter): self
     {
-        if ($this->filters == null) {
+        if ($this->filters === null) {
             $this->filters = [];
         }
         $this->filters[] = $filter;
@@ -120,7 +120,7 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
     {
         Assertion::typeIdentifier($property);
 
-        if ($this->responseProperties == null) {
+        if ($this->responseProperties === null) {
             $this->responseProperties = [];
         }
         $this->responseProperties[] = $property;
@@ -274,10 +274,10 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
     protected function getSerializedBoosts(): array
     {
         return array_map(
-        function (Boost $boost) {
-            return $boost->jsonSerialize();
-        },
-        $this->boosts
+            static function (Boost $boost) {
+                return $boost->jsonSerialize();
+            },
+            $this->boosts
         );
     }
 
