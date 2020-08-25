@@ -3,6 +3,7 @@
 namespace Lmc\Matej\IntegrationTests\RequestBuilder;
 
 use Lmc\Matej\IntegrationTests\IntegrationTestCase;
+use Lmc\Matej\Model\Command;
 use Lmc\Matej\Model\Command\Boost;
 use Lmc\Matej\Model\Command\Interaction;
 use Lmc\Matej\Model\Command\UserMerge;
@@ -76,6 +77,28 @@ class RecommendationRequestBuilderTest extends IntegrationTestCase
         $this->assertInstanceOf(RecommendationsResponse::class, $response);
         $this->assertResponseCommandStatuses($response, 'SKIPPED', 'SKIPPED', 'INVALID');
         $this->assertShorthandResponse($response, 'SKIPPED', 'SKIPPED', 'INVALID');
+    }
+
+    /** @test */
+    public function shouldFilterByItemProperties(): void
+    {
+        $matej = static::createMatejInstance();
+
+        $response = $matej
+            ->request()
+            ->setupItemProperties()
+            ->addProperty(Command\ItemPropertySetup::boolean('for_recommendation'))
+            ->send();
+        $this->assertSame(1, $response->getNumberOfCommands());
+        $this->assertSame(1, $response->getNumberOfSuccessfulCommands());
+        $response = $matej
+            ->request()
+            ->recommendation($this->createRecommendationCommand('user-a')
+                ->addFilter('for_recommendation = 1')
+            )->send();
+        $this->assertInstanceOf(RecommendationsResponse::class, $response);
+        $this->assertResponseCommandStatuses($response, 'SKIPPED', 'SKIPPED', 'OK');
+        $this->assertShorthandResponse($response, 'SKIPPED', 'SKIPPED', 'OK');
     }
 
     private function createRecommendationCommand(string $username): UserRecommendation
