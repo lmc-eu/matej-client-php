@@ -7,6 +7,11 @@
 ## Unreleased
 - Mark `UserRecommendation::FILTER_TYPE_MQL` deprecated.
 
+### Fixed
+- Response to UserRecommendation request without specified item properties now works as documented.
+Each recommendation is an instance of `StdClass` containing `item_id` property.
+
+
 ## 3.0.1 - 2020-08-18
 ### Changed
 - Client doesn't send no longer used parameter `filter_type`.

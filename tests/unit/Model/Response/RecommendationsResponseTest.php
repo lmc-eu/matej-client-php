@@ -43,6 +43,56 @@ class RecommendationsResponseTest extends UnitTestCase
         $this->assertSame(['MOCK' => 'USER_MERGE'], $response->getUserMerge()->getData());
 
         $this->assertSame('MOCK_RECOMMENDATION_MESSAGE', $response->getRecommendation()->getMessage());
-        $this->assertSame(['MOCK' => 'RECOMMENDATION'], $response->getRecommendation()->getData());
+        $this->assertEquals(['MOCK' => (object) ['item-id' => 'RECOMMENDATION']], $response->getRecommendation()->getData());
+    }
+
+    /** @test */
+    public function shouldReturnListOfObjectsWithComplexResponseTest(): void
+    {
+        $interactionCommandResponse = (object) [
+            'status' => CommandResponse::STATUS_OK,
+            'message' => 'MOCK_INTERACTION_MESSAGE',
+            'data' => ['MOCK' => 'INTERACTION'],
+        ];
+        $userMergeCommandResponse = (object) [
+            'status' => CommandResponse::STATUS_OK,
+            'message' => 'MOCK_USER_MERGE_MESSAGE',
+            'data' => ['MOCK' => 'USER_MERGE'],
+        ];
+        $recommendationCommandResponse = (object) [
+            'status' => CommandResponse::STATUS_OK,
+            'message' => 'MOCK_RECOMMENDATION_MESSAGE',
+            'data' => [(object) ['item-id' => 'MOCK_ITEM_ID']],
+        ];
+
+        $response = new RecommendationsResponse(3, 3, 0, 0, [$interactionCommandResponse, $userMergeCommandResponse, $recommendationCommandResponse]);
+        $this->assertTrue($response->getRecommendation()->isSuccessful());
+        $this->assertSame('MOCK_RECOMMENDATION_MESSAGE', $response->getRecommendation()->getMessage());
+        $this->assertEquals([(object) ['item-id' => 'MOCK_ITEM_ID']], $response->getRecommendation()->getData());
+    }
+
+    /** @test */
+    public function shouldReturnListOfObjectsWithFlatResponseTest(): void
+    {
+        $interactionCommandResponse = (object) [
+            'status' => CommandResponse::STATUS_OK,
+            'message' => 'MOCK_INTERACTION_MESSAGE',
+            'data' => ['MOCK' => 'INTERACTION'],
+        ];
+        $userMergeCommandResponse = (object) [
+            'status' => CommandResponse::STATUS_OK,
+            'message' => 'MOCK_USER_MERGE_MESSAGE',
+            'data' => ['MOCK' => 'USER_MERGE'],
+        ];
+        $recommendationCommandResponse = (object) [
+            'status' => CommandResponse::STATUS_OK,
+            'message' => 'MOCK_RECOMMENDATION_MESSAGE',
+            'data' => ['MOCK_ITEM_ID'],
+        ];
+
+        $response = new RecommendationsResponse(3, 3, 0, 0, [$interactionCommandResponse, $userMergeCommandResponse, $recommendationCommandResponse]);
+        $this->assertTrue($response->getRecommendation()->isSuccessful());
+        $this->assertSame('MOCK_RECOMMENDATION_MESSAGE', $response->getRecommendation()->getMessage());
+        $this->assertEquals([(object) ['item-id' => 'MOCK_ITEM_ID']], $response->getRecommendation()->getData());
     }
 }
