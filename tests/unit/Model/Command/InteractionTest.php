@@ -128,7 +128,8 @@ class InteractionTest extends TestCase
     {
         /** @var Interaction $command */
         $command = forward_static_call_array(
-            [Interaction::class, 'withItem'], $constructorParams
+            [Interaction::class, 'withItem'],
+            $constructorParams
         );
 
         $this->assertInstanceOf(Interaction::class, $command);
@@ -157,7 +158,8 @@ class InteractionTest extends TestCase
     {
         /** @var Interaction $command */
         $command = forward_static_call_array(
-            [Interaction::class, 'withAliasedItem'], $constructorParams
+            [Interaction::class, 'withAliasedItem'],
+            $constructorParams
         );
 
         $this->assertInstanceOf(Interaction::class, $command);

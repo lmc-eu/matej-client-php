@@ -31,7 +31,7 @@ class ExceptionPluginTest extends TestCase
         };
 
         $plugin = new ExceptionPlugin();
-        $promise = $plugin->handleRequest($request, $next, function() use ($response): Promise {
+        $promise = $plugin->handleRequest($request, $next, function () use ($response): Promise {
             return new HttpFulfilledPromise($response);
         });
         $this->assertInstanceOf(HttpFulfilledPromise::class, $promise);
@@ -66,7 +66,7 @@ class ExceptionPluginTest extends TestCase
 
         $plugin = new ExceptionPlugin();
 
-        $promise = $plugin->handleRequest($request, $next, function() use ($response): Promise {
+        $promise = $plugin->handleRequest($request, $next, function () use ($response): Promise {
             return new HttpFulfilledPromise($response);
         });
 

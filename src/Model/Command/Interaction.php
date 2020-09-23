@@ -51,7 +51,11 @@ class Interaction extends AbstractCommand implements UserAwareInterface
         int $timestamp = null
     ): self {
         $interaction = new static(
-            $interactionType, $userId, self::DEFAULT_ITEM_ID_ALIAS, $itemId, $timestamp
+            $interactionType,
+            $userId,
+            self::DEFAULT_ITEM_ID_ALIAS,
+            $itemId,
+            $timestamp
         );
 
         return $interaction;
@@ -68,7 +72,11 @@ class Interaction extends AbstractCommand implements UserAwareInterface
         int $timestamp = null
     ): self {
         return new static(
-            $interactionType, $userId, $itemIdAlias, $itemId, $timestamp
+            $interactionType,
+            $userId,
+            $itemIdAlias,
+            $itemId,
+            $timestamp
         );
     }
 

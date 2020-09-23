@@ -28,8 +28,9 @@ class InteractionRequestTest extends IntegrationTestCase
         $response = static::createMatejInstance()
             ->request()
             ->events()
-            ->addInteraction(Interaction::withItem('purchase', 'user-a', 'item-a')
-                ->setAttribute('quantity', 2)
+            ->addInteraction(
+                Interaction::withItem('purchase', 'user-a', 'item-a')
+                    ->setAttribute('quantity', 2)
             )
             ->send();
 
