@@ -22,8 +22,9 @@ class RecommendationRequestBuilderTest extends IntegrationTestCase
     {
         $response = static::createMatejInstance()
             ->request()
-            ->recommendation($this->createRecommendationCommand('user-a')
-                ->addBoost(Boost::create('age > 1', 1.2))
+            ->recommendation(
+                $this->createRecommendationCommand('user-a')
+                    ->addBoost(Boost::create('age > 1', 1.2))
             )->send();
 
         $this->assertInstanceOf(RecommendationsResponse::class, $response);
@@ -93,9 +94,8 @@ class RecommendationRequestBuilderTest extends IntegrationTestCase
         $this->assertSame(1, $response->getNumberOfSuccessfulCommands());
         $response = $matej
             ->request()
-            ->recommendation($this->createRecommendationCommand('user-a')
-                ->addFilter('for_recommendation = 1')
-            )->send();
+            ->recommendation($this->createRecommendationCommand('user-a')->addFilter('for_recommendation = 1'))
+            ->send();
         $this->assertInstanceOf(RecommendationsResponse::class, $response);
         $this->assertResponseCommandStatuses($response, 'SKIPPED', 'SKIPPED', 'OK');
         $this->assertShorthandResponse($response, 'SKIPPED', 'SKIPPED', 'OK');
