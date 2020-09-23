@@ -475,3 +475,10 @@ To run all those checks execute:
 ```sh
 $ composer all
 ```
+
+In case of codestyle violation you can run this command which will try to automatically fix the codestyle:
+
+
+```sh
+$ composer fix
+```
