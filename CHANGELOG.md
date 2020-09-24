@@ -5,12 +5,13 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+
+## 3.0.2 - 2020-09-24
 - Mark `UserRecommendation::FILTER_TYPE_MQL` deprecated.
 
 ### Fixed
 - Response to UserRecommendation request without specified item properties now works as documented.
 Each recommendation is an instance of `StdClass` containing `item_id` property.
-
 
 ## 3.0.1 - 2020-08-18
 ### Changed
