@@ -7,8 +7,11 @@ use Lmc\Matej\UnitTestCase;
 
 class RecommendationsResponseTest extends UnitTestCase
 {
-    /** @test */
-    public function shouldBeInstantiable(): void
+    /**
+     * @test
+     * @dataProvider provideRecommendationResponseData
+     */
+    public function shouldBeInstantiable(array $recommendationResponseData): void
     {
         $interactionCommandResponse = (object) [
             'status' => CommandResponse::STATUS_OK,
@@ -23,7 +26,7 @@ class RecommendationsResponseTest extends UnitTestCase
         $recommendationCommandResponse = (object) [
             'status' => CommandResponse::STATUS_OK,
             'message' => 'MOCK_RECOMMENDATION_MESSAGE',
-            'data' => ['MOCK' => 'RECOMMENDATION'],
+            'data' => $recommendationResponseData,
         ];
 
         $response = new RecommendationsResponse(3, 3, 0, 0, [$interactionCommandResponse, $userMergeCommandResponse, $recommendationCommandResponse]);
@@ -42,7 +45,20 @@ class RecommendationsResponseTest extends UnitTestCase
         $this->assertSame('MOCK_USER_MERGE_MESSAGE', $response->getUserMerge()->getMessage());
         $this->assertSame(['MOCK' => 'USER_MERGE'], $response->getUserMerge()->getData());
 
+        $this->assertTrue($response->getRecommendation()->isSuccessful());
         $this->assertSame('MOCK_RECOMMENDATION_MESSAGE', $response->getRecommendation()->getMessage());
-        $this->assertSame(['MOCK' => 'RECOMMENDATION'], $response->getRecommendation()->getData());
+        $this->assertEquals([(object) ['item-id' => 'MOCK_ITEM_ID']], $response->getRecommendation()->getData());
+    }
+
+    public function provideRecommendationResponseData(): array
+    {
+        return [
+            'complex response data' => [
+                [(object) ['item-id' => 'MOCK_ITEM_ID']],
+            ],
+            'flat response data' => [
+                ['MOCK_ITEM_ID'],
+            ],
+        ];
     }
 }

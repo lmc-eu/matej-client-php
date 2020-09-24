@@ -20,7 +20,7 @@ class CommandResponse
     /** @var string */
     private $message;
     /** @var array */
-    private $data = [];
+    protected $data = [];
 
     private function __construct()
     {

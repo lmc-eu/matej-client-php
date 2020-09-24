@@ -33,9 +33,7 @@ class Response
         $this->numberOfSkippedCommands = $numberOfSkippedCommands;
         $this->responseId = $responseId;
 
-        foreach ($commandResponses as $rawCommandResponse) {
-            $this->commandResponses[] = CommandResponse::createFromRawCommandResponseObject($rawCommandResponse);
-        }
+        $this->commandResponses = $this->decodeRawCommandResponses($commandResponses);
 
         if ($this->numberOfCommands !== count($commandResponses)) {
             throw ResponseDecodingException::forInconsistentNumberOfCommands(
@@ -56,6 +54,16 @@ class Response
             );
         }
         $this->responseId = $responseId;
+    }
+
+    protected function decodeRawCommandResponses(array $commandResponses): array
+    {
+        $decodedResponses = [];
+        foreach ($commandResponses as $rawCommandResponse) {
+            $decodedResponses[] = CommandResponse::createFromRawCommandResponseObject($rawCommandResponse);
+        }
+
+        return $decodedResponses;
     }
 
     public function getNumberOfCommands(): int
