@@ -47,14 +47,14 @@ class RecommendationsResponseTest extends UnitTestCase
 
         $this->assertTrue($response->getRecommendation()->isSuccessful());
         $this->assertSame('MOCK_RECOMMENDATION_MESSAGE', $response->getRecommendation()->getMessage());
-        $this->assertEquals([(object) ['item-id' => 'MOCK_ITEM_ID']], $response->getRecommendation()->getData());
+        $this->assertEquals([(object) ['item_id' => 'MOCK_ITEM_ID']], $response->getRecommendation()->getData());
     }
 
     public function provideRecommendationResponseData(): array
     {
         return [
             'complex response data' => [
-                [(object) ['item-id' => 'MOCK_ITEM_ID']],
+                [(object) ['item_id' => 'MOCK_ITEM_ID']],
             ],
             'flat response data' => [
                 ['MOCK_ITEM_ID'],
