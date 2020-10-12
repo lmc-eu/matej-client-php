@@ -52,6 +52,13 @@ jobs:
           mkdir -p build/logs/
           vendor/bin/phpunit --colors=always --coverage-clover build/logs/clover.xml
 
+      - name: Submit coverage to Coveralls
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          composer global require --dev php-coveralls/php-coveralls
+          ~/.composer/vendor/bin/php-coveralls --coverage_clover=./build/logs/clover.xml -v
+
   codestyle:
     name: "Code style and static analysis"
     runs-on: ubuntu-latest
