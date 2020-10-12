@@ -36,7 +36,6 @@ class ItemPropertiesSetupRequestBuilderTest extends TestCase
 
         $request = $builder->build();
 
-        $this->assertInstanceOf(Request::class, $request);
         $this->assertSame($expectedMethod, $request->getMethod());
         $this->assertSame('/item-properties', $request->getPath());
         $this->assertContainsOnlyInstancesOf(ItemPropertySetup::class, $request->getData());

@@ -22,7 +22,6 @@ class AuthorizationExceptionTest extends UnitTestCase
 
         $exception = AuthorizationException::fromRequestAndResponse($request, $response);
 
-        $this->assertInstanceOf(AuthorizationException::class, $exception);
         $this->assertSame(
             'Matej API authorization error for url "/endpoint" (Invalid signature. Check your secret key)',
             $exception->getMessage()

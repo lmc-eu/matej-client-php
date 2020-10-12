@@ -39,7 +39,6 @@ class RecommendationRequestBuilderTest extends TestCase
 
         $request = $builder->build();
 
-        $this->assertInstanceOf(Request::class, $request);
         $this->assertSame(RequestMethodInterface::METHOD_POST, $request->getMethod());
         $this->assertSame('/recommendations', $request->getPath());
 
@@ -143,7 +142,7 @@ class RecommendationRequestBuilderTest extends TestCase
         $builder = new RecommendationRequestBuilder($recommendationsCommand);
         $builder->setUserMerge($userMergeCommand);
         $builder->setInteraction($interactionCommand);
-        $this->assertInstanceOf(Request::class, $builder->build());
+        $this->assertNotEmpty($builder->build());
     }
 
     /**

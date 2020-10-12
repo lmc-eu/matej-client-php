@@ -12,7 +12,6 @@ class UserRecommendationTest extends TestCase
     {
         $command = UserRecommendation::create('user-id', 'test-scenario');
 
-        $this->assertInstanceOf(UserRecommendation::class, $command);
         $this->assertEquals(
             [
                 'type' => 'user-based-recommendations',
@@ -49,8 +48,6 @@ class UserRecommendationTest extends TestCase
             ->addResponseProperty('item_url')
             ->addBoost(Boost::create('valid_to >= NOW()', 1.0))
             ->addBoost(Boost::create('custom = argument', 2.0));
-
-        $this->assertInstanceOf(UserRecommendation::class, $command);
 
         $this->assertEquals(
             [

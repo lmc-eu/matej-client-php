@@ -36,7 +36,6 @@ class ForgetRequestBuilderTest extends TestCase
 
         $request = $builder->build();
 
-        $this->assertInstanceOf(Request::class, $request);
         $this->assertSame(RequestMethodInterface::METHOD_POST, $request->getMethod());
         $this->assertSame('/forget', $request->getPath());
 

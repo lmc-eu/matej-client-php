@@ -45,7 +45,7 @@ class ResponseTest extends UnitTestCase
         $this->assertCount(count($commandResponses), $response->getCommandResponses());
         $this->assertContainsOnlyInstancesOf(CommandResponse::class, $response->getCommandResponses());
         for ($i = 0; $i < count($commandResponses); $i++) {
-            $this->assertInstanceOf(CommandResponse::class, $response->getCommandResponse($i));
+            $this->assertNotEmpty($response->getCommandResponse($i));
         }
     }
 

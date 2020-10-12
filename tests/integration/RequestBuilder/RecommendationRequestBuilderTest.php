@@ -8,7 +8,6 @@ use Lmc\Matej\Model\Command\Boost;
 use Lmc\Matej\Model\Command\Interaction;
 use Lmc\Matej\Model\Command\UserMerge;
 use Lmc\Matej\Model\Command\UserRecommendation;
-use Lmc\Matej\Model\CommandResponse;
 use Lmc\Matej\Model\Response\RecommendationsResponse;
 
 /**
@@ -115,9 +114,6 @@ class RecommendationRequestBuilderTest extends IntegrationTestCase
         string $userMergeStatus,
         string $recommendationStatus
     ): void {
-        $this->assertInstanceOf(CommandResponse::class, $response->getInteraction());
-        $this->assertInstanceOf(CommandResponse::class, $response->getUserMerge());
-        $this->assertInstanceOf(CommandResponse::class, $response->getRecommendation());
         $this->assertSame($interactionStatus, $response->getInteraction()->getStatus());
         $this->assertSame($userMergeStatus, $response->getUserMerge()->getStatus());
         $this->assertSame($recommendationStatus, $response->getRecommendation()->getStatus());

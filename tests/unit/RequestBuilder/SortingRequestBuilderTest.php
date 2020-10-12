@@ -36,7 +36,6 @@ class SortingRequestBuilderTest extends TestCase
 
         $request = $builder->build();
 
-        $this->assertInstanceOf(Request::class, $request);
         $this->assertSame(RequestMethodInterface::METHOD_POST, $request->getMethod());
         $this->assertSame('/sorting', $request->getPath());
 
@@ -116,7 +115,7 @@ class SortingRequestBuilderTest extends TestCase
         $builder = new SortingRequestBuilder($sortingCommand);
         $builder->setUserMerge($userMergeCommand);
         $builder->setInteraction($interactionCommand);
-        $this->assertInstanceOf(Request::class, $builder->build());
+        $this->assertNotEmpty($builder->build());
     }
 
     /**

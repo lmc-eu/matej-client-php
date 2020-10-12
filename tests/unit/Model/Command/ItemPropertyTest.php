@@ -25,7 +25,6 @@ class ItemPropertyTest extends TestCase
     {
         $command = ItemProperty::create('exampleItemId', $properties);
 
-        $this->assertInstanceOf(ItemProperty::class, $command);
         $this->assertSame(
             [
                 'type' => 'item-properties',

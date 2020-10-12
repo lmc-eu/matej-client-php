@@ -37,10 +37,8 @@ class RequestManagerTest extends UnitTestCase
             'custom-request-id'
         );
 
-        $matejResponse = $requestManager->sendRequest($request);
-
-        // Request should be decoded to Matej Response; decoding itself is comprehensively tested in ResponseDecoderTest
-        $this->assertInstanceOf(Response::class, $matejResponse);
+        // Response decoding is comprehensively tested in ResponseDecoderTest
+        $requestManager->sendRequest($request);
 
         // Assert properties of the send request
         $recordedRequests = $mockClient->getRequests();
