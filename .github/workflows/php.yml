@@ -2,45 +2,91 @@ name: Run all tests
 
 on:
   push:
-    branches: [ master ]
   pull_request:
     branches: [ master ]
   workflow_dispatch:
+  schedule:
+    - cron:  '0 3 * * *'
 
 jobs:
-  test:
-    runs-on: ${{ matrix.operating-system }}
+  tests:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        operating-system: [ ubuntu-latest ]
-        php: ['7.2', '7.3', '7.4']
-    name: Tests with PHP ${{ matrix.php }}
+        php-version: ['7.1', '7.2', '7.3', '7.4']
+        dependencies: ['']
+        include:
+          - { php-version: '7.1', dependencies: '--prefer-lowest' }
+          - { php-version: '8.0', dependencies: '--ignore-platform-req=php' }
+
+    name: PHP ${{ matrix.php-version }} ${{ matrix.dependencies }}
 
     steps:
-    - uses: actions/checkout@v2
-    - uses: nanasess/setup-php@master
-      with:
-        php-version: ${{ matrix.php }}
+      - uses: actions/checkout@v2
 
-    - name: Validate composer.json and composer.lock
-      run: composer validate
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: mbstring, intl, zip
+          coverage: xdebug
+          tools: composer:v2
 
-    - name: Cache Composer packages
-      id: composer-cache
-      uses: actions/cache@v2
-      with:
-        path: vendor
-        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-php-
+      - name: Cache Composer dependencies
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ matrix.dependencies }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
 
-    - name: Install dependencies
-      if: steps.composer-cache.outputs.cache-hit != 'true'
-      run: composer install --prefer-dist --no-progress --no-suggest
+      - name: Install dependencies
+        run: composer update --no-interaction --no-progress --no-suggest ${{ matrix.dependencies }}
 
-    - name: Run test suite
-      env:
-        MATEJ_TEST_ACCOUNTID: ${{ secrets.MATEJ_TEST_ACCOUNTID }}
-        MATEJ_TEST_APIKEY: ${{ secrets.MATEJ_TEST_APIKEY }}
-        MATEJ_TEST_BASE_URL: ${{ secrets.MATEJ_TEST_BASE_URL }}
-      run: composer all
+      - name: Run tests
+        env:
+          MATEJ_TEST_ACCOUNTID: ${{ secrets.MATEJ_TEST_ACCOUNTID }}
+          MATEJ_TEST_APIKEY: ${{ secrets.MATEJ_TEST_APIKEY }}
+          MATEJ_TEST_BASE_URL: ${{ secrets.MATEJ_TEST_BASE_URL }}
+        run: |
+          mkdir -p build/logs/
+          vendor/bin/phpunit --colors=always --coverage-clover build/logs/clover.xml
+
+  codestyle:
+    name: "Code style and static analysis"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          extensions: mbstring, intl
+
+      - name: Cache Composer dependencies
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer update --no-interaction --no-progress --no-suggest
+
+      - name: Lint
+        run: composer lint
+
+      - name: Run checks
+        run: composer analyze
+
+  markdown-link-check:
+    name: "Markdown link check"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          use-verbose-mode: 'yes'
