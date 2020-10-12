@@ -19,7 +19,6 @@ class CommandResponseTest extends UnitTestCase
     ): void {
         $commandResponse = CommandResponse::createFromRawCommandResponseObject($objectResponse);
 
-        $this->assertInstanceOf(CommandResponse::class, $commandResponse);
         $this->assertSame($expectedStatus, $commandResponse->getStatus());
         $this->assertSame($expectedMessage, $commandResponse->getMessage());
         $this->assertSame($expectedData, $commandResponse->getData());

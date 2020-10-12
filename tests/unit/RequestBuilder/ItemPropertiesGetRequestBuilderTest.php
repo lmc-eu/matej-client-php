@@ -22,7 +22,6 @@ class ItemPropertiesGetRequestBuilderTest extends UnitTestCase
 
         $request = $builder->build();
 
-        $this->assertInstanceOf(Request::class, $request);
         $this->assertSame(RequestMethodInterface::METHOD_GET, $request->getMethod());
         $this->assertSame('/item-properties', $request->getPath());
         $this->assertEmpty($request->getData());

@@ -47,7 +47,6 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
     }
 
     /**
-     * @param string $userId
      * @param string $scenario Name of the place where recommendations are applied - eg. 'search-results-page',
      * 'emailing', 'empty-search-results, 'homepage', ...
      * @return static
@@ -116,7 +115,6 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
     /**
      * Add another response property you want returned. item_id is always returned by Matej.
      *
-     * @param string $property
      * @return $this
      */
     public function addResponseProperty(string $property): self
@@ -222,7 +220,6 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
     /**
      * Set how much should the item be penalized for being recommended again in the near future.
      *
-     * @param float $rotationRate
      * @return $this
      */
     public function setRotationRate(float $rotationRate): self
@@ -238,7 +235,6 @@ class UserRecommendation extends AbstractCommand implements UserAwareInterface
      * Specify for how long will the item's rotationRate be taken in account and so the item is penalized for
      * recommendations.
      *
-     * @param int $rotationTime
      * @return $this
      */
     public function setRotationTime(int $rotationTime): self

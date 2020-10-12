@@ -53,9 +53,6 @@ abstract class AbstractRequestBuilder
         return $this;
     }
 
-    /**
-     * @return Response
-     */
     public function send(): Response
     {
         $this->assertRequestManagerIsAvailable();

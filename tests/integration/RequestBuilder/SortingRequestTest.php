@@ -6,7 +6,6 @@ use Lmc\Matej\IntegrationTests\IntegrationTestCase;
 use Lmc\Matej\Model\Command\Interaction;
 use Lmc\Matej\Model\Command\Sorting;
 use Lmc\Matej\Model\Command\UserMerge;
-use Lmc\Matej\Model\CommandResponse;
 use Lmc\Matej\Model\Response\SortingResponse;
 
 /**
@@ -62,9 +61,6 @@ class SortingRequestTest extends IntegrationTestCase
         string $userMergeStatus,
         string $sortingStatus
     ): void {
-        $this->assertInstanceOf(CommandResponse::class, $response->getInteraction());
-        $this->assertInstanceOf(CommandResponse::class, $response->getUserMerge());
-        $this->assertInstanceOf(CommandResponse::class, $response->getSorting());
         $this->assertSame($interactionStatus, $response->getInteraction()->getStatus());
         $this->assertSame($userMergeStatus, $response->getUserMerge()->getStatus());
         $this->assertSame($sortingStatus, $response->getSorting()->getStatus());

@@ -22,7 +22,6 @@ class ResetDatabaseRequestBuilderTest extends UnitTestCase
 
         $request = $builder->build();
 
-        $this->assertInstanceOf(Request::class, $request);
         $this->assertSame(RequestMethodInterface::METHOD_DELETE, $request->getMethod());
         $this->assertSame('/database', $request->getPath());
         $this->assertEmpty($request->getData());

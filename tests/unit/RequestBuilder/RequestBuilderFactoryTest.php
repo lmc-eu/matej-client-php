@@ -42,10 +42,9 @@ class RequestBuilderFactoryTest extends TestCase
         $minimalBuilderInit($builder);
 
         $this->assertInstanceOf($expectedBuilderClass, $builder);
-        $this->assertInstanceOf(Request::class, $builder->build());
 
         // Make sure the builder has been properly configured and it can execute send() via RequestManager mock:
-        $this->assertInstanceOf(Response::class, $builder->send());
+        $this->assertNotEmpty($builder->send());
     }
 
     /**
