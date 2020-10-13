@@ -19,6 +19,7 @@ class Assertion extends \Assert\Assertion
 
     /**
      * Assert value is valid Matej type identifier
+     *
      * @param mixed $value
      */
     public static function typeIdentifier($value): bool
