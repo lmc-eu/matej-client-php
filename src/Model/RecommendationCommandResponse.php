@@ -16,7 +16,7 @@ class RecommendationCommandResponse extends CommandResponse
            consistent format. */
         foreach ($this->data as $key => $val) {
             if (is_string($val)) {
-                $val = (object) ['item-id' => $val];
+                $val = (object) ['item_id' => $val];
             }
             $data[$key] = $val;
         }
