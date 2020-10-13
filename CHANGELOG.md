@@ -5,6 +5,8 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+
+## 3.1.0 - 2020-10-13
 ### Fixed
 - Attribute `item-id` renamed to `item_id` in recommendation request response.
 
