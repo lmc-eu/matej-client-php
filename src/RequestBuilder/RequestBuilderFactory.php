@@ -98,6 +98,14 @@ class RequestBuilderFactory
         return $requestBuilder;
     }
 
+    public function resetData(): ResetDataRequestBuilder
+    {
+        $requestBuilder = new ResetDataRequestBuilder();
+        $this->setupBuilder($requestBuilder);
+
+        return $requestBuilder;
+    }
+
     private function setupBuilder(AbstractRequestBuilder $requestBuilder): void
     {
         $requestBuilder->setRequestManager($this->requestManager);

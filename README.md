@@ -139,6 +139,21 @@ $response = $matej->request()
 var_dump($response->isSuccessful()); // true on success
 ```
 
+### Reset data
+
+Data (users and items) of test accounts (those ending with `-test`) could be reset via the API.
+Using this you can delete all data while keeping database setup (item properties, scenarios).
+
+```php
+$matej = new Matej('accountId', 'apikey');
+
+$response = $matej->request()
+    ->resetData()
+    ->send();
+
+var_dump($response->isSuccessful()); // true on success
+```
+
 ### Send Events data to Matej
 
 You can use `events()` builder for sending batch of following commands to Matej:

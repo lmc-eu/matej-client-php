@@ -98,6 +98,7 @@ class RequestBuilderFactoryTest extends TestCase
             'recommendation' => ['recommendation', RecommendationRequestBuilder::class, $voidInit, $userRecommendation],
             'forget' => ['forget', ForgetRequestBuilder::class, $forgetInit],
             'resetDatabase' => ['resetDatabase', ResetDatabaseRequestBuilder::class, $voidInit],
+            'resetData' => ['resetData', ResetDataRequestBuilder::class, $voidInit],
         ];
     }
 }
