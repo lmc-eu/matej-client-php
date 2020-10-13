@@ -5,6 +5,11 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+### Fixed
+- Attribute `item-id` renamed to `item_id` in recommendation request response.
+
+### Added
+- Added support for Matej command `resetData()` to remove data from instance.
 
 ## 3.0.2 - 2020-09-24
 - Mark `UserRecommendation::FILTER_TYPE_MQL` deprecated.
