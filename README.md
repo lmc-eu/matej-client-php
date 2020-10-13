@@ -1,7 +1,7 @@
 # PHP API Client for Matej recommendation engine
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/lmc/matej-client.svg?style=flat-square)](https://packagist.org/packages/lmc/matej-client)
-[![Travis Build Status](https://img.shields.io/travis/lmc-eu/matej-client-php/master.svg?style=flat-square)](https://travis-ci.org/lmc-eu/matej-client-php)
+[![GitHub Actions Build Status](https://img.shields.io/github/workflow/status/lmc-eu/matej-client-php/Tests%20and%20linting?style=flat-square&label=GitHub%20Actions%20build)](https://github.com/lmc-eu/matej-client-php/actions)
 [![Coverage Status](https://img.shields.io/coveralls/lmc-eu/matej-client-php/master.svg?style=flat-square)](https://coveralls.io/r/lmc-eu/matej-client-php?branch=master)
 
 ## Still using PHP 5.6?
