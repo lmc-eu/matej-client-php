@@ -4,9 +4,10 @@ namespace Lmc\Matej\RequestBuilder;
 
 use Fig\Http\Message\RequestMethodInterface;
 use Lmc\Matej\Exception\LogicException;
+use Lmc\Matej\Model\Command\AbstractRecommendation;
+use Lmc\Matej\Model\Command\AbstractUserRecommendation;
 use Lmc\Matej\Model\Command\Interaction;
 use Lmc\Matej\Model\Command\UserMerge;
-use Lmc\Matej\Model\Command\UserRecommendation;
 use Lmc\Matej\Model\Request;
 use Lmc\Matej\Model\Response\RecommendationsResponse;
 
@@ -21,10 +22,10 @@ class RecommendationRequestBuilder extends AbstractRequestBuilder
     private $interactionCommand;
     /** @var UserMerge|null */
     private $userMergeCommand;
-    /** @var UserRecommendation */
+    /** @var AbstractRecommendation */
     private $userRecommendationCommand;
 
-    public function __construct(UserRecommendation $userRecommendationCommand)
+    public function __construct(AbstractRecommendation $userRecommendationCommand)
     {
         $this->userRecommendationCommand = $userRecommendationCommand;
     }
@@ -68,7 +69,7 @@ class RecommendationRequestBuilder extends AbstractRequestBuilder
      */
     private function assertInteractionUserId(): void
     {
-        if ($this->interactionCommand === null) {
+        if ($this->interactionCommand === null || !($this->userRecommendationCommand instanceof AbstractUserRecommendation)) {
             return;
         }
 
@@ -101,8 +102,11 @@ class RecommendationRequestBuilder extends AbstractRequestBuilder
      */
     private function assertUserMergeUserId(): void
     {
-        if ($this->userMergeCommand !== null
-            && $this->userMergeCommand->getUserId() !== $this->userRecommendationCommand->getUserId()) {
+        if ($this->userMergeCommand === null || !($this->userRecommendationCommand instanceof AbstractUserRecommendation)) {
+            return;
+        }
+
+        if ($this->userMergeCommand->getUserId() !== $this->userRecommendationCommand->getUserId()) {
             throw LogicException::forInconsistentUserId($this->userRecommendationCommand, $this->userMergeCommand);
         }
     }

@@ -3,8 +3,8 @@
 namespace Lmc\Matej\RequestBuilder;
 
 use Lmc\Matej\Http\RequestManager;
+use Lmc\Matej\Model\Command\AbstractRecommendation;
 use Lmc\Matej\Model\Command\Sorting;
-use Lmc\Matej\Model\Command\UserRecommendation;
 
 /**
  * Factory to create concrete RequestBuilder which helps you to create request for each Matej API
@@ -74,7 +74,7 @@ class RequestBuilderFactory
         return $requestBuilder;
     }
 
-    public function recommendation(UserRecommendation $recommendation): RecommendationRequestBuilder
+    public function recommendation(AbstractRecommendation $recommendation): RecommendationRequestBuilder
     {
         $requestBuilder = new RecommendationRequestBuilder($recommendation);
         $this->setupBuilder($requestBuilder);

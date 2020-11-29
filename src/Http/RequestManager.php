@@ -131,7 +131,7 @@ class RequestManager
                 $uri,
                 [
                     'Content-Type' => 'application/json',
-                    static::REQUEST_ID_HEADER => $request->getRequestId(),
+                    static::REQUEST_ID_HEADER => $request->getRequestId()
                 ],
                 $requestBody
             );

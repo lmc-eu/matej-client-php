@@ -186,9 +186,16 @@ If that happens, you should resend the entire request later, as no commands were
 
 This has been implemented so that we don't lose any pushed data. Simple sleep of 100ms should be enough.
 
-### Recommendations for single user
+### Requesting recommendations
 
-You can get recommendations for a single user using `recommendation()` builder.
+You can request 4 types of recommendation from Matej. Each of them is represented by a specific recommendation command class:
+
+- Items to user - UserItemRecommendation
+- Items to item - ItemItemRecommendation
+- Users to user - UserUserRecommendation
+- Users to item - ItemUserRecommendation
+
+For example, you can get recommendations for a single user using `recommendation()` builder.
 You can attach most recent interaction and user merge event to the request so that they're taken into account
 when providing recommendations.
 
@@ -196,7 +203,7 @@ when providing recommendations.
 $matej = new Matej('accountId', 'apikey');
 
 $response = $matej->request()
-    ->recommendation(UserRecommendation::create('user-id', 'test-scenario'))
+    ->recommendation(UserItemRecommendation::create('user-id', 'test-scenario'))
     ->setInteraction(Interaction::withItem('purchases', 'user-id', 'item-id')) // optional
     ->setUserMerge(UserMerge::mergeInto('user-id', 'source-id')) // optional
     ->send();
@@ -204,15 +211,33 @@ $response = $matej->request()
 $recommendations = $response->getRecommendation()->getData();
 ```
 
-You can also set more granular options of the recommendation command and overwrite Matej default behavior on per-request basis:
+You can also set more granular options of the recommendation command and overwrite Matej default behaviour on per-request basis.
+
+Each type of recommendation command supports different customization options. See table bellow.
+
+
+| Atribute      | Methods                                   | UserItemRecommendation | UserUserRecommendation | ItemItemRecommendation | ItemUserRecommendation |
+|---------------|-------------------------------------------|------------------------|------------------------|------------------------|------------------------|
+| scenario      |              `static::create`               |            ✅           |            ✅           |            ✅           |            ✅           |
+| count         |                  `setCount`                 |            ✅           |            ✅           |            ✅           |            ✅           |
+| rotation_rate |              `setRotationRate`              |            ✅           |            ✅           |            ❌           |            ❌           |
+| rotation_time |              `setRotationTime`              |            ✅           |            ✅           |            ❌           |            ❌           |
+| hard_rotation |             `enableHardRotation`            |            ✅           |            ✅           |            ❌           |            ❌           |
+| allow_seen    |                `setAllowSeen`               |            ✅           |            ✅           |            ❌           |            ✅           |
+| min_relevance |            `setMinimalRelevance`            |  `ItemMinimalRelevance`  |            ❌           |            ❌           |  `UserMinimalRelevance`  |
+| filter        |            `addFilter` `setFilters`           |            ✅           |            ❌           |            ✅           |            ❌           |
+| boost_rules   |             `addBoost` `setBoosts`            |            ✅           |            ❌           |            ✅           |            ❌           |
+| model_name    |                `setModelName`               |            ✅           |            ✅           |            ✅           |            ✅           |
+| properties    | `addResponseProperty` `setResponseProperties` |            ✅           |            ❌           |            ✅           |            ❌           |
+
 
 ```php
-$recommendation = UserRecommendation::create('user-id', 'test-scenario')
+$recommendation = UserItemRecommendation::create('user-id', 'test-scenario')
     ->setCount(5)
     ->setRotationRate(1.0)
     ->setRotationTime(3600)
     ->setFilters(['for_recommendation = 1'])
-    ->setMinimalRelevance(MinimalRelevance::HIGH())
+    ->setMinimalRelevance(ItemMinimalRelevance::HIGH())
     ->enableHardRotation()
     // You can further modify which items will be recommended by providing boosting rules.
     // Priority of items matching the query will be multiplied by the value of multiplier:
@@ -256,7 +281,7 @@ these properties to be returned as part of your Recommendation Request.
 We call them response properties. They can be specified by calling `->addResponseProperty()` method or by calling `->setResponseProperties()` method. Following will request an `item_id`, `item_url`, `item_title`:
 
 ```php
-$recommendation = UserRecommendation::create('user-id', 'test-scenario')
+$recommendation = UserItemRecommendation::create('user-id', 'test-scenario')
     ->addResponseProperty('item_title')
     ->addResponseProperty('item_url');
 
@@ -337,7 +362,7 @@ $response = $matej->request()
     ->addSorting(Sorting::create('user-id', ['item-id-1', 'item-id-2', 'item-id-3']))
     ->addSortings([/* array of Sorting objects */])
     // Request user-based recommendations
-    ->addRecommendation(UserRecommendation::create('user-id', 'emailing'))
+    ->addRecommendation(UserItemRecommendation::create('user-id', 'emailing'))
     ->addRecommendations([/* array of UserRecommendation objects */])
     ->send();
 ```
@@ -349,7 +374,7 @@ but once available, you can specify which model you want to use when requesting 
 This is available for `recommendation`, `sorting` and `campaign` requests:
 
 ```php
-$recommendationCommand = UserRecommendation::create('user-id', 'test-scenario')
+$recommendationCommand = UserItemRecommendation::create('user-id', 'test-scenario')
     ->setModelName('alpha');
 
 $sortingCommand = Sorting::create('user-id', ['item-id-1', 'item-id-2', 'item-id-3']);
@@ -376,7 +401,7 @@ Typically, you'd select a random sample of users, to which you'd present recomme
 in your code should look similar to this:
 
 ```php
-$recommendation = UserRecommendation::create('user-id', 'test-scenario');
+$recommendation = UserItemRecommendation::create('user-id', 'test-scenario');
 
 if ($session->isUserInBucketB()) {
     $recommendation->setModelName('alpha');

@@ -5,6 +5,13 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+### Added
+- Added support for new recommendation types - `UserUserRecommendation`, `ItemUserRecommendation`, `ItemItemRecommendation`.
+
+### Changed
+- **BC BREAK** | Removed deprecated constant `FILTER_TYPE_MQL` from `UserRecommendation`.
+- **BC BREAK** | Class `UserRecommendation` renamed to `UserItemRecommendation`.
+- **BC BREAK** | Class `MinimalRelavance` renamed to `ItemMinimalRelevances`.
 
 ## 3.1.0 - 2020-10-13
 ### Fixed
