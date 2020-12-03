@@ -212,7 +212,7 @@ $recommendation = UserItemRecommendation::create('user-id', 'test-scenario')
     ->setRotationRate(1.0)
     ->setRotationTime(3600)
     ->setFilters(['for_recommendation = 1'])
-    ->setMinimalRelevance(MinimalRelevance::HIGH())
+    ->setMinimalRelevance(ItemMinimalRelevance::HIGH())
     ->enableHardRotation()
     // You can further modify which items will be recommended by providing boosting rules.
     // Priority of items matching the query will be multiplied by the value of multiplier:

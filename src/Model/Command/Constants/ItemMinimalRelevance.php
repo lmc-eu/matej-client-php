@@ -5,11 +5,11 @@ namespace Lmc\Matej\Model\Command\Constants;
 use MyCLabs\Enum\Enum;
 
 /**
- * @method static MinimalRelevance LOW()
- * @method static MinimalRelevance MEDIUM()
- * @method static MinimalRelevance HIGH()
+ * @method static ItemMinimalRelevance LOW()
+ * @method static ItemMinimalRelevance MEDIUM()
+ * @method static ItemMinimalRelevance HIGH()
  */
-final class MinimalRelevance extends Enum
+final class ItemMinimalRelevance extends Enum
 {
     public const LOW = 'low';
     public const MEDIUM = 'medium';

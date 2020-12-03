@@ -3,7 +3,7 @@
 namespace Lmc\Matej\Model\Command;
 
 use Lmc\Matej\Model\Assertion;
-use Lmc\Matej\Model\Command\Constants\MinimalRelevance;
+use Lmc\Matej\Model\Command\Constants\ItemMinimalRelevance;
 
 /**
  * Deliver personalized recommendations for the given user.
@@ -27,7 +27,7 @@ class UserItemRecommendation extends AbstractCommand implements UserAwareInterfa
     private $rotationTime;
     /** @var bool */
     private $hardRotation;
-    /** @var MinimalRelevance */
+    /** @var ItemMinimalRelevance */
     private $minimalRelevance;
     /** @var string[] */
     private $filters;
@@ -76,7 +76,7 @@ class UserItemRecommendation extends AbstractCommand implements UserAwareInterfa
      *
      * @return $this
      */
-    public function setMinimalRelevance(MinimalRelevance $minimalRelevance): self
+    public function setMinimalRelevance(ItemMinimalRelevance $minimalRelevance): self
     {
         $this->minimalRelevance = $minimalRelevance;
 

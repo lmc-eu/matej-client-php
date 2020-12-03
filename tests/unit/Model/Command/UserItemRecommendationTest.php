@@ -2,7 +2,7 @@
 
 namespace Lmc\Matej\Model\Command;
 
-use Lmc\Matej\Model\Command\Constants\MinimalRelevance;
+use Lmc\Matej\Model\Command\Constants\ItemMinimalRelevance;
 use PHPUnit\Framework\TestCase;
 
 class UserItemRecommendationTest extends TestCase
@@ -40,7 +40,7 @@ class UserItemRecommendationTest extends TestCase
             ->setRotationRate($rotationRate)
             ->setRotationTime($rotationTime);
 
-        $command->setMinimalRelevance(MinimalRelevance::HIGH())
+        $command->setMinimalRelevance(ItemMinimalRelevance::HIGH())
             ->enableHardRotation()
             ->setFilters(['foo = bar', 'baz = ban'])
             ->setModelName($modelName)
@@ -59,7 +59,7 @@ class UserItemRecommendationTest extends TestCase
                     'rotation_rate' => $rotationRate,
                     'rotation_time' => $rotationTime,
                     'hard_rotation' => true,
-                    'min_relevance' => MinimalRelevance::HIGH,
+                    'min_relevance' => ItemMinimalRelevance::HIGH,
                     'filter' => 'foo = bar and baz = ban',
                     'properties' => ['item_url'],
                     'model_name' => $modelName,

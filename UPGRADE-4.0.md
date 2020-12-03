@@ -5,12 +5,13 @@ API client release 4.0 contains backward incompatible changes.
 This guide will help you upgrade your codebase.
 
 ## Recommending items to users
-Class `UserRecommendation` was renamed to `UserItemRecommendation`. All other methods and attributes remained unchanged.
+Class `UserRecommendation` was renamed to `UserItemRecommendation`. Class `MinimalRelevance` was
+renamed to `ItemMinimalRelevance`. All other methods and attributes remained unchanged.
 
 #### Before
 ```php
 $recommendation = UserRecommendation::create('user-id', 'scenario')
-    ->setMinimalRelevance(MinimalRelevance::LOW())
+    ->setMinimalRelevance(ItemMinimalRelevance::LOW())
     ->setCount(5)
     ->setRotationRate(1.0)
     ->setRotationTime(3600);
@@ -19,7 +20,7 @@ $recommendation = UserRecommendation::create('user-id', 'scenario')
 #### After
 ```php
 $recommendation = UserItemRecommendation::create('user-id', 'scenario')
-    ->setMinimalRelevance(MinimalRelevance::LOW())
+    ->setMinimalRelevance(ItemMinimalRelevance::LOW())
     ->setCount(5)
     ->setRotationRate(1.0)
     ->setRotationTime(3600);

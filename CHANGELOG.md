@@ -7,6 +7,7 @@
 ## Unreleased
 ### Changed
 - **BC BREAK** | Class `UserRecommendation` renamed to `UserItemRecommendation`.
+- **BC BREAK** | Class `MinimalRelavance` renamed to `ItemMinimalRelevances`.
 
 ## 3.1.0 - 2020-10-13
 ### Fixed
