@@ -2,67 +2,53 @@
 
 namespace Lmc\Matej\Model\Command;
 
-use Lmc\Matej\Model\Command\Constants\ItemMinimalRelevance;
 use PHPUnit\Framework\TestCase;
 
-class UserItemRecommendationTest extends TestCase
+class ItemItemRecommendationTest extends TestCase
 {
     /** @test */
     public function shouldBeInstantiableViaNamedConstructorWithDefaultValues(): void
     {
-        $command = UserItemRecommendation::create('user-id', 'test-scenario');
+        $command = ItemItemRecommendation::create('item-id', 'test-scenario');
 
         $this->assertEquals(
             [
-                'type' => 'user-item-recommendations',
+                'type' => 'item-item-recommendations',
                 'parameters' => [
-                    'user_id' => 'user-id',
+                    'item_id' => 'item-id',
                     'scenario' => 'test-scenario',
                 ],
             ],
             $command->jsonSerialize()
         );
-        $this->assertSame('user-id', $command->getUserId());
     }
 
     /** @test */
     public function shouldUseCustomParameters(): void
     {
-        $userId = 'user-' . md5(microtime());
+        $itemId = 'item-' . md5(microtime());
         $count = random_int(1, 100);
         $scenario = 'scenario-' . md5(microtime());
-        $rotationRate = mt_rand() / mt_getrandmax();
-        $rotationTime = random_int(1, 86400);
         $modelName = 'test-model-' . md5(microtime());
 
-        $command = UserItemRecommendation::create($userId, $scenario)
+        $command = ItemItemRecommendation::create($itemId, $scenario)
             ->setCount($count)
-            ->setRotationRate($rotationRate)
-            ->setRotationTime($rotationTime)
-            ->setMinimalRelevance(ItemMinimalRelevance::HIGH())
-            ->enableHardRotation()
             ->setFilters(['foo = bar', 'baz = ban'])
             ->setModelName($modelName)
-            ->setAllowSeen(true)
             ->addResponseProperty('item_url')
             ->addBoost(Boost::create('valid_to >= NOW()', 1.0))
             ->addBoost(Boost::create('custom = argument', 2.0));
 
         $this->assertEquals(
             [
-                'type' => 'user-item-recommendations',
+                'type' => 'item-item-recommendations',
                 'parameters' => [
-                    'user_id' => $userId,
+                    'item_id' => $itemId,
                     'count' => $count,
                     'scenario' => $scenario,
-                    'rotation_rate' => $rotationRate,
-                    'rotation_time' => $rotationTime,
-                    'hard_rotation' => true,
-                    'min_relevance' => ItemMinimalRelevance::HIGH,
                     'filter' => 'foo = bar and baz = ban',
                     'properties' => ['item_url'],
                     'model_name' => $modelName,
-                    'allow_seen' => true,
                     'boost_rules' => [
                         ['query' => 'valid_to >= NOW()', 'multiplier' => 1.0],
                         ['query' => 'custom = argument', 'multiplier' => 2.0],
@@ -76,7 +62,7 @@ class UserItemRecommendationTest extends TestCase
     /** @test */
     public function shouldAssembleMqlFilters(): void
     {
-        $command = UserItemRecommendation::create('user-id', 'test-scenario');
+        $command = ItemItemRecommendation::create('item-id', 'test-scenario');
 
         // Default filter
         $this->assertArrayNotHasKey('filter', $command->jsonSerialize()['parameters']);
@@ -108,7 +94,7 @@ class UserItemRecommendationTest extends TestCase
     /** @test */
     public function shouldAllowModificationOfResponseProperties(): void
     {
-        $command = UserItemRecommendation::create('user-id', 'test-scenario');
+        $command = ItemItemRecommendation::create('item-id', 'test-scenario');
         $command->addResponseProperty('test');
         $this->assertSame(['test'], $command->jsonSerialize()['parameters']['properties']);
 
@@ -124,13 +110,14 @@ class UserItemRecommendationTest extends TestCase
     /** @test */
     public function shouldResetBoostRules(): void
     {
-        $command = UserItemRecommendation::create('user-id', 'test-scenario')
-            ->addBoost(Boost::create('valid_to >= NOW()', 1.0));
-
-        $command->setBoosts([
-            Boost::create('foo = bar', 1.2),
-            Boost::create('baz = ban', 3.4),
-        ]);
+        $command = ItemItemRecommendation::create('item-id', 'test-scenario')
+            ->addBoost(Boost::create('valid_to >= NOW()', 1.0))
+            ->setBoosts(
+                [
+                    Boost::create('foo = bar', 1.2),
+                    Boost::create('baz = ban', 3.4),
+                ]
+            );
 
         $this->assertSame(
             [
@@ -144,7 +131,7 @@ class UserItemRecommendationTest extends TestCase
     /** @test */
     public function shouldNotIncludeEmptyBoosts(): void
     {
-        $command = UserItemRecommendation::create('user-id', 'test-scenario')
+        $command = ItemItemRecommendation::create('item-id', 'test-scenario')
             ->setBoosts([]);
 
         $this->assertArrayNotHasKey('boost_rules', $command->jsonSerialize()['parameters']);

@@ -70,7 +70,7 @@ class RequestBuilderFactoryTest extends TestCase
 
         $voidInit = function ($builder): void {};
 
-        $userItemRecommendation = UserItemRecommendation::create('user-id', 'test-scenario')
+        $userRecommendation = UserItemRecommendation::create('user-id', 'test-scenario')
             ->setCount(5)
             ->setRotationRate(0.5)
             ->setRotationTime(3600);
@@ -95,7 +95,7 @@ class RequestBuilderFactoryTest extends TestCase
                 $voidInit,
                 Sorting::create('user-a', ['item-a', 'item-b', 'item-c']),
             ],
-            'recommendation' => ['recommendation', RecommendationRequestBuilder::class, $voidInit, $userItemRecommendation],
+            'recommendation' => ['recommendation', RecommendationRequestBuilder::class, $voidInit, $userRecommendation],
             'forget' => ['forget', ForgetRequestBuilder::class, $forgetInit],
             'resetDatabase' => ['resetDatabase', ResetDatabaseRequestBuilder::class, $voidInit],
             'resetData' => ['resetData', ResetDataRequestBuilder::class, $voidInit],

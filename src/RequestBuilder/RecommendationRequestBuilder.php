@@ -4,8 +4,9 @@ namespace Lmc\Matej\RequestBuilder;
 
 use Fig\Http\Message\RequestMethodInterface;
 use Lmc\Matej\Exception\LogicException;
+use Lmc\Matej\Model\Command\AbstractRecommendation;
+use Lmc\Matej\Model\Command\AbstractUserRecommendation;
 use Lmc\Matej\Model\Command\Interaction;
-use Lmc\Matej\Model\Command\UserItemRecommendation;
 use Lmc\Matej\Model\Command\UserMerge;
 use Lmc\Matej\Model\Request;
 use Lmc\Matej\Model\Response\RecommendationsResponse;
@@ -21,12 +22,12 @@ class RecommendationRequestBuilder extends AbstractRequestBuilder
     private $interactionCommand;
     /** @var UserMerge|null */
     private $userMergeCommand;
-    /** @var UserItemRecommendation */
-    private $userItemRecommendationCommand;
+    /** @var AbstractRecommendation */
+    private $userRecommendationCommand;
 
-    public function __construct(UserItemRecommendation $userItemRecommendationCommand)
+    public function __construct(AbstractRecommendation $userRecommendationCommand)
     {
-        $this->userItemRecommendationCommand = $userItemRecommendationCommand;
+        $this->userRecommendationCommand = $userRecommendationCommand;
     }
 
     /** @return $this */
@@ -53,7 +54,7 @@ class RecommendationRequestBuilder extends AbstractRequestBuilder
         return new Request(
             static::ENDPOINT_PATH,
             RequestMethodInterface::METHOD_POST,
-            [$this->interactionCommand, $this->userMergeCommand, $this->userItemRecommendationCommand],
+            [$this->interactionCommand, $this->userMergeCommand, $this->userRecommendationCommand],
             $this->requestId,
             RecommendationsResponse::class
         );
@@ -68,21 +69,21 @@ class RecommendationRequestBuilder extends AbstractRequestBuilder
      */
     private function assertInteractionUserId(): void
     {
-        if ($this->interactionCommand === null) {
+        if ($this->interactionCommand === null || !($this->userRecommendationCommand instanceof AbstractUserRecommendation)) {
             return;
         }
 
         $interactionUserId = $this->interactionCommand->getUserId();
 
         // (A, null, A)
-        if ($this->userMergeCommand === null && $interactionUserId !== $this->userItemRecommendationCommand->getUserId()) {
-            throw LogicException::forInconsistentUserId($this->userItemRecommendationCommand, $this->interactionCommand);
+        if ($this->userMergeCommand === null && $interactionUserId !== $this->userRecommendationCommand->getUserId()) {
+            throw LogicException::forInconsistentUserId($this->userRecommendationCommand, $this->interactionCommand);
         }
 
         // allow (B, A -> B, B)
         if ($this->userMergeCommand !== null
             && $interactionUserId === $this->userMergeCommand->getUserId()
-            && $interactionUserId === $this->userItemRecommendationCommand->getUserId()) {
+            && $interactionUserId === $this->userRecommendationCommand->getUserId()) {
             return;
         }
 
@@ -101,9 +102,12 @@ class RecommendationRequestBuilder extends AbstractRequestBuilder
      */
     private function assertUserMergeUserId(): void
     {
-        if ($this->userMergeCommand !== null
-            && $this->userMergeCommand->getUserId() !== $this->userItemRecommendationCommand->getUserId()) {
-            throw LogicException::forInconsistentUserId($this->userItemRecommendationCommand, $this->userMergeCommand);
+        if ($this->userMergeCommand === null || !($this->userRecommendationCommand instanceof AbstractUserRecommendation)) {
+            return;
+        }
+
+        if ($this->userMergeCommand->getUserId() !== $this->userRecommendationCommand->getUserId()) {
+            throw LogicException::forInconsistentUserId($this->userRecommendationCommand, $this->userMergeCommand);
         }
     }
 }

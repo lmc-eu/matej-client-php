@@ -6,8 +6,8 @@ use Fig\Http\Message\RequestMethodInterface;
 use Lmc\Matej\Exception\LogicException;
 use Lmc\Matej\Model\Assertion;
 use Lmc\Matej\Model\Command\AbstractCommand;
+use Lmc\Matej\Model\Command\AbstractRecommendation;
 use Lmc\Matej\Model\Command\Sorting;
-use Lmc\Matej\Model\Command\UserItemRecommendation;
 use Lmc\Matej\Model\Request;
 
 class CampaignRequestBuilder extends AbstractRequestBuilder
@@ -17,8 +17,7 @@ class CampaignRequestBuilder extends AbstractRequestBuilder
     /** @var AbstractCommand[] */
     protected $commands = [];
 
-    /** @return $this */
-    public function addRecommendation(UserItemRecommendation $recommendation): self
+    public function addRecommendation(AbstractRecommendation $recommendation): self
     {
         $this->commands[] = $recommendation;
 
@@ -26,8 +25,7 @@ class CampaignRequestBuilder extends AbstractRequestBuilder
     }
 
     /**
-     * @param UserItemRecommendation[] $recommendations
-     * @return $this
+     * @param AbstractRecommendation[] $recommendations
      */
     public function addRecommendations(array $recommendations): self
     {
