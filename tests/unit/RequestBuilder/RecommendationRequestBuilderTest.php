@@ -7,8 +7,8 @@ use Lmc\Matej\Exception\LogicException;
 use Lmc\Matej\Http\RequestManager;
 use Lmc\Matej\Model\Command\Interaction;
 use Lmc\Matej\Model\Command\Sorting;
+use Lmc\Matej\Model\Command\UserItemRecommendation;
 use Lmc\Matej\Model\Command\UserMerge;
-use Lmc\Matej\Model\Command\UserRecommendation;
 use Lmc\Matej\Model\Request;
 use Lmc\Matej\Model\Response;
 use Lmc\Matej\Model\Response\RecommendationsResponse;
@@ -23,7 +23,7 @@ class RecommendationRequestBuilderTest extends TestCase
     /** @test */
     public function shouldBuildRequestWithCommands(): void
     {
-        $recommendationsCommand = UserRecommendation::create('userId1', 'test-scenario')
+        $recommendationsCommand = UserItemRecommendation::create('userId1', 'test-scenario')
             ->setCount(5)
             ->setRotationRate(0.5)
             ->setRotationTime(3600);
@@ -55,7 +55,7 @@ class RecommendationRequestBuilderTest extends TestCase
     /** @test */
     public function shouldThrowExceptionWhenSendingCommandsWithoutRequestManager(): void
     {
-        $recommendationsCommand = UserRecommendation::create('userId1', 'test-scenario')
+        $recommendationsCommand = UserItemRecommendation::create('userId1', 'test-scenario')
             ->setCount(5)
             ->setRotationRate(0.5)
             ->setRotationTime(3600);
@@ -84,7 +84,7 @@ class RecommendationRequestBuilderTest extends TestCase
     public function shouldThrowExceptionWhenInteractionIsForUnrelatedUser(): void
     {
         $builder = new RecommendationRequestBuilder(
-            $recommendationsCommand = UserRecommendation::create('userId1', 'scenario')
+            $recommendationsCommand = UserItemRecommendation::create('userId1', 'scenario')
                 ->setCount(5)
                 ->setRotationRate(0.5)
                 ->setRotationTime(3600)
@@ -94,7 +94,7 @@ class RecommendationRequestBuilderTest extends TestCase
 
         $this->expectException(LogicException::class);
         $this->expectExceptionMessage(
-            'User in Interaction command ("different-user") must be the same as user in UserRecommendation command '
+            'User in Interaction command ("different-user") must be the same as user in UserItemRecommendation command '
             . '("userId1")'
         );
         $builder->build();
@@ -104,7 +104,7 @@ class RecommendationRequestBuilderTest extends TestCase
     public function shouldThrowExceptionWhenMergeIsForUnrelatedUser(): void
     {
         $builder = new RecommendationRequestBuilder(
-            $recommendationsCommand = UserRecommendation::create('userId1', 'scenario')
+            $recommendationsCommand = UserItemRecommendation::create('userId1', 'scenario')
                 ->setCount(5)
                 ->setRotationRate(0.5)
                 ->setRotationTime(3600)
@@ -114,7 +114,7 @@ class RecommendationRequestBuilderTest extends TestCase
 
         $this->expectException(LogicException::class);
         $this->expectExceptionMessage(
-            'User in UserMerge command ("different-user") must be the same as user in UserRecommendation command'
+            'User in UserMerge command ("different-user") must be the same as user in UserItemRecommendation command'
             . ' ("userId1")'
         );
         $builder->build();
@@ -134,7 +134,7 @@ class RecommendationRequestBuilderTest extends TestCase
     ): void {
         $interactionCommand = Interaction::withItem('purchases', $interactionUser, 'test-item-id');
         $userMergeCommand = UserMerge::mergeFromSourceToTargetUser($sourceUserToBeDeleted, $targetUserId);
-        $recommendationsCommand = UserRecommendation::create($recommendationUser, 'scenario')
+        $recommendationsCommand = UserItemRecommendation::create($recommendationUser, 'scenario')
             ->setCount(5)
             ->setRotationRate(0.5)
             ->setRotationTime(3600);
@@ -154,7 +154,7 @@ class RecommendationRequestBuilderTest extends TestCase
     {
         $interactionCommand = Interaction::withItem('purchases', 'test-user-a', 'test-item-id');
         $userMergeCommand = UserMerge::mergeFromSourceToTargetUser('test-user-b', 'test-user-a');
-        $recommendationsCommand = UserRecommendation::create('test-user-b', 'scenario')
+        $recommendationsCommand = UserItemRecommendation::create('test-user-b', 'scenario')
             ->setCount(5)
             ->setRotationRate(0.5)
             ->setRotationTime(3600);

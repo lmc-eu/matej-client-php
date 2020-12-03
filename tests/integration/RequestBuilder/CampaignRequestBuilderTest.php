@@ -5,7 +5,7 @@ namespace Lmc\Matej\IntegrationTests\RequestBuilder;
 use Lmc\Matej\Exception\LogicException;
 use Lmc\Matej\IntegrationTests\IntegrationTestCase;
 use Lmc\Matej\Model\Command\Sorting;
-use Lmc\Matej\Model\Command\UserRecommendation;
+use Lmc\Matej\Model\Command\UserItemRecommendation;
 
 /**
  * @covers \Lmc\Matej\RequestBuilder\CampaignRequestBuilder
@@ -45,9 +45,9 @@ class CampaignRequestBuilderTest extends IntegrationTestCase
         $this->assertResponseCommandStatuses($response, ...$this->generateOkStatuses(6));
     }
 
-    private function createRecommendationCommand(string $letter): UserRecommendation
+    private function createRecommendationCommand(string $letter): UserItemRecommendation
     {
-        return UserRecommendation::create('user-' . $letter, 'integration-test-scenario')
+        return UserItemRecommendation::create('user-' . $letter, 'integration-test-scenario')
             ->setCount(1)
             ->setRotationRate(1)
             ->setRotationTime(3600);

@@ -7,7 +7,7 @@ use Lmc\Matej\Model\Command\ItemProperty;
 use Lmc\Matej\Model\Command\ItemPropertySetup;
 use Lmc\Matej\Model\Command\Sorting;
 use Lmc\Matej\Model\Command\UserForget;
-use Lmc\Matej\Model\Command\UserRecommendation;
+use Lmc\Matej\Model\Command\UserItemRecommendation;
 use Lmc\Matej\Model\Request;
 use Lmc\Matej\Model\Response;
 use PHPUnit\Framework\TestCase;
@@ -70,7 +70,7 @@ class RequestBuilderFactoryTest extends TestCase
 
         $voidInit = function ($builder): void {};
 
-        $userRecommendation = UserRecommendation::create('user-id', 'test-scenario')
+        $userItemRecommendation = UserItemRecommendation::create('user-id', 'test-scenario')
             ->setCount(5)
             ->setRotationRate(0.5)
             ->setRotationTime(3600);
@@ -95,7 +95,7 @@ class RequestBuilderFactoryTest extends TestCase
                 $voidInit,
                 Sorting::create('user-a', ['item-a', 'item-b', 'item-c']),
             ],
-            'recommendation' => ['recommendation', RecommendationRequestBuilder::class, $voidInit, $userRecommendation],
+            'recommendation' => ['recommendation', RecommendationRequestBuilder::class, $voidInit, $userItemRecommendation],
             'forget' => ['forget', ForgetRequestBuilder::class, $forgetInit],
             'resetDatabase' => ['resetDatabase', ResetDatabaseRequestBuilder::class, $voidInit],
             'resetData' => ['resetData', ResetDataRequestBuilder::class, $voidInit],

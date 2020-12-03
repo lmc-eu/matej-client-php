@@ -7,7 +7,7 @@ use Lmc\Matej\Exception\LogicException;
 use Lmc\Matej\Model\Assertion;
 use Lmc\Matej\Model\Command\AbstractCommand;
 use Lmc\Matej\Model\Command\Sorting;
-use Lmc\Matej\Model\Command\UserRecommendation;
+use Lmc\Matej\Model\Command\UserItemRecommendation;
 use Lmc\Matej\Model\Request;
 
 class CampaignRequestBuilder extends AbstractRequestBuilder
@@ -18,7 +18,7 @@ class CampaignRequestBuilder extends AbstractRequestBuilder
     protected $commands = [];
 
     /** @return $this */
-    public function addRecommendation(UserRecommendation $recommendation): self
+    public function addRecommendation(UserItemRecommendation $recommendation): self
     {
         $this->commands[] = $recommendation;
 
@@ -26,7 +26,7 @@ class CampaignRequestBuilder extends AbstractRequestBuilder
     }
 
     /**
-     * @param UserRecommendation[] $recommendations
+     * @param UserItemRecommendation[] $recommendations
      * @return $this
      */
     public function addRecommendations(array $recommendations): self

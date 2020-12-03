@@ -5,12 +5,12 @@ namespace Lmc\Matej\Model\Command;
 use Lmc\Matej\Model\Command\Constants\MinimalRelevance;
 use PHPUnit\Framework\TestCase;
 
-class UserRecommendationTest extends TestCase
+class UserItemRecommendationTest extends TestCase
 {
     /** @test */
     public function shouldBeInstantiableViaNamedConstructorWithDefaultValues(): void
     {
-        $command = UserRecommendation::create('user-id', 'test-scenario');
+        $command = UserItemRecommendation::create('user-id', 'test-scenario');
 
         $this->assertEquals(
             [
@@ -35,7 +35,7 @@ class UserRecommendationTest extends TestCase
         $rotationTime = random_int(1, 86400);
         $modelName = 'test-model-' . md5(microtime());
 
-        $command = UserRecommendation::create($userId, $scenario)
+        $command = UserItemRecommendation::create($userId, $scenario)
             ->setCount($count)
             ->setRotationRate($rotationRate)
             ->setRotationTime($rotationTime);
@@ -77,7 +77,7 @@ class UserRecommendationTest extends TestCase
     /** @test */
     public function shouldAssembleMqlFilters(): void
     {
-        $command = UserRecommendation::create('user-id', 'test-scenario');
+        $command = UserItemRecommendation::create('user-id', 'test-scenario');
 
         // Default filter
         $this->assertArrayNotHasKey('filter', $command->jsonSerialize()['parameters']);
@@ -109,7 +109,7 @@ class UserRecommendationTest extends TestCase
     /** @test */
     public function shouldAllowModificationOfResponseProperties(): void
     {
-        $command = UserRecommendation::create('user-id', 'test-scenario');
+        $command = UserItemRecommendation::create('user-id', 'test-scenario');
         $command->addResponseProperty('test');
         $this->assertSame(['test'], $command->jsonSerialize()['parameters']['properties']);
 
@@ -125,7 +125,7 @@ class UserRecommendationTest extends TestCase
     /** @test */
     public function shouldResetBoostRules(): void
     {
-        $command = UserRecommendation::create('user-id', 'test-scenario')
+        $command = UserItemRecommendation::create('user-id', 'test-scenario')
             ->addBoost(Boost::create('valid_to >= NOW()', 1.0));
 
         $command->setBoosts([
@@ -145,7 +145,7 @@ class UserRecommendationTest extends TestCase
     /** @test */
     public function shouldNotIncludeEmptyBoosts(): void
     {
-        $command = UserRecommendation::create('user-id', 'test-scenario')
+        $command = UserItemRecommendation::create('user-id', 'test-scenario')
             ->setBoosts([]);
 
         $this->assertArrayNotHasKey('boost_rules', $command->jsonSerialize()['parameters']);

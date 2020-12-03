@@ -7,7 +7,7 @@ use Lmc\Matej\Exception\DomainException;
 use Lmc\Matej\Exception\LogicException;
 use Lmc\Matej\Http\RequestManager;
 use Lmc\Matej\Model\Command\Sorting;
-use Lmc\Matej\Model\Command\UserRecommendation;
+use Lmc\Matej\Model\Command\UserItemRecommendation;
 use Lmc\Matej\Model\Request;
 use Lmc\Matej\Model\Response;
 use PHPUnit\Framework\TestCase;
@@ -23,17 +23,17 @@ class CampaignRequestBuilderTest extends TestCase
     {
         $builder = new CampaignRequestBuilder();
 
-        $recommendationCommand1 = UserRecommendation::create('userId1', 'scenario1')
+        $recommendationCommand1 = UserItemRecommendation::create('userId1', 'scenario1')
             ->setCount(1)
             ->setRotationRate(1.0)
             ->setRotationTime(600);
 
-        $recommendationCommand2 = UserRecommendation::create('userId2', 'scenario2')
+        $recommendationCommand2 = UserItemRecommendation::create('userId2', 'scenario2')
             ->setCount(2)
             ->setRotationRate(0.5)
             ->setRotationTime(700);
 
-        $recommendationCommand3 = UserRecommendation::create('userId3', 'scenario3')
+        $recommendationCommand3 = UserItemRecommendation::create('userId3', 'scenario3')
             ->setCount(3)
             ->setRotationRate(0.0)
             ->setRotationTime(800);
@@ -84,7 +84,7 @@ class CampaignRequestBuilderTest extends TestCase
 
         for ($i = 0; $i < 501; $i++) {
             $builder->addRecommendation(
-                UserRecommendation::create('userId1', 'scenario1')
+                UserItemRecommendation::create('userId1', 'scenario1')
                     ->setCount(1)
                     ->setRotationRate(1.0)
                     ->setRotationTime(600)
@@ -122,7 +122,7 @@ class CampaignRequestBuilderTest extends TestCase
         $builder->setRequestManager($requestManagerMock);
 
         $builder->addRecommendation(
-            UserRecommendation::create('userId1', 'scenario1')
+            UserItemRecommendation::create('userId1', 'scenario1')
                 ->setCount(1)
                 ->setRotationRate(1.0)
                 ->setRotationTime(600)

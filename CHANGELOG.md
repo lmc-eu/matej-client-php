@@ -5,6 +5,8 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+### Changed
+- **BC BREAK** | Class `UserRecommendation` renamed to `UserItemRecommendation`.
 
 ## 3.1.0 - 2020-10-13
 ### Fixed

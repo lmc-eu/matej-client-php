@@ -6,8 +6,8 @@ use Lmc\Matej\IntegrationTests\IntegrationTestCase;
 use Lmc\Matej\Model\Command;
 use Lmc\Matej\Model\Command\Boost;
 use Lmc\Matej\Model\Command\Interaction;
+use Lmc\Matej\Model\Command\UserItemRecommendation;
 use Lmc\Matej\Model\Command\UserMerge;
-use Lmc\Matej\Model\Command\UserRecommendation;
 use Lmc\Matej\Model\Response\RecommendationsResponse;
 
 /**
@@ -100,9 +100,9 @@ class RecommendationRequestBuilderTest extends IntegrationTestCase
         $this->assertShorthandResponse($response, 'SKIPPED', 'SKIPPED', 'OK');
     }
 
-    private function createRecommendationCommand(string $username): UserRecommendation
+    private function createRecommendationCommand(string $username): UserItemRecommendation
     {
-        return UserRecommendation::create($username, 'integration-test-scenario')
+        return UserItemRecommendation::create($username, 'integration-test-scenario')
             ->setCount(5)
             ->setRotationRate(0.50)
             ->setRotationTime(3600);

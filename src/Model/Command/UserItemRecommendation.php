@@ -8,7 +8,7 @@ use Lmc\Matej\Model\Command\Constants\MinimalRelevance;
 /**
  * Deliver personalized recommendations for the given user.
  */
-class UserRecommendation extends AbstractCommand implements UserAwareInterface
+class UserItemRecommendation extends AbstractCommand implements UserAwareInterface
 {
     /** @deprecated No longer used, will be removed in next major release. */
     public const FILTER_TYPE_MQL = 'mql';
