@@ -60,8 +60,6 @@ abstract class AbstractRecommendation extends AbstractCommand
         $this->scenario = $scenario;
     }
 
-    abstract protected function getCommandType(): string;
-
     protected function getCommandParameters(): array
     {
         $parameters = [
