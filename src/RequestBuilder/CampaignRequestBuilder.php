@@ -7,7 +7,7 @@ use Lmc\Matej\Exception\LogicException;
 use Lmc\Matej\Model\Assertion;
 use Lmc\Matej\Model\Command\AbstractCommand;
 use Lmc\Matej\Model\Command\AbstractRecommendation;
-use Lmc\Matej\Model\Command\Sorting;
+use Lmc\Matej\Model\Command\ItemSorting;
 use Lmc\Matej\Model\Request;
 
 class CampaignRequestBuilder extends AbstractRequestBuilder
@@ -37,7 +37,7 @@ class CampaignRequestBuilder extends AbstractRequestBuilder
     }
 
     /** @return $this */
-    public function addSorting(Sorting $sorting): self
+    public function addSorting(ItemSorting $sorting): self
     {
         $this->commands[] = $sorting;
 
@@ -45,7 +45,7 @@ class CampaignRequestBuilder extends AbstractRequestBuilder
     }
 
     /**
-     * @param Sorting[] $sortings
+     * @param ItemSorting[] $sortings
      * @return $this
      */
     public function addSortings(array $sortings): self

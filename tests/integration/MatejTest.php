@@ -2,7 +2,7 @@
 
 namespace Lmc\Matej\IntegrationTests;
 
-use Lmc\Matej\Model\Command\Sorting;
+use Lmc\Matej\Model\Command\ItemSorting;
 
 class MatejTest extends IntegrationTestCase
 {
@@ -13,7 +13,7 @@ class MatejTest extends IntegrationTestCase
 
         $response = static::createMatejInstance()
             ->request()
-            ->sorting(Sorting::create('integration-test-php-client-user-id-A', ['itemA', 'itemB']))
+            ->sorting(ItemSorting::create('integration-test-php-client-user-id-A', ['itemA', 'itemB']))
             ->setRequestId($requestId)
             ->send();
 

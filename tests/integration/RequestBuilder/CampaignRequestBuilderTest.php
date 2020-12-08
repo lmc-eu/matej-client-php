@@ -5,8 +5,8 @@ namespace Lmc\Matej\IntegrationTests\RequestBuilder;
 use Lmc\Matej\Exception\LogicException;
 use Lmc\Matej\IntegrationTests\IntegrationTestCase;
 use Lmc\Matej\Model\Command\ItemItemRecommendation;
+use Lmc\Matej\Model\Command\ItemSorting;
 use Lmc\Matej\Model\Command\ItemUserRecommendation;
-use Lmc\Matej\Model\Command\Sorting;
 use Lmc\Matej\Model\Command\UserItemRecommendation;
 use Lmc\Matej\Model\Command\UserUserRecommendation;
 
@@ -78,9 +78,9 @@ class CampaignRequestBuilderTest extends IntegrationTestCase
             ->setCount(1);
     }
 
-    private function createSortingCommand(string $letter): Sorting
+    private function createSortingCommand(string $letter): ItemSorting
     {
-        return Sorting::create(
+        return ItemSorting::create(
             'user-' . $letter,
             ['itemA', 'itemB', 'itemC']
         );

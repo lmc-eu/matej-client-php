@@ -4,7 +4,7 @@ namespace Lmc\Matej\Model\Command;
 
 use Lmc\Matej\UnitTestCase;
 
-class SortingTest extends UnitTestCase
+class ItemSortingTest extends UnitTestCase
 {
     /** @test */
     public function shouldBeInstantiableViaNamedConstructor(): void
@@ -13,7 +13,7 @@ class SortingTest extends UnitTestCase
         $itemIds = ['item-1', 'item-3', 'item-2'];
         $modelName = 'test-model-name';
 
-        $command = Sorting::create($userId, $itemIds);
+        $command = ItemSorting::create($userId, $itemIds);
         $this->assertSortingCommand($command, $userId, $itemIds);
 
         $command->setModelName($modelName);
@@ -23,7 +23,7 @@ class SortingTest extends UnitTestCase
     /**
      * Execute asserts against user merge command
      *
-     * @param Sorting $command
+     * @param ItemSorting $command
      */
     private function assertSortingCommand($command, string $userId, array $itemIds, ?string $modelName = null): void
     {
@@ -36,7 +36,7 @@ class SortingTest extends UnitTestCase
             $parameters['model_name'] = $modelName;
         }
 
-        $this->assertInstanceOf(Sorting::class, $command);
+        $this->assertInstanceOf(ItemSorting::class, $command);
         $this->assertSame(
             [
                 'type' => 'sorting',

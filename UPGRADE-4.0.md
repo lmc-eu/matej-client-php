@@ -5,6 +5,23 @@ API client release 4.0 contains backward incompatible changes.
 
 This guide will help you upgrade your codebase.
 
+## Sorting renamed to ItemSorting
+Class `Sorting` was renamed to `ItemSorting`. All its methods and behaviour remained the same.
+
+#### Before
+```php
+$response =  $matej->request()
+    ->sorting(Sorting::create('user-id', ['item-id-1', 'item-id-2', 'item-id-3']))
+    ->send();
+```
+
+#### After
+```php
+$response =  $matej->request()
+    ->sorting(ItemSorting::create('user-id', ['item-id-1', 'item-id-2', 'item-id-3']))
+    ->send();
+```
+
 
 ## New types of recommendations
 API client now supports new types of recommendation commands:

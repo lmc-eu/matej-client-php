@@ -326,7 +326,7 @@ and user merge event in one request, to make them taken into account when execut
 $matej = new Matej('accountId', 'apikey');
 
 $response =  $matej->request()
-    ->sorting(Sorting::create('user-id', ['item-id-1', 'item-id-2', 'item-id-3']))
+    ->sorting(ItemSorting::create('user-id', ['item-id-1', 'item-id-2', 'item-id-3']))
     ->setInteraction(Interaction::withItem('purchases', 'user-id', 'item-id')) // optional
     ->setUserMerge(UserMerge::mergeInto('user-id', 'source-id')) // optional
     ->send();
@@ -359,7 +359,7 @@ $matej = new Matej('accountId', 'apikey');
 $response = $matej->request()
     ->campaign()
     // Request item sortings
-    ->addSorting(Sorting::create('user-id', ['item-id-1', 'item-id-2', 'item-id-3']))
+    ->addSorting(ItemSorting::create('user-id', ['item-id-1', 'item-id-2', 'item-id-3']))
     ->addSortings([/* array of Sorting objects */])
     // Request user-based recommendations
     ->addRecommendation(UserItemRecommendation::create('user-id', 'emailing'))
@@ -368,16 +368,16 @@ $response = $matej->request()
 ```
 
 ### A/B Testing support
-`Recommendation` and `Sorting` commands support optional A/B testing of various models. This has to be set up in Matej first,
+`Recommendation` and `ItemSorting` commands support optional A/B testing of various models. This has to be set up in Matej first,
 but once available, you can specify which model you want to use when requesting recommendations or sorting.
 
-This is available for `recommendation`, `sorting` and `campaign` requests:
+This is available for `Recommendation`, `ItemSorting` and `Campaign` requests:
 
 ```php
 $recommendationCommand = UserItemRecommendation::create('user-id', 'test-scenario')
     ->setModelName('alpha');
 
-$sortingCommand = Sorting::create('user-id', ['item-id-1', 'item-id-2', 'item-id-3']);
+$sortingCommand = ItemSorting::create('user-id', ['item-id-1', 'item-id-2', 'item-id-3']);
 $sortingCommand->setModelName('beta');
 
 $response = $matej->request()

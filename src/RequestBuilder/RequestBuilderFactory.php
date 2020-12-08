@@ -4,7 +4,7 @@ namespace Lmc\Matej\RequestBuilder;
 
 use Lmc\Matej\Http\RequestManager;
 use Lmc\Matej\Model\Command\AbstractRecommendation;
-use Lmc\Matej\Model\Command\Sorting;
+use Lmc\Matej\Model\Command\ItemSorting;
 
 /**
  * Factory to create concrete RequestBuilder which helps you to create request for each Matej API
@@ -66,7 +66,7 @@ class RequestBuilderFactory
         return $requestBuilder;
     }
 
-    public function sorting(Sorting $sorting): SortingRequestBuilder
+    public function sorting(ItemSorting $sorting): SortingRequestBuilder
     {
         $requestBuilder = new SortingRequestBuilder($sorting);
         $this->setupBuilder($requestBuilder);

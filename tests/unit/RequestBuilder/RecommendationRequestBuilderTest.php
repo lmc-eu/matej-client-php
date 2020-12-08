@@ -8,8 +8,8 @@ use Lmc\Matej\Http\RequestManager;
 use Lmc\Matej\Model\Command\AbstractRecommendation;
 use Lmc\Matej\Model\Command\Interaction;
 use Lmc\Matej\Model\Command\ItemItemRecommendation;
+use Lmc\Matej\Model\Command\ItemSorting;
 use Lmc\Matej\Model\Command\ItemUserRecommendation;
-use Lmc\Matej\Model\Command\Sorting;
 use Lmc\Matej\Model\Command\UserItemRecommendation;
 use Lmc\Matej\Model\Command\UserMerge;
 use Lmc\Matej\Model\Command\UserUserRecommendation;
@@ -79,7 +79,7 @@ class RecommendationRequestBuilderTest extends TestCase
             ->with($this->isInstanceOf(Request::class))
             ->willReturn(new Response(0, 0, 0, 0));
 
-        $builder = new SortingRequestBuilder(Sorting::create('userId1', ['itemId1', 'itemId2']));
+        $builder = new SortingRequestBuilder(ItemSorting::create('userId1', ['itemId1', 'itemId2']));
         $builder->setRequestManager($requestManagerMock);
         $builder->send();
     }

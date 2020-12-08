@@ -7,8 +7,8 @@ use Lmc\Matej\Exception\DomainException;
 use Lmc\Matej\Exception\LogicException;
 use Lmc\Matej\Http\RequestManager;
 use Lmc\Matej\Model\Command\ItemItemRecommendation;
+use Lmc\Matej\Model\Command\ItemSorting;
 use Lmc\Matej\Model\Command\ItemUserRecommendation;
-use Lmc\Matej\Model\Command\Sorting;
 use Lmc\Matej\Model\Command\UserItemRecommendation;
 use Lmc\Matej\Model\Command\UserUserRecommendation;
 use Lmc\Matej\Model\Request;
@@ -45,9 +45,9 @@ class CampaignRequestBuilderTest extends TestCase
         $builder->addRecommendation($recommendationCommand1);
         $builder->addRecommendations([$recommendationCommand2, $recommendationCommand3, $recommendationCommand4]);
 
-        $sortingCommand1 = Sorting::create('userId1', ['itemId1', 'itemId2']);
-        $sortingCommand2 = Sorting::create('userId2', ['itemId2', 'itemId3']);
-        $sortingCommand3 = Sorting::create('userId3', ['itemId3', 'itemId4']);
+        $sortingCommand1 = ItemSorting::create('userId1', ['itemId1', 'itemId2']);
+        $sortingCommand2 = ItemSorting::create('userId2', ['itemId2', 'itemId3']);
+        $sortingCommand3 = ItemSorting::create('userId3', ['itemId3', 'itemId4']);
 
         $builder->addSorting($sortingCommand1);
         $builder->addSortings([$sortingCommand2, $sortingCommand3]);
@@ -94,7 +94,7 @@ class CampaignRequestBuilderTest extends TestCase
                     ->setRotationRate(1.0)
                     ->setRotationTime(600)
             );
-            $builder->addSorting(Sorting::create('userId1', ['itemId1', 'itemId2']));
+            $builder->addSorting(ItemSorting::create('userId1', ['itemId1', 'itemId2']));
         }
 
         $this->expectException(DomainException::class);
@@ -107,7 +107,7 @@ class CampaignRequestBuilderTest extends TestCase
     {
         $builder = new CampaignRequestBuilder();
 
-        $builder->addSorting(Sorting::create('userId1', ['itemId1', 'itemId2']));
+        $builder->addSorting(ItemSorting::create('userId1', ['itemId1', 'itemId2']));
 
         $this->expectException(LogicException::class);
         $this->expectExceptionMessage('Instance of RequestManager must be set to request builder');
@@ -132,7 +132,7 @@ class CampaignRequestBuilderTest extends TestCase
                 ->setRotationRate(1.0)
                 ->setRotationTime(600)
         );
-        $builder->addSorting(Sorting::create('userId1', ['itemId1', 'itemId2']));
+        $builder->addSorting(ItemSorting::create('userId1', ['itemId1', 'itemId2']));
 
         $builder->send();
     }
