@@ -5,7 +5,7 @@ namespace Lmc\Matej\Model\Command;
 use Lmc\Matej\Model\Assertion;
 
 /**
- * Deliver personalized recommendations for the given user.
+ * Deliver recommendations for given item.
  */
 abstract class AbstractItemRecommendation extends AbstractRecommendation
 {
@@ -16,11 +16,6 @@ abstract class AbstractItemRecommendation extends AbstractRecommendation
     {
         parent::__construct($scenario);
         $this->setItemId($itemId);
-    }
-
-    public function getItemId(): string
-    {
-        return $this->itemId;
     }
 
     protected function setItemId(string $itemId): void

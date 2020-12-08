@@ -3,7 +3,7 @@
 namespace Lmc\Matej\Model\Command;
 
 /**
- * Deliver personalized recommendations for the given user.
+ * Deliver item recommendations for given item.
  */
 class ItemItemRecommendation extends AbstractItemRecommendation
 {

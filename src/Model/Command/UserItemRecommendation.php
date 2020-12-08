@@ -5,7 +5,7 @@ namespace Lmc\Matej\Model\Command;
 use Lmc\Matej\Model\Command\Constants\ItemMinimalRelevance;
 
 /**
- * Deliver personalized recommendations for the given user.
+ * Deliver item recommendations for given user.
  */
 class UserItemRecommendation extends AbstractUserRecommendation
 {

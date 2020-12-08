@@ -3,7 +3,7 @@
 namespace Lmc\Matej\Model\Command;
 
 /**
- * Deliver personalized recommendations for the given user.
+ * Deliver user recommendations for given user.
  */
 class UserUserRecommendation extends AbstractUserRecommendation
 {

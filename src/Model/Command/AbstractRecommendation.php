@@ -5,7 +5,7 @@ namespace Lmc\Matej\Model\Command;
 use Lmc\Matej\Model\Assertion;
 
 /**
- * Deliver personalized recommendations for the given user.
+ * Deliver recommendations.
  */
 abstract class AbstractRecommendation extends AbstractCommand
 {
