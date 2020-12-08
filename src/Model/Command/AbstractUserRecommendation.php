@@ -17,8 +17,6 @@ abstract class AbstractUserRecommendation extends AbstractRecommendation impleme
     private $rotationTime;
     /** @var bool */
     private $hardRotation;
-    /** @var bool */
-    private $allowSeen = false;
 
     protected function __construct(string $userId, string $scenario)
     {
@@ -35,22 +33,6 @@ abstract class AbstractUserRecommendation extends AbstractRecommendation impleme
     public function enableHardRotation(): self
     {
         $this->hardRotation = true;
-
-        return $this;
-    }
-
-    /**
-     * Allow items, that the user has already "seen"
-     *
-     * By default user won't see any items, that it has visited (and we have recorded DetailView  interaction.)
-     * If you want to circumvent this, and get recommendations including the ones, that the user has already visited,
-     * you can set the "seen" allowance here.
-     *
-     * @return $this
-     */
-    public function setAllowSeen(bool $seen): self
-    {
-        $this->allowSeen = $seen;
 
         return $this;
     }
@@ -111,10 +93,6 @@ abstract class AbstractUserRecommendation extends AbstractRecommendation impleme
 
         if ($this->rotationRate !== null) {
             $parameters['rotation_time'] = $this->rotationTime;
-        }
-
-        if ($this->allowSeen !== false) {
-            $parameters['allow_seen'] = $this->allowSeen;
         }
 
         if ($this->hardRotation !== null) {

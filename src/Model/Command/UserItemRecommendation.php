@@ -13,6 +13,8 @@ class UserItemRecommendation extends AbstractUserRecommendation
 
     /** @var ItemMinimalRelevance */
     private $minimalRelevance;
+    /** @var bool */
+    private $allowSeen = false;
 
     /**
      * @param string $scenario Name of the place where recommendations are applied - eg. 'search-results-page',
@@ -34,6 +36,22 @@ class UserItemRecommendation extends AbstractUserRecommendation
         return $this;
     }
 
+    /**
+     * Allow items, that the user has already "seen"
+     *
+     * By default user won't see any items, that it has visited (and we have recorded DetailView  interaction.)
+     * If you want to circumvent this, and get recommendations including the ones, that the user has already visited,
+     * you can set the "seen" allowance here.
+     *
+     * @return $this
+     */
+    public function setAllowSeen(bool $seen): self
+    {
+        $this->allowSeen = $seen;
+
+        return $this;
+    }
+
     protected function getCommandType(): string
     {
         return 'user-item-recommendations';
@@ -45,6 +63,10 @@ class UserItemRecommendation extends AbstractUserRecommendation
 
         if ($this->minimalRelevance !== null) {
             $parameters['min_relevance'] = $this->minimalRelevance->jsonSerialize();
+        }
+
+        if ($this->allowSeen !== false) {
+            $parameters['allow_seen'] = $this->allowSeen;
         }
 
         $itemsFilterParameters = $this->getItemsFilterParameters();

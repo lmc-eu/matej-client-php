@@ -223,7 +223,7 @@ Each type of recommendation command supports different customization options. Se
 | rotation_rate |              `setRotationRate`              |            ✅           |            ✅           |            ❌           |            ❌           |
 | rotation_time |              `setRotationTime`              |            ✅           |            ✅           |            ❌           |            ❌           |
 | hard_rotation |             `enableHardRotation`            |            ✅           |            ✅           |            ❌           |            ❌           |
-| allow_seen    |                `setAllowSeen`               |            ✅           |            ✅           |            ❌           |            ✅           |
+| allow_seen    |                `setAllowSeen`               |            ✅           |            ❌           |            ❌           |            ✅           |
 | min_relevance |            `setMinimalRelevance`            |  `ItemMinimalRelevance`  |            ❌           |            ❌           |  `UserMinimalRelevance`  |
 | filter        |            `addFilter` `setFilters`           |            ✅           |            ❌           |            ✅           |            ❌           |
 | boost_rules   |             `addBoost` `setBoosts`            |            ✅           |            ❌           |            ✅           |            ❌           |
