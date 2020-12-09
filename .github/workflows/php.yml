@@ -9,7 +9,7 @@ on:
     - cron:  '0 3 * * *'
 
 jobs:
-  tests:
+  unit-tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -19,7 +19,7 @@ jobs:
           - { php-version: '7.1', dependencies: '--prefer-lowest' }
           - { php-version: '8.0', dependencies: '--ignore-platform-req=php' }
 
-    name: PHP ${{ matrix.php-version }} ${{ matrix.dependencies }}
+    name: PHP ${{ matrix.php-version }} ${{ matrix.dependencies }} (unit tests)
 
     steps:
       - uses: actions/checkout@v2
@@ -44,13 +44,42 @@ jobs:
         run: composer update --no-interaction --no-progress --no-suggest ${{ matrix.dependencies }}
 
       - name: Run tests
+        run: |
+          mkdir -p build/logs/
+          vendor/bin/phpunit --testsuite unit --colors=always --coverage-clover build/logs/clover.xml
+
+      - name: Submit coverage to Coveralls
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          composer global require --dev php-coveralls/php-coveralls
+          ~/.composer/vendor/bin/php-coveralls --coverage_clover=./build/logs/clover.xml -v
+
+  integration-tests:
+    name: "Integration tests"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          extensions: mbstring, intl, zip
+          coverage: xdebug
+          tools: composer:v2
+
+      - name: Install dependencies
+        run: composer update --no-interaction --no-progress --no-suggest
+
+      - name: Run tests
         env:
           MATEJ_TEST_ACCOUNTID: ${{ secrets.MATEJ_TEST_ACCOUNTID }}
           MATEJ_TEST_APIKEY: ${{ secrets.MATEJ_TEST_APIKEY }}
           MATEJ_TEST_BASE_URL: ${{ secrets.MATEJ_TEST_BASE_URL }}
         run: |
           mkdir -p build/logs/
-          vendor/bin/phpunit --colors=always --coverage-clover build/logs/clover.xml
+          vendor/bin/phpunit --testsuite functional --colors=always --coverage-clover build/logs/clover.xml
 
       - name: Submit coverage to Coveralls
         env:
