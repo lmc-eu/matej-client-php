@@ -11,7 +11,7 @@
 ### Changed
 - **BC BREAK** | Removed deprecated constant `FILTER_TYPE_MQL` from `UserRecommendation`.
 - **BC BREAK** | Class `UserRecommendation` renamed to `UserItemRecommendation`.
-- **BC BREAK** | Class `MinimalRelavance` renamed to `ItemMinimalRelevances`.
+- **BC BREAK** | Rename class `MinimalRelavance` to `ItemMinimalRelevance`.
 - **BC BREAK** | Class `Sorting` renamed to `ItemSorting`.
 
 ## 3.1.0 - 2020-10-13
