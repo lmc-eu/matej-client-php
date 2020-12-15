@@ -6,7 +6,7 @@
 
 ## Unreleased
 ### Added
-- Added support for new recommendation types - `UserUserRecommendation`, `ItemUserRecommendation`, `ItemItemRecommendation`.
+- Add support for new recommendation types - `UserUserRecommendation`, `ItemUserRecommendation`, `ItemItemRecommendation`.
 
 ### Changed
 - **BC BREAK** | Removed deprecated constant `FILTER_TYPE_MQL` from `UserRecommendation`.
