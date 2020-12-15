@@ -30,8 +30,8 @@ API client now supports new types of recommendation commands:
 - Recommend items to item (`ItemItemRecommendation`)
 - Recommend users to item (`ItemUserRecommendation`)
 
-Each recommendation type supports different parameter options. Awailable parameters are
-described in table bellow:
+Each recommendation type supports different parameter options. Available parameters are
+described in table below:
 
 | Atribute      | Methods                                   | UserItemRecommendation | UserUserRecommendation | ItemItemRecommendation | ItemUserRecommendation |
 |---------------|-------------------------------------------|------------------------|------------------------|------------------------|------------------------|
