@@ -9,8 +9,8 @@
 - Add support for new recommendation types - `UserUserRecommendation`, `ItemUserRecommendation`, `ItemItemRecommendation`.
 
 ### Changed
-- **BC BREAK** | Removed deprecated constant `FILTER_TYPE_MQL` from `UserRecommendation`.
-- **BC BREAK** | Class `UserRecommendation` renamed to `UserItemRecommendation`.
+- **BC BREAK** | Remove deprecated constant `FILTER_TYPE_MQL` from `UserRecommendation`.
+- **BC BREAK** | Rename class `UserRecommendation` to `UserItemRecommendation`.
 - **BC BREAK** | Rename class `MinimalRelavance` to `ItemMinimalRelevance`.
 - **BC BREAK** | Rename class `Sorting` to `ItemSorting`.
 
