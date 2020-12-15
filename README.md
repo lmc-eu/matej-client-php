@@ -213,7 +213,7 @@ $recommendations = $response->getRecommendation()->getData();
 
 You can also set more granular options of the recommendation command and overwrite Matej default behaviour on per-request basis.
 
-Each type of recommendation command supports different customization options. See table bellow.
+Each type of recommendation command supports different customization options. See table below.
 
 
 | Atribute      | Methods                                   | UserItemRecommendation | UserUserRecommendation | ItemItemRecommendation | ItemUserRecommendation |
