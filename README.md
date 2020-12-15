@@ -218,7 +218,7 @@ Each type of recommendation command supports different customization options. Se
 
 | Atribute      | Methods                                   | UserItemRecommendation | UserUserRecommendation | ItemItemRecommendation | ItemUserRecommendation |
 |---------------|-------------------------------------------|------------------------|------------------------|------------------------|------------------------|
-| scenario      |              `static::create`               |            ✅           |            ✅           |            ✅           |            ✅           |
+| scenario      |              in constructor               |            ✅           |            ✅           |            ✅           |            ✅           |
 | count         |                  `setCount`                 |            ✅           |            ✅           |            ✅           |            ✅           |
 | rotation_rate |              `setRotationRate`              |            ✅           |            ✅           |            ❌           |            ❌           |
 | rotation_time |              `setRotationTime`              |            ✅           |            ✅           |            ❌           |            ❌           |
