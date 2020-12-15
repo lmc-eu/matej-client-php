@@ -1,4 +1,3 @@
-
 # Upgrading from 3.x to 4.0
 
 API client release 4.0 contains backward incompatible changes.
