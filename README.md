@@ -188,7 +188,7 @@ This has been implemented so that we don't lose any pushed data. Simple sleep of
 
 ### Requesting recommendations
 
-You can request 4 types of recommendation from Matej. Each of them is represented by a specific recommendation command class:
+You can request 4 types of recommendations from Matej. Each of them is represented by a specific recommendation command class:
 
 - Items to user - UserItemRecommendation
 - Items to item - ItemItemRecommendation
