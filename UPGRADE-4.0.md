@@ -74,7 +74,7 @@ $recommendation = UserItemRecommendation::create('user-id', 'scenario')
 ```
 
 ## New recommendation types
-New types of recommendations can be created is similar way to `UserItemRecommendation`. For example:
+New types of recommendations can be created in a similar way to `UserItemRecommendation`. For example:
 
 ### Users that might be interested in an item
 ```php
