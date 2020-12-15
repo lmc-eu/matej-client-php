@@ -47,7 +47,7 @@ described in table below:
 | model_name    |                `setModelName`               |            ✅           |            ✅           |            ✅           |            ✅           |
 | properties    | `addResponseProperty` `setResponseProperties` |            ✅           |            ❌           |            ✅           |            ❌           |
 
-\* `UserMinimalRelevance` supports only `MEDIUM` and `HIGH` relevancies.
+\* `UserMinimalRelevance` supports only `MEDIUM` and `HIGH` relevances.
 
 Each recommendation class provides a static constructor method `create` that accepts `userId` (recommendations for users) or `itemId` (recommendations for items).
 
