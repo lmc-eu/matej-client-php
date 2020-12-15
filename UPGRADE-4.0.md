@@ -6,7 +6,7 @@ API client release 4.0 contains backward incompatible changes.
 This guide will help you upgrade your codebase.
 
 ## Sorting renamed to ItemSorting
-Class `Sorting` was renamed to `ItemSorting`. All its methods and behaviour remained the same.
+Class `Sorting` was renamed to `ItemSorting`. All its methods and behavior remained the same.
 
 #### Before
 ```php
