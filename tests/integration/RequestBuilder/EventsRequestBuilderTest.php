@@ -15,14 +15,11 @@ use Lmc\Matej\Model\Command\UserMerge;
  */
 class EventsRequestBuilderTest extends IntegrationTestCase
 {
-    private static function getPropertiesList(): array
-    {
-        return [
-            'test_property_a',
-            'test_property_b',
-            'test_property_c',
-        ];
-    }
+    private const PROPERTIES_LIST = [
+        'test_property_a',
+        'test_property_b',
+        'test_property_c',
+    ];
 
     public static function setUpBeforeClass(): void
     {
@@ -34,7 +31,7 @@ class EventsRequestBuilderTest extends IntegrationTestCase
     public static function tearDownAfterClass(): void
     {
         $matej = static::createMatejInstance();
-        static::removeItemProperties($matej);
+        static::resetItemProperties($matej);
     }
 
     /** @test */
@@ -78,7 +75,7 @@ class EventsRequestBuilderTest extends IntegrationTestCase
     private static function setupItemProperties(Matej $matej): void
     {
         $request = $matej->request()->setupItemProperties();
-        foreach (static::getPropertiesList() as $property) {
+        foreach (static::PROPERTIES_LIST as $property) {
             $request->addProperty(ItemPropertySetup::string($property));
         }
         $request->send();
@@ -95,17 +92,17 @@ class EventsRequestBuilderTest extends IntegrationTestCase
                 $properties[] = $property->name;
             }
 
-            if (!array_diff(static::getPropertiesList(), $properties)) {
+            if (!array_diff(static::PROPERTIES_LIST, $properties)) {
                 return;
             }
-            usleep(1000000); # 0.1s
+            usleep(100000); # 0.1s
         }
     }
 
-    private static function removeItemProperties(Matej $matej): void
+    private static function resetItemProperties(Matej $matej): void
     {
         $request = $matej->request()->deleteItemProperties();
-        foreach (static::getPropertiesList() as $property) {
+        foreach (static::PROPERTIES_LIST as $property) {
             $request->addProperty(ItemPropertySetup::string($property));
         }
         $request->send();

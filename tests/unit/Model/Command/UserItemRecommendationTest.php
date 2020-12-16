@@ -74,6 +74,29 @@ class UserItemRecommendationTest extends TestCase
     }
 
     /** @test */
+    public function shouldUseRotationTimeWithoutRotationRate(): void
+    {
+        $userId = 'user-' . md5(microtime());
+        $scenario = 'scenario-' . md5(microtime());
+        $rotationTime = random_int(1, 86400);
+
+        $command = UserItemRecommendation::create($userId, $scenario)
+            ->setRotationTime($rotationTime);
+
+        $this->assertEquals(
+            [
+                'type' => 'user-item-recommendations',
+                'parameters' => [
+                    'user_id' => $userId,
+                    'scenario' => $scenario,
+                    'rotation_time' => $rotationTime,
+                ],
+            ],
+            $command->jsonSerialize()
+        );
+    }
+
+    /** @test */
     public function shouldAssembleMqlFilters(): void
     {
         $command = UserItemRecommendation::create('user-id', 'test-scenario');

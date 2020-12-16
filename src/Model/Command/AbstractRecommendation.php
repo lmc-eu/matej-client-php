@@ -50,9 +50,6 @@ abstract class AbstractRecommendation extends AbstractCommand
         return $this;
     }
 
-    /**
-     * Scenario name.
-     */
     protected function setScenario(string $scenario): void
     {
         Assertion::typeIdentifier($scenario);

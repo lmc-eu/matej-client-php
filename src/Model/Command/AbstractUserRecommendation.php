@@ -91,7 +91,7 @@ abstract class AbstractUserRecommendation extends AbstractRecommendation impleme
             $parameters['rotation_rate'] = $this->rotationRate;
         }
 
-        if ($this->rotationRate !== null) {
+        if ($this->rotationTime !== null) {
             $parameters['rotation_time'] = $this->rotationTime;
         }
 
