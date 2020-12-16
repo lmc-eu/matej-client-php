@@ -39,7 +39,7 @@ class CampaignRequestBuilderTest extends TestCase
         $recommendationCommand3 = ItemUserRecommendation::create('itemId1', 'scenario3')
             ->setCount(3);
 
-        $recommendationCommand4 = ItemItemRecommendation::create('itemId2', 'scenario3')
+        $recommendationCommand4 = ItemItemRecommendation::create('itemId2', 'scenario4')
             ->setCount(4);
 
         $builder->addRecommendation($recommendationCommand1);

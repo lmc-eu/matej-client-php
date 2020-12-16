@@ -211,12 +211,14 @@ $response = $matej->request()
 $recommendations = $response->getRecommendation()->getData();
 ```
 
-You can also set more granular options of the recommendation command and overwrite Matej default behaviour on per-request basis.
+You can also set more granular options of the recommendation command and overwrite Matej default behavior on per-request basis.
 
 Each type of recommendation command supports different customization options. See table below.
 
 
-| Atribute      | Methods                                   | UserItemRecommendation | UserUserRecommendation | ItemItemRecommendation | ItemUserRecommendation |
+#### Available recommendation attributes
+
+| Attribute      | Methods                                   | UserItemRecommendation | UserUserRecommendation | ItemItemRecommendation | ItemUserRecommendation |
 |---------------|-------------------------------------------|------------------------|------------------------|------------------------|------------------------|
 | scenario      |              in constructor               |            ✅           |            ✅           |            ✅           |            ✅           |
 | count         |                  `setCount`                 |            ✅           |            ✅           |            ✅           |            ✅           |
@@ -421,7 +423,7 @@ There are two ways how to remove user data, but both of them aren't reversible a
 the user ever again:
 
 * Preferred way is to `anonymize` the user, which will randomly generate unique identifiers for all personal data,
-  and change that identifier across all databases and logfiles. This way the users behaviour will stay in Matej database,
+  and change that identifier across all databases and logfiles. This way the users behavior will stay in Matej database,
   and therefore **will continue to contribute to the recommendation model**, but you won't be able to identify the user.
   Thus his profile will be effectively frozen (as no new interactions can come in.) **New user id is generated server-side**,
   so there is no going back after issuing the request.

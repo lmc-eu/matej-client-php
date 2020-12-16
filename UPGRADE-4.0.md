@@ -29,26 +29,8 @@ API client now supports new types of recommendation commands:
 - Recommend items to item (`ItemItemRecommendation`)
 - Recommend users to item (`ItemUserRecommendation`)
 
-Each recommendation type supports different parameter options. Available parameters are
-described in table below:
-
-| Atribute      | Methods                                   | UserItemRecommendation | UserUserRecommendation | ItemItemRecommendation | ItemUserRecommendation |
-|---------------|-------------------------------------------|------------------------|------------------------|------------------------|------------------------|
-| scenario      |              `static::create`               |            ✅           |            ✅           |            ✅           |            ✅           |
-| count         |                  `setCount`                 |            ✅           |            ✅           |            ✅           |            ✅           |
-| rotation_rate |              `setRotationRate`              |            ✅           |            ✅           |            ❌           |            ❌           |
-| rotation_time |              `setRotationTime`              |            ✅           |            ✅           |            ❌           |            ❌           |
-| hard_rotation |             `enableHardRotation`            |            ✅           |            ✅           |            ❌           |            ❌           |
-| allow_seen    |                `setAllowSeen`               |            ✅           |            ❌           |            ❌           |            ✅           |
-| min_relevance |            `setMinimalRelevance`            |  `ItemMinimalRelevance`  |            ❌           |            ❌           |  `UserMinimalRelevance`*  |
-| filter        |            `addFilter` `setFilters`           |            ✅           |            ❌           |            ✅           |            ❌           |
-| boost_rules   |             `addBoost` `setBoosts`            |            ✅           |            ❌           |            ✅           |            ❌           |
-| model_name    |                `setModelName`               |            ✅           |            ✅           |            ✅           |            ✅           |
-| properties    | `addResponseProperty` `setResponseProperties` |            ✅           |            ❌           |            ✅           |            ❌           |
-
-\* `UserMinimalRelevance` supports only `MEDIUM` and `HIGH` relevances.
-
-Each recommendation class provides a static constructor method `create` that accepts `userId` (recommendations for users) or `itemId` (recommendations for items).
+Each recommendation type supports different parameter options.
+Available parameters are documented in [readme](README.md#available-recommendation-attributes).
 
 ## Recommending items to users
 Class `UserRecommendation` was renamed to `UserItemRecommendation`. Class `MinimalRelevance` was
