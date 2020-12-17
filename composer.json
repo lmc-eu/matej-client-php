@@ -59,7 +59,7 @@
         "all": [
             "@lint",
             "@analyze",
-            "./vendor/bin/phpunit --colors=always"
+            "@test"
         ],
         "analyze": [
             "vendor/bin/ecs check src/ tests/ --ansi",
@@ -73,6 +73,9 @@
             "vendor/bin/parallel-lint -j 10 ./src ./tests",
             "@composer validate",
             "@composer normalize --dry-run"
+        ],
+        "test": [
+            "./vendor/bin/phpunit --colors=always"
         ]
     }
 }

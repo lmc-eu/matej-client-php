@@ -5,7 +5,7 @@ namespace Lmc\Matej\RequestBuilder;
 use Fig\Http\Message\RequestMethodInterface;
 use Lmc\Matej\Exception\LogicException;
 use Lmc\Matej\Model\Command\Interaction;
-use Lmc\Matej\Model\Command\Sorting;
+use Lmc\Matej\Model\Command\ItemSorting;
 use Lmc\Matej\Model\Command\UserMerge;
 use Lmc\Matej\Model\Request;
 use Lmc\Matej\Model\Response\SortingResponse;
@@ -21,10 +21,10 @@ class SortingRequestBuilder extends AbstractRequestBuilder
     private $interactionCommand;
     /** @var UserMerge|null */
     private $userMergeCommand;
-    /** @var Sorting */
+    /** @var ItemSorting */
     private $sortingCommand;
 
-    public function __construct(Sorting $sortingCommand)
+    public function __construct(ItemSorting $sortingCommand)
     {
         $this->sortingCommand = $sortingCommand;
     }

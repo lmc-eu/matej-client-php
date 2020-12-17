@@ -4,33 +4,34 @@ namespace Lmc\Matej\IntegrationTests\RequestBuilder;
 
 use Lmc\Matej\Exception\LogicException;
 use Lmc\Matej\IntegrationTests\IntegrationTestCase;
+use Lmc\Matej\Matej;
 use Lmc\Matej\Model\Command\Interaction;
 use Lmc\Matej\Model\Command\ItemProperty;
 use Lmc\Matej\Model\Command\ItemPropertySetup;
 use Lmc\Matej\Model\Command\UserMerge;
-use Lmc\Matej\RequestBuilder\ItemPropertiesSetupRequestBuilder;
 
 /**
  * @covers \Lmc\Matej\RequestBuilder\EventsRequestBuilder
  */
 class EventsRequestBuilderTest extends IntegrationTestCase
 {
+    private const PROPERTIES_LIST = [
+        'test_property_a',
+        'test_property_b',
+        'test_property_c',
+    ];
+
     public static function setUpBeforeClass(): void
     {
-        $request = static::createMatejInstance()->request()->setupItemProperties();
-
-        static::addPropertiesToPropertySetupRequest($request);
-
-        $request->send();
+        $matej = static::createMatejInstance();
+        static::setupItemProperties($matej);
+        static::waitForItemPropertiesSetup($matej);
     }
 
     public static function tearDownAfterClass(): void
     {
-        $request = static::createMatejInstance()->request()->deleteItemProperties();
-
-        static::addPropertiesToPropertySetupRequest($request);
-
-        $request->send();
+        $matej = static::createMatejInstance();
+        static::resetItemProperties($matej);
     }
 
     /** @test */
@@ -71,12 +72,39 @@ class EventsRequestBuilderTest extends IntegrationTestCase
         $this->assertResponseCommandStatuses($response, ...$this->generateOkStatuses(9));
     }
 
-    private static function addPropertiesToPropertySetupRequest(ItemPropertiesSetupRequestBuilder $builder): void
+    private static function setupItemProperties(Matej $matej): void
     {
-        $builder->addProperties([
-            ItemPropertySetup::string('test_property_a'),
-            ItemPropertySetup::string('test_property_b'),
-            ItemPropertySetup::string('test_property_c'),
-        ]);
+        $request = $matej->request()->setupItemProperties();
+        foreach (static::PROPERTIES_LIST as $property) {
+            $request->addProperty(ItemPropertySetup::string($property));
+        }
+        $request->send();
+    }
+
+    private static function waitForItemPropertiesSetup(Matej $matej): void
+    {
+        while (true) {
+            $request = $matej->request()->getItemProperties();
+            $resp = $request->send();
+
+            $properties = [];
+            foreach ($resp->getData() as $property) {
+                $properties[] = $property->name;
+            }
+
+            if (!array_diff(static::PROPERTIES_LIST, $properties)) {
+                return;
+            }
+            usleep(100000); # 0.1s
+        }
+    }
+
+    private static function resetItemProperties(Matej $matej): void
+    {
+        $request = $matej->request()->deleteItemProperties();
+        foreach (static::PROPERTIES_LIST as $property) {
+            $request->addProperty(ItemPropertySetup::string($property));
+        }
+        $request->send();
     }
 }

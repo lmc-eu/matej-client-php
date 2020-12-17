@@ -8,7 +8,7 @@ use Lmc\Matej\Model\Assertion;
  * Sorting items is a way how to use Matej to deliver personalized experience to users.
  * It allows to sort given list of items according to the user preference.
  */
-class Sorting extends AbstractCommand implements UserAwareInterface
+class ItemSorting extends AbstractCommand implements UserAwareInterface
 {
     /** @var string */
     private $userId;

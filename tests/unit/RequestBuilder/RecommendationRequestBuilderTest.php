@@ -5,10 +5,14 @@ namespace Lmc\Matej\RequestBuilder;
 use Fig\Http\Message\RequestMethodInterface;
 use Lmc\Matej\Exception\LogicException;
 use Lmc\Matej\Http\RequestManager;
+use Lmc\Matej\Model\Command\AbstractRecommendation;
 use Lmc\Matej\Model\Command\Interaction;
-use Lmc\Matej\Model\Command\Sorting;
+use Lmc\Matej\Model\Command\ItemItemRecommendation;
+use Lmc\Matej\Model\Command\ItemSorting;
+use Lmc\Matej\Model\Command\ItemUserRecommendation;
+use Lmc\Matej\Model\Command\UserItemRecommendation;
 use Lmc\Matej\Model\Command\UserMerge;
-use Lmc\Matej\Model\Command\UserRecommendation;
+use Lmc\Matej\Model\Command\UserUserRecommendation;
 use Lmc\Matej\Model\Request;
 use Lmc\Matej\Model\Response;
 use Lmc\Matej\Model\Response\RecommendationsResponse;
@@ -20,19 +24,19 @@ use PHPUnit\Framework\TestCase;
  */
 class RecommendationRequestBuilderTest extends TestCase
 {
-    /** @test */
-    public function shouldBuildRequestWithCommands(): void
-    {
-        $recommendationsCommand = UserRecommendation::create('userId1', 'test-scenario')
-            ->setCount(5)
-            ->setRotationRate(0.5)
-            ->setRotationTime(3600);
-        $builder = new RecommendationRequestBuilder($recommendationsCommand);
+    /**
+     * @test
+     * @dataProvider provideRecommendationCommand
+     */
+    public function shouldBuildRequestWithCommands(
+        AbstractRecommendation $recommendationCommand
+    ): void {
+        $builder = new RecommendationRequestBuilder($recommendationCommand);
 
         $interactionCommand = Interaction::withItem('detailviews', 'sourceId1', 'itemId1');
         $builder->setInteraction($interactionCommand);
 
-        $userMergeCommand = UserMerge::mergeFromSourceToTargetUser('sourceId1', 'userId1');
+        $userMergeCommand = UserMerge::mergeFromSourceToTargetUser('sourceId1', 'user_id');
         $builder->setUserMerge($userMergeCommand);
 
         $builder->setRequestId('custom-request-id-foo');
@@ -46,20 +50,20 @@ class RecommendationRequestBuilderTest extends TestCase
         $this->assertCount(3, $requestData);
         $this->assertSame($interactionCommand, $requestData[0]);
         $this->assertSame($userMergeCommand, $requestData[1]);
-        $this->assertSame($recommendationsCommand, $requestData[2]);
+        $this->assertSame($recommendationCommand, $requestData[2]);
 
         $this->assertSame('custom-request-id-foo', $request->getRequestId());
         $this->assertSame(RecommendationsResponse::class, $request->getResponseClass());
     }
 
-    /** @test */
-    public function shouldThrowExceptionWhenSendingCommandsWithoutRequestManager(): void
-    {
-        $recommendationsCommand = UserRecommendation::create('userId1', 'test-scenario')
-            ->setCount(5)
-            ->setRotationRate(0.5)
-            ->setRotationTime(3600);
-        $builder = new RecommendationRequestBuilder($recommendationsCommand);
+    /**
+     * @test
+     * @dataProvider provideRecommendationCommand
+     */
+    public function shouldThrowExceptionWhenSendingCommandsWithoutRequestManager(
+        AbstractRecommendation $recommendationCommand
+    ): void {
+        $builder = new RecommendationRequestBuilder($recommendationCommand);
 
         $this->expectException(LogicException::class);
         $this->expectExceptionMessage('Instance of RequestManager must be set to request builder');
@@ -75,47 +79,47 @@ class RecommendationRequestBuilderTest extends TestCase
             ->with($this->isInstanceOf(Request::class))
             ->willReturn(new Response(0, 0, 0, 0));
 
-        $builder = new SortingRequestBuilder(Sorting::create('userId1', ['itemId1', 'itemId2']));
+        $builder = new SortingRequestBuilder(ItemSorting::create('userId1', ['itemId1', 'itemId2']));
         $builder->setRequestManager($requestManagerMock);
         $builder->send();
     }
 
-    /** @test */
-    public function shouldThrowExceptionWhenInteractionIsForUnrelatedUser(): void
-    {
-        $builder = new RecommendationRequestBuilder(
-            $recommendationsCommand = UserRecommendation::create('userId1', 'scenario')
-                ->setCount(5)
-                ->setRotationRate(0.5)
-                ->setRotationTime(3600)
-        );
+    /**
+     * @test
+     * @dataProvider provideUserRecommendationCommand
+     */
+    public function shouldThrowExceptionWhenInteractionIsForUnrelatedUser(
+        AbstractRecommendation $recommendationCommand
+    ): void {
+        $builder = new RecommendationRequestBuilder($recommendationCommand);
 
         $builder->setInteraction(Interaction::withItem('purchases', 'different-user', 'itemId1'));
 
         $this->expectException(LogicException::class);
         $this->expectExceptionMessage(
-            'User in Interaction command ("different-user") must be the same as user in UserRecommendation command '
-            . '("userId1")'
+            'User in Interaction command ("different-user") must be the same as user in '
+            . (new \ReflectionClass($recommendationCommand))->getShortName() . ' command '
+            . '("user_id")'
         );
         $builder->build();
     }
 
-    /** @test */
-    public function shouldThrowExceptionWhenMergeIsForUnrelatedUser(): void
-    {
-        $builder = new RecommendationRequestBuilder(
-            $recommendationsCommand = UserRecommendation::create('userId1', 'scenario')
-                ->setCount(5)
-                ->setRotationRate(0.5)
-                ->setRotationTime(3600)
-        );
+    /**
+     * @test
+     * @dataProvider provideUserRecommendationCommand
+     */
+    public function shouldThrowExceptionWhenMergeIsForUnrelatedUser(
+        AbstractRecommendation $recommendationCommand
+    ): void {
+        $builder = new RecommendationRequestBuilder($recommendationCommand);
 
-        $builder->setUserMerge(UserMerge::mergeInto('different-user', 'userId1'));
+        $builder->setUserMerge(UserMerge::mergeInto('different-user', 'user_id'));
 
         $this->expectException(LogicException::class);
         $this->expectExceptionMessage(
-            'User in UserMerge command ("different-user") must be the same as user in UserRecommendation command'
-            . ' ("userId1")'
+            'User in UserMerge command ("different-user") must be the same as user in '
+            . (new \ReflectionClass($recommendationCommand))->getShortName() . ' command'
+            . ' ("user_id")'
         );
         $builder->build();
     }
@@ -134,7 +138,7 @@ class RecommendationRequestBuilderTest extends TestCase
     ): void {
         $interactionCommand = Interaction::withItem('purchases', $interactionUser, 'test-item-id');
         $userMergeCommand = UserMerge::mergeFromSourceToTargetUser($sourceUserToBeDeleted, $targetUserId);
-        $recommendationsCommand = UserRecommendation::create($recommendationUser, 'scenario')
+        $recommendationsCommand = UserItemRecommendation::create($recommendationUser, 'scenario')
             ->setCount(5)
             ->setRotationRate(0.5)
             ->setRotationTime(3600);
@@ -154,7 +158,7 @@ class RecommendationRequestBuilderTest extends TestCase
     {
         $interactionCommand = Interaction::withItem('purchases', 'test-user-a', 'test-item-id');
         $userMergeCommand = UserMerge::mergeFromSourceToTargetUser('test-user-b', 'test-user-a');
-        $recommendationsCommand = UserRecommendation::create('test-user-b', 'scenario')
+        $recommendationsCommand = UserItemRecommendation::create('test-user-b', 'scenario')
             ->setCount(5)
             ->setRotationRate(0.5)
             ->setRotationTime(3600);
@@ -179,5 +183,51 @@ class RecommendationRequestBuilderTest extends TestCase
            '(A, A -> B, B)' => ['test-user-a', 'test-user-a', 'test-user-b', 'test-user-b'],
            '(B, A -> B, B)' => ['test-user-b', 'test-user-a', 'test-user-b', 'test-user-b'],
         ];
+    }
+
+    public function provideRecommendationCommand(): array
+    {
+        return [
+            'user-item' => [$this->createUserItemRecommendationCommand()],
+            'user-user' => [$this->createUserUserRecommendationCommand()],
+            'item-item' => [$this->createItemItemRecommendationCommand()],
+            'item-user' => [$this->createItemUserRecommendationCommand()],
+        ];
+    }
+
+    public function provideUserRecommendationCommand(): array
+    {
+        return [
+            'user-item' => [$this->createUserItemRecommendationCommand()],
+            'user-user' => [$this->createUserUserRecommendationCommand()],
+        ];
+    }
+
+    private function createUserItemRecommendationCommand(): UserItemRecommendation
+    {
+        return UserItemRecommendation::create('user_id', 'integration-test-scenario')
+            ->setCount(5)
+            ->setRotationRate(0.50)
+            ->setRotationTime(3600);
+    }
+
+    private function createUserUserRecommendationCommand(): UserUserRecommendation
+    {
+        return UserUserRecommendation::create('user_id', 'integration-test-scenario')
+            ->setCount(5)
+            ->setRotationRate(0.50)
+            ->setRotationTime(3600);
+    }
+
+    private function createItemUserRecommendationCommand(): ItemUserRecommendation
+    {
+        return ItemUserRecommendation::create('item_id', 'integration-test-scenario')
+            ->setCount(5);
+    }
+
+    private function createItemItemRecommendationCommand(): ItemItemRecommendation
+    {
+        return ItemItemRecommendation::create('item_id', 'integration-test-scenario')
+            ->setCount(5);
     }
 }

@@ -4,10 +4,14 @@ namespace Lmc\Matej\IntegrationTests\RequestBuilder;
 
 use Lmc\Matej\IntegrationTests\IntegrationTestCase;
 use Lmc\Matej\Model\Command;
-use Lmc\Matej\Model\Command\Boost;
+use Lmc\Matej\Model\Command\AbstractRecommendation;
+use Lmc\Matej\Model\Command\AbstractUserRecommendation;
 use Lmc\Matej\Model\Command\Interaction;
+use Lmc\Matej\Model\Command\ItemItemRecommendation;
+use Lmc\Matej\Model\Command\ItemUserRecommendation;
+use Lmc\Matej\Model\Command\UserItemRecommendation;
 use Lmc\Matej\Model\Command\UserMerge;
-use Lmc\Matej\Model\Command\UserRecommendation;
+use Lmc\Matej\Model\Command\UserUserRecommendation;
 use Lmc\Matej\Model\Response\RecommendationsResponse;
 
 /**
@@ -16,30 +20,36 @@ use Lmc\Matej\Model\Response\RecommendationsResponse;
  */
 class RecommendationRequestBuilderTest extends IntegrationTestCase
 {
-    /** @test */
-    public function shouldExecuteRecommendationRequestOnly(): void
-    {
+    /**
+     * @test
+     * @dataProvider provideRecommendationCommand
+     */
+    public function shouldExecuteRecommendationRequestOnly(
+        AbstractRecommendation $recommendationCommand
+    ): void {
         $response = static::createMatejInstance()
             ->request()
-            ->recommendation(
-                $this->createRecommendationCommand('user-a')
-                    ->addBoost(Boost::create('age > 1', 1.2))
-            )->send();
+            ->recommendation($recommendationCommand)
+            ->send();
 
         $this->assertInstanceOf(RecommendationsResponse::class, $response);
         $this->assertResponseCommandStatuses($response, 'SKIPPED', 'SKIPPED', 'OK');
         $this->assertShorthandResponse($response, 'SKIPPED', 'SKIPPED', 'OK');
     }
 
-    /** @test */
-    public function shouldExecuteRecommendationRequestWithUserMergeAndInteraction(): void
-    {
+    /**
+     * @test
+     * @dataProvider provideUserRecommendationCommand
+     */
+    public function shouldExecuteRecommendationRequestWithUserMergeAndInteraction(
+        AbstractUserRecommendation $recommendationCommand
+    ): void {
         $response = static::createMatejInstance()
             ->request()
-            ->recommendation($this->createRecommendationCommand('user-b'))
-            ->setUserMerge(UserMerge::mergeInto('user-b', 'user-a'))
+            ->recommendation($recommendationCommand)
+            ->setUserMerge(UserMerge::mergeInto('user-id', 'user-id2'))
             ->setInteraction(
-                Interaction::withItem('detailview', 'user-a', 'item-a')
+                Interaction::withItem('detailview', 'user-id2', 'user-id2')
             )
             ->send();
         $this->assertInstanceOf(RecommendationsResponse::class, $response);
@@ -47,11 +57,14 @@ class RecommendationRequestBuilderTest extends IntegrationTestCase
         $this->assertShorthandResponse($response, 'OK', 'OK', 'OK');
     }
 
-    /** @test */
-    public function shouldReturnInvalidCommandOnInvalidModelName(): void
-    {
-        $recommendation = $this->createRecommendationCommand('user-a')
-            ->setModelName('invalid-model-name');
+    /**
+     * @test
+     * @dataProvider provideRecommendationCommand
+     */
+    public function shouldReturnInvalidCommandOnInvalidModelName(
+        AbstractRecommendation $recommendationCommand
+    ): void {
+        $recommendation = $recommendationCommand->setModelName('invalid-model-name');
 
         $response = static::createMatejInstance()
             ->request()
@@ -63,11 +76,14 @@ class RecommendationRequestBuilderTest extends IntegrationTestCase
         $this->assertShorthandResponse($response, 'SKIPPED', 'SKIPPED', 'INVALID');
     }
 
-    /** @test */
-    public function shouldReturnInvalidCommandOnInvalidPropertyName(): void
+    /**
+     * @test
+     * @dataProvider provideItemFilteringCommand
+     * @param mixed $recommendationCommand
+     */
+    public function shouldReturnInvalidCommandOnInvalidPropertyName($recommendationCommand): void
     {
-        $recommendation = $this->createRecommendationCommand('user-a')
-            ->addResponseProperty('unknown-property');
+        $recommendation = $recommendationCommand->addResponseProperty('unknown-property');
 
         $response = static::createMatejInstance()
             ->request()
@@ -79,8 +95,12 @@ class RecommendationRequestBuilderTest extends IntegrationTestCase
         $this->assertShorthandResponse($response, 'SKIPPED', 'SKIPPED', 'INVALID');
     }
 
-    /** @test */
-    public function shouldFilterByItemProperties(): void
+    /**
+     * @test
+     * @dataProvider provideItemFilteringCommand
+     * @param mixed $recommendationCommand
+     */
+    public function shouldFilterByItemProperties($recommendationCommand): void
     {
         $matej = static::createMatejInstance();
 
@@ -93,19 +113,11 @@ class RecommendationRequestBuilderTest extends IntegrationTestCase
         $this->assertSame(1, $response->getNumberOfSuccessfulCommands());
         $response = $matej
             ->request()
-            ->recommendation($this->createRecommendationCommand('user-a')->addFilter('for_recommendation = 1'))
+            ->recommendation($recommendationCommand->addFilter('for_recommendation = 1'))
             ->send();
         $this->assertInstanceOf(RecommendationsResponse::class, $response);
         $this->assertResponseCommandStatuses($response, 'SKIPPED', 'SKIPPED', 'OK');
         $this->assertShorthandResponse($response, 'SKIPPED', 'SKIPPED', 'OK');
-    }
-
-    private function createRecommendationCommand(string $username): UserRecommendation
-    {
-        return UserRecommendation::create($username, 'integration-test-scenario')
-            ->setCount(5)
-            ->setRotationRate(0.50)
-            ->setRotationTime(3600);
     }
 
     private function assertShorthandResponse(
@@ -117,5 +129,59 @@ class RecommendationRequestBuilderTest extends IntegrationTestCase
         $this->assertSame($interactionStatus, $response->getInteraction()->getStatus());
         $this->assertSame($userMergeStatus, $response->getUserMerge()->getStatus());
         $this->assertSame($recommendationStatus, $response->getRecommendation()->getStatus());
+    }
+
+    public function provideRecommendationCommand(): array
+    {
+        return [
+            'user-item' => [$this->createUserItemRecommendationCommand()],
+            'user-user' => [$this->createUserUserRecommendationCommand()],
+            'item-item' => [$this->createItemItemRecommendationCommand()],
+            'item-user' => [$this->createItemUserRecommendationCommand()],
+        ];
+    }
+
+    public function provideUserRecommendationCommand(): array
+    {
+        return [
+            'user-item' => [$this->createUserItemRecommendationCommand()],
+            'user-user' => [$this->createUserUserRecommendationCommand()],
+        ];
+    }
+
+    public function provideItemFilteringCommand(): array
+    {
+        return [
+            'user-item' => [$this->createUserItemRecommendationCommand()],
+            'item-item' => [$this->createItemItemRecommendationCommand()],
+        ];
+    }
+
+    private function createUserItemRecommendationCommand(): UserItemRecommendation
+    {
+        return UserItemRecommendation::create('user-id', 'integration-test-scenario')
+            ->setCount(5)
+            ->setRotationRate(0.50)
+            ->setRotationTime(3600);
+    }
+
+    private function createUserUserRecommendationCommand(): UserUserRecommendation
+    {
+        return UserUserRecommendation::create('user-id', 'integration-test-scenario')
+            ->setCount(5)
+            ->setRotationRate(0.50)
+            ->setRotationTime(3600);
+    }
+
+    private function createItemUserRecommendationCommand(): ItemUserRecommendation
+    {
+        return ItemUserRecommendation::create('item-id', 'integration-test-scenario')
+            ->setCount(5);
+    }
+
+    private function createItemItemRecommendationCommand(): ItemItemRecommendation
+    {
+        return ItemItemRecommendation::create('item-id', 'integration-test-scenario')
+            ->setCount(5);
     }
 }
