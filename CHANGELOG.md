@@ -5,6 +5,8 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+
+## 4.0.0 - 2020-12-17
 ### Added
 - Add support for new recommendation types - `UserUserRecommendation`, `ItemUserRecommendation`, `ItemItemRecommendation`.
 
