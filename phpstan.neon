@@ -9,8 +9,6 @@ parameters:
         - '#Unsafe usage of new static\(\)#'
         - message: '#expects class-string#'
           path: tests/
-        - message: '#Unable to resolve the template type ExpectedType#'
-          path: tests/unit/RequestBuilder/RequestBuilderFactoryTest.php
         - message: '#parameter \$factoryArguments with no typehint specified#'
           path: tests/unit/RequestBuilder/RequestBuilderFactoryTest.php
 
