@@ -5,6 +5,8 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+### Changed
+- Require PHP ^7.3
 
 ## 4.1.0 - 2021-08-19
 ### Added

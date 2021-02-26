@@ -41,8 +41,11 @@ class UserMerge extends AbstractCommand implements UserAwareInterface
      *
      * @return static
      */
-    public static function mergeFromSourceToTargetUser(string $sourceUserIdToBeDeleted, string $targetUserId, int $timestamp = null): self
-    {
+    public static function mergeFromSourceToTargetUser(
+        string $sourceUserIdToBeDeleted,
+        string $targetUserId,
+        int $timestamp = null
+    ): self {
         return new static($targetUserId, $sourceUserIdToBeDeleted, $timestamp);
     }
 
