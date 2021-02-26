@@ -11,12 +11,12 @@
     - You should keep the `## Unreleased` header (but with no content below it) on the top of the document.
     - Also, make sure the CHANGELOG.md contains an entry for each notable change done in the repository since the last release.
 1. Change client version constant `VERSION` in `src/Matej.php` to match the new version number.
-1. Commit the changes in `CHANGELOG.md` and `Matej.php` directly to the master branch:
+1. Commit the changes in `CHANGELOG.md` and `Matej.php` directly to the main branch:
     - `git commit -m "Release version X.Y.Z"`
 1. Tag the release:
     - `git tag X.Y.Z`
-1. Push the changes in master branch and tags to the repository:
-    - `git push origin master`
+1. Push the changes in main branch and tags to the repository:
+    - `git push origin main`
     - `git push origin X.Y.Z`
 1. Now the [PHP 5 version](https://github.com/lmc-eu/matej-client-php5) of the client needs to be updated and tagged as well:
     1. Clone the repo: `git clone git@github.com:lmc-eu/matej-client-php5.git` or pull the master branch if you have it already cloned: `git pull origin master`
