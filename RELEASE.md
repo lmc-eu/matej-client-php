@@ -18,11 +18,3 @@
 1. Push the changes in main branch and tags to the repository:
     - `git push origin main`
     - `git push origin X.Y.Z`
-1. Now the [PHP 5 version](https://github.com/lmc-eu/matej-client-php5) of the client needs to be updated and tagged as well:
-    1. Clone the repo: `git clone git@github.com:lmc-eu/matej-client-php5.git` or pull the master branch if you have it already cloned: `git pull origin master`
-    1. Inside the repository directory run transpilation script: `./transpile.sh`
-    1. Make sure the whole process completed successfully, including passed unit tests.
-    1. `git commit -a -m "Release version X.Y.Z"`
-    1. `git tag X.Y.Z`
-    1. `git push origin master`
-    1. `git push origin X.Y.Z`
