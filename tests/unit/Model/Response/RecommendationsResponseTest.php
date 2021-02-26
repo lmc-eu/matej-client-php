@@ -29,7 +29,11 @@ class RecommendationsResponseTest extends UnitTestCase
             'data' => $recommendationResponseData,
         ];
 
-        $response = new RecommendationsResponse(3, 3, 0, 0, [$interactionCommandResponse, $userMergeCommandResponse, $recommendationCommandResponse]);
+        $response = new RecommendationsResponse(3, 3, 0, 0, [
+            $interactionCommandResponse,
+            $userMergeCommandResponse,
+            $recommendationCommandResponse,
+        ]);
 
         $this->assertTrue($response->getInteraction()->isSuccessful());
         $this->assertTrue($response->getUserMerge()->isSuccessful());

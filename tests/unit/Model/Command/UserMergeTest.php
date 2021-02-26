@@ -24,7 +24,9 @@ class UserMergeTest extends UnitTestCase
     public function shouldThrowExceptionWhenMergingSameUsers(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('You have to provide different source and target user id in UserMerge ("test-user" set for both)');
+        $this->expectExceptionMessage(
+            'You have to provide different source and target user id in UserMerge ("test-user" set for both)'
+        );
 
         UserMerge::mergeInto('test-user', 'test-user');
     }

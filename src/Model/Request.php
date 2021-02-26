@@ -20,8 +20,13 @@ class Request
     /** @var string */
     private $responseClass;
 
-    public function __construct(string $path, string $method, array $data = [], string $requestId = null, string $responseClass = Response::class)
-    {
+    public function __construct(
+        string $path,
+        string $method,
+        array $data = [],
+        string $requestId = null,
+        string $responseClass = Response::class
+    ) {
         $this->path = $path;
         $this->method = $method;
         $this->data = $data;

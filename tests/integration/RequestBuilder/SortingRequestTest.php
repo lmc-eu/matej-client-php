@@ -47,7 +47,9 @@ class SortingRequestTest extends IntegrationTestCase
     {
         $response = static::createMatejInstance()
             ->request()
-            ->sorting(ItemSorting::create('user-b', ['item-a', 'item-b', 'itemC-c'])->setModelName('invalid-model-name'))
+            ->sorting(
+                ItemSorting::create('user-b', ['item-a', 'item-b', 'itemC-c'])->setModelName('invalid-model-name')
+            )
             ->send();
 
         $this->assertInstanceOf(SortingResponse::class, $response);

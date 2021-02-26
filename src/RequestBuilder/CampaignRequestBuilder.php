@@ -64,6 +64,11 @@ class CampaignRequestBuilder extends AbstractRequestBuilder
         }
         Assertion::batchSize($this->commands);
 
-        return new Request(static::ENDPOINT_PATH, RequestMethodInterface::METHOD_POST, $this->commands, $this->requestId);
+        return new Request(
+            static::ENDPOINT_PATH,
+            RequestMethodInterface::METHOD_POST,
+            $this->commands,
+            $this->requestId
+        );
     }
 }
