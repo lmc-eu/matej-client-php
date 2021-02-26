@@ -32,7 +32,9 @@ class RecommendationsResponse extends Response
         $decodedResponses = [];
         foreach ($commandResponses as $index => $rawCommandResponse) {
             if ($index === static::RECOMMENDATION_INDEX) {
-                $decodedResponses[] = RecommendationCommandResponse::createFromRawCommandResponseObject($rawCommandResponse);
+                $decodedResponses[] = RecommendationCommandResponse::createFromRawCommandResponseObject(
+                    $rawCommandResponse
+                );
             } else {
                 $decodedResponses[] = CommandResponse::createFromRawCommandResponseObject($rawCommandResponse);
             }

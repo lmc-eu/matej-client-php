@@ -55,7 +55,9 @@ class ForgetRequestBuilderTest extends TestCase
         $builder = new ForgetRequestBuilder();
 
         $this->expectException(LogicException::class);
-        $this->expectExceptionMessage('At least one UserForget command must be added to the builder before sending the request');
+        $this->expectExceptionMessage(
+            'At least one UserForget command must be added to the builder before sending the request'
+        );
         $builder->build();
     }
 

@@ -22,7 +22,9 @@ class RequestManagerTest extends UnitTestCase
      */
     public function shouldSendAndDecodeRequest(): void
     {
-        $dummyHttpResponse = $this->createJsonResponseFromFile(__DIR__ . '/Fixtures/response-one-successful-command.json');
+        $dummyHttpResponse = $this->createJsonResponseFromFile(
+            __DIR__ . '/Fixtures/response-one-successful-command.json'
+        );
 
         $mockClient = new Client();
         $mockClient->addResponse($dummyHttpResponse);

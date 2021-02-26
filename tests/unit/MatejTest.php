@@ -21,7 +21,9 @@ class MatejTest extends UnitTestCase
     /** @test */
     public function shouldExecuteRequestViaBuilder(): void
     {
-        $dummyHttpResponse = $this->createJsonResponseFromFile(__DIR__ . '/Http/Fixtures/response-one-successful-command.json');
+        $dummyHttpResponse = $this->createJsonResponseFromFile(
+            __DIR__ . '/Http/Fixtures/response-one-successful-command.json'
+        );
 
         $mockClient = new Client();
         $mockClient->addResponse($dummyHttpResponse);
@@ -52,7 +54,9 @@ class MatejTest extends UnitTestCase
     /** @test */
     public function shouldOverwriteBaseUrl(): void
     {
-        $dummyHttpResponse = $this->createJsonResponseFromFile(__DIR__ . '/Http/Fixtures/response-one-successful-command.json');
+        $dummyHttpResponse = $this->createJsonResponseFromFile(
+            __DIR__ . '/Http/Fixtures/response-one-successful-command.json'
+        );
 
         $mockClient = new Client();
         $mockClient->addResponse($dummyHttpResponse);

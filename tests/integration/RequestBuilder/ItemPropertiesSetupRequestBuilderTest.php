@@ -19,7 +19,9 @@ class ItemPropertiesSetupRequestBuilderTest extends IntegrationTestCase
     public function shouldThrowExceptionWhenSendingBlankRequests(ItemPropertiesSetupRequestBuilder $builder): void
     {
         $this->expectException(LogicException::class);
-        $this->expectExceptionMessage('At least one ItemPropertySetup command must be added to the builder before sending the request');
+        $this->expectExceptionMessage(
+            'At least one ItemPropertySetup command must be added to the builder before sending the request'
+        );
         $builder->send();
     }
 

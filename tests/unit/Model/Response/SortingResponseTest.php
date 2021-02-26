@@ -26,7 +26,11 @@ class SortingResponseTest extends UnitTestCase
             'data' => ['MOCK' => 'SORTING'],
         ];
 
-        $response = new SortingResponse(3, 3, 0, 0, [$interactionCommandResponse, $userMergeCommandResponse, $sortingCommandReponse]);
+        $response = new SortingResponse(3, 3, 0, 0, [
+            $interactionCommandResponse,
+            $userMergeCommandResponse,
+            $sortingCommandReponse,
+        ]);
 
         $this->assertTrue($response->getInteraction()->isSuccessful());
         $this->assertTrue($response->getUserMerge()->isSuccessful());

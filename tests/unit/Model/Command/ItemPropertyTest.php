@@ -13,7 +13,9 @@ class ItemPropertyTest extends TestCase
     public function shouldNotAllowItemIdInProperties(): void
     {
         $this->expectException(DomainException::class);
-        $this->expectExceptionMessage('Cannot update value of "item_id" property - it is used by Matej to identify the item and cannot be altered once created.');
+        $this->expectExceptionMessage(
+            'Cannot update value of "item_id" property - it is used by Matej to identify the item and cannot be altered once created.'
+        );
         ItemProperty::create('exampleItemId', ['item_id' => 'customItemId']);
     }
 

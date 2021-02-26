@@ -41,7 +41,9 @@ class ItemPropertySetupTest extends TestCase
     public function shouldNotAllowItemIdAsPropertyName(string $constructorName): void
     {
         $this->expectException(DomainException::class);
-        $this->expectExceptionMessage('Cannot manipulate with property "item_id" - it is used by Matej to identify items.');
+        $this->expectExceptionMessage(
+            'Cannot manipulate with property "item_id" - it is used by Matej to identify items.'
+        );
         ItemPropertySetup::$constructorName('item_id');
     }
 
