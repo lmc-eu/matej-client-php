@@ -14,11 +14,14 @@ class UserMerge extends AbstractCommand implements UserAwareInterface
     private $sourceUserId;
     /** @var string */
     private $targetUserId;
+    /** @var int */
+    private $timestamp;
 
-    private function __construct(string $targetUserId, string $sourceUserId)
+    private function __construct(string $targetUserId, string $sourceUserId, int $timestamp = null)
     {
         $this->setTargetUserId($targetUserId);
         $this->setSourceUserId($sourceUserId);
+        $this->setTimestamp($timestamp ?? time());
 
         $this->assertUserIdsNotEqual();
     }
@@ -28,9 +31,9 @@ class UserMerge extends AbstractCommand implements UserAwareInterface
      *
      * @return static
      */
-    public static function mergeInto(string $targetUserId, string $sourceUserIdToBeDeleted): self
+    public static function mergeInto(string $targetUserId, string $sourceUserIdToBeDeleted, int $timestamp = null): self
     {
-        return new static($targetUserId, $sourceUserIdToBeDeleted);
+        return new static($targetUserId, $sourceUserIdToBeDeleted, $timestamp);
     }
 
     /**
@@ -38,9 +41,9 @@ class UserMerge extends AbstractCommand implements UserAwareInterface
      *
      * @return static
      */
-    public static function mergeFromSourceToTargetUser(string $sourceUserIdToBeDeleted, string $targetUserId): self
+    public static function mergeFromSourceToTargetUser(string $sourceUserIdToBeDeleted, string $targetUserId, int $timestamp = null): self
     {
-        return new static($targetUserId, $sourceUserIdToBeDeleted);
+        return new static($targetUserId, $sourceUserIdToBeDeleted, $timestamp);
     }
 
     public function getUserId(): string
@@ -67,6 +70,13 @@ class UserMerge extends AbstractCommand implements UserAwareInterface
         $this->targetUserId = $targetUserId;
     }
 
+    protected function setTimestamp(int $timestamp): void
+    {
+        Assertion::greaterThan($timestamp, 0);
+
+        $this->timestamp = $timestamp;
+    }
+
     private function assertUserIdsNotEqual(): void
     {
         Assertion::notEq(
@@ -86,6 +96,7 @@ class UserMerge extends AbstractCommand implements UserAwareInterface
         return [
             'target_user_id' => $this->targetUserId,
             'source_user_id' => $this->sourceUserId,
+            'timestamp' => $this->timestamp,
         ];
     }
 }

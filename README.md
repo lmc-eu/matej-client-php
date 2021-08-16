@@ -175,7 +175,7 @@ $response = $matej->request()
     ->addItemProperty(ItemProperty::create('item-id', ['valid_from' => time(), 'title' => 'Title']))
     ->addItemProperties([/* array of ItemProperty objects */])
     // Merge user
-    ->addUserMerge(UserMerge::mergeInto('target-user-id', 'source-user-id'))
+    ->addUserMerge(UserMerge::mergeInto('target-user-id', 'source-user-id'), time())
     ->addUserMerges([/* array of UserMerge objects */])
     ->send();
 ```
@@ -205,7 +205,7 @@ $matej = new Matej('accountId', 'apikey');
 $response = $matej->request()
     ->recommendation(UserItemRecommendation::create('user-id', 'test-scenario'))
     ->setInteraction(Interaction::withItem('purchases', 'user-id', 'item-id')) // optional
-    ->setUserMerge(UserMerge::mergeInto('user-id', 'source-id')) // optional
+    ->setUserMerge(UserMerge::mergeInto('user-id', 'source-id', time())) // optional
     ->send();
 
 $recommendations = $response->getRecommendation()->getData();
@@ -330,7 +330,7 @@ $matej = new Matej('accountId', 'apikey');
 $response =  $matej->request()
     ->sorting(ItemSorting::create('user-id', ['item-id-1', 'item-id-2', 'item-id-3']))
     ->setInteraction(Interaction::withItem('purchases', 'user-id', 'item-id')) // optional
-    ->setUserMerge(UserMerge::mergeInto('user-id', 'source-id')) // optional
+    ->setUserMerge(UserMerge::mergeInto('user-id', 'source-id', time())) // optional
     ->send();
 
 $sortedItems = $response->getSorting()->getData();
