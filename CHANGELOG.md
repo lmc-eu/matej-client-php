@@ -5,6 +5,9 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+### Added
+- Added optional argument timestamp to UserMerge command.
+
 
 ## 4.0.0 - 2020-12-17
 ### Added

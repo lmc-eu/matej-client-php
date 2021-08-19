@@ -12,7 +12,7 @@ class UserMergeTest extends UnitTestCase
     {
         $sourceUserId = 'source-user';
         $targetUserId = 'target-user';
-        $timestamp = time();
+        $timestamp = 1629362296;
 
         $command = UserMerge::mergeInto($targetUserId, $sourceUserId, $timestamp);
         $this->assertUserMergeCommand($command, $sourceUserId, $targetUserId, $timestamp);
