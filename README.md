@@ -4,11 +4,7 @@
 [![GitHub Actions Build Status](https://img.shields.io/github/workflow/status/lmc-eu/matej-client-php/Tests%20and%20linting?style=flat-square&label=GitHub%20Actions%20build)](https://github.com/lmc-eu/matej-client-php/actions)
 [![Coverage Status](https://img.shields.io/coveralls/lmc-eu/matej-client-php/main.svg?style=flat-square)](https://coveralls.io/r/lmc-eu/matej-client-php?branch=main)
 
-## Still using PHP 5.6?
-
-This library requires PHP 7.1+. However, we provide also PHP 5.6-compatible version [`matej-client-php5`](https://github.com/lmc-eu/matej-client-php5).
-
-Please note that the PHP 5.6 version is just transpiled copy of this library - examples, pull requests, issues, changelog etc. are placed in this repository.
+This library requires PHP 7.1+.
 
 ## Installation
 
@@ -24,19 +20,19 @@ This means that besides the `lmc/matej-client` library itself you must install a
 If you, for example, want to use Guzzle 6 as the underlying HTTP library, install the package like this:
 
 ```sh
-$ composer require lmc/matej-client php-http/guzzle6-adapter # use lmc/matej-client-php5 instead for PHP 5.6 version
+$ composer require lmc/matej-client php-http/guzzle6-adapter
 ```
 
 Or if you want to use Guzzle 5 (note that unlike `guzzle6-adapter`, the one does not come with `guzzlehttp/psr7`, so you must install it as well):
 
 ```sh
-$ composer require lmc/matej-client php-http/guzzle5-adapter guzzlehttp/psr7 # use lmc/matej-client-php5 instead for PHP 5.6 version
+$ composer require lmc/matej-client php-http/guzzle5-adapter guzzlehttp/psr7
 ```
 
 Or if you want to use cURL client:
 
 ```sh
-$ composer require lmc/matej-client php-http/curl-client guzzlehttp/psr7 # use lmc/matej-client-php5 instead for PHP 5.6 version
+$ composer require lmc/matej-client php-http/curl-client guzzlehttp/psr7
 ```
 
 ## Usage
