@@ -175,7 +175,7 @@ $response = $matej->request()
     ->addItemProperty(ItemProperty::create('item-id', ['valid_from' => time(), 'title' => 'Title']))
     ->addItemProperties([/* array of ItemProperty objects */])
     // Merge user
-    ->addUserMerge(UserMerge::mergeInto('target-user-id', 'source-user-id'))
+    ->addUserMerge(UserMerge::mergeInto('target-user-id', 'source-user-id', 1629361884))
     ->addUserMerges([/* array of UserMerge objects */])
     ->send();
 ```
@@ -185,6 +185,16 @@ and when the number of events in the queue crosses certain threshold, Matej API 
 If that happens, you should resend the entire request later, as no commands were processed.
 
 This has been implemented so that we don't lose any pushed data. Simple sleep of 100ms should be enough.
+
+### Merging users
+
+You can merge users using the `UserMerge` command. The first argument is the target user ID and the second argument is the ID
+of source user. When you merge two users, Matej will move all interactions and history of the source user and assign them to
+the target user. The source user is then removed.
+
+Optionally, you may send a third argument with a timestamp of when the merge happened.
+
+**The timestamp will be required in the future. We reccommend you to send it which will make future upgrades of the Matej client easier for you.**
 
 ### Requesting recommendations
 

@@ -12,12 +12,13 @@ class UserMergeTest extends UnitTestCase
     {
         $sourceUserId = 'source-user';
         $targetUserId = 'target-user';
+        $timestamp = 1629362296;
 
-        $command = UserMerge::mergeInto($targetUserId, $sourceUserId);
-        $this->assertUserMergeCommand($command, $sourceUserId, $targetUserId);
+        $command = UserMerge::mergeInto($targetUserId, $sourceUserId, $timestamp);
+        $this->assertUserMergeCommand($command, $sourceUserId, $targetUserId, $timestamp);
 
-        $command = UserMerge::mergeFromSourceToTargetUser($sourceUserId, $targetUserId);
-        $this->assertUserMergeCommand($command, $sourceUserId, $targetUserId);
+        $command = UserMerge::mergeFromSourceToTargetUser($sourceUserId, $targetUserId, $timestamp);
+        $this->assertUserMergeCommand($command, $sourceUserId, $targetUserId, $timestamp);
     }
 
     public function shouldThrowExceptionWhenMergingSameUsers(): void
@@ -33,7 +34,7 @@ class UserMergeTest extends UnitTestCase
      *
      * @param UserMerge $command
      */
-    private function assertUserMergeCommand($command, string $sourceUserId, string $targetUserId): void
+    private function assertUserMergeCommand($command, string $sourceUserId, string $targetUserId, int $timestamp): void
     {
         $this->assertInstanceOf(UserMerge::class, $command);
         $this->assertSame(
@@ -42,6 +43,7 @@ class UserMergeTest extends UnitTestCase
                 'parameters' => [
                     'target_user_id' => $targetUserId,
                     'source_user_id' => $sourceUserId,
+                    'timestamp' => $timestamp,
                 ],
             ],
             $command->jsonSerialize()
