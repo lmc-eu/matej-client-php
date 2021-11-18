@@ -82,10 +82,11 @@ trait ItemsFilteringTrait
 
     /**
      * Set boosts. Removes all previously set rules.
+     * @param Boost[] $boosts
      */
     public function setBoosts(array $boosts): self
     {
-        $this->boosts = $boosts;
+        $this->boosts = array_values($boosts);
 
         return $this;
     }
