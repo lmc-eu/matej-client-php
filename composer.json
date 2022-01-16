@@ -1,8 +1,8 @@
 {
     "name": "lmc/matej-client",
-    "type": "library",
     "description": "API Client for Matej recommendation engine",
     "license": "MIT",
+    "type": "library",
     "authors": [
         {
             "name": "LMC s.r.o.",
@@ -40,9 +40,7 @@
         "phpunit/phpunit": "^7.5.20 || ^8.0 || ^9.0",
         "symfony/var-dumper": "^3.3 || ^4.0 || ^5.0"
     },
-    "config": {
-        "sort-packages": true
-    },
+    "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
             "Lmc\\Matej\\": "src/"
@@ -54,7 +52,15 @@
             "Lmc\\Matej\\IntegrationTests\\": "tests/integration/"
         }
     },
-    "minimum-stability": "stable",
+    "config": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true,
+            "phpstan/extension-installer": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "composer/package-versions-deprecated": true
+        },
+        "sort-packages": true
+    },
     "scripts": {
         "all": [
             "@lint",
