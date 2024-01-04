@@ -3,11 +3,11 @@
 namespace Lmc\Matej\Http;
 
 use Fig\Http\Message\RequestMethodInterface;
-use Http\Mock\Client;
+use Http\Discovery\Psr18Client;
 use Lmc\Matej\Matej;
 use Lmc\Matej\Model\Request;
-use Lmc\Matej\Model\Response;
 use Lmc\Matej\UnitTestCase;
+use Psr\Http\Message\RequestInterface;
 
 /**
  * @covers \Lmc\Matej\Http\RequestManager
@@ -26,8 +26,29 @@ class RequestManagerTest extends UnitTestCase
             __DIR__ . '/Fixtures/response-one-successful-command.json'
         );
 
-        $mockClient = new Client();
-        $mockClient->addResponse($dummyHttpResponse);
+        $mockClient = $this->createMock(Psr18Client::class);
+        $mockClient->expects($this->once())
+            ->method('sendRequest')
+            ->with($this->callback(function (RequestInterface $request) {
+                $this->assertMatchesRegularExpression(
+                    '~https\://account\-id\.matej\.lmc\.cz/foo/endpoint\?hmac_timestamp\=[0-9]+&hmac_sign\=[[:alnum:]]~',
+                    $request->getUri()->__toString()
+                );
+                $this->assertSame(RequestMethodInterface::METHOD_PUT, $request->getMethod());
+                $this->assertJsonStringEqualsJsonString(
+                    '{"foo":"bar","list":{"lorem":"ipsum","dolor":333}}',
+                    $request->getBody()->__toString()
+                );
+                $this->assertSame(['application/json'], $request->getHeader('Content-Type'));
+                $this->assertSame(['custom-request-id'], $request->getHeader(RequestManager::REQUEST_ID_HEADER));
+                $this->assertSame(
+                    Matej::CLIENT_ID . '/' . Matej::VERSION,
+                    $request->getHeader(RequestManager::CLIENT_VERSION_HEADER)[0]
+                );
+
+                return true;
+            }))
+            ->willReturn($dummyHttpResponse);
 
         $requestManager = new RequestManager('account-id', 'api-key');
         $requestManager->setHttpClient($mockClient);
@@ -41,24 +62,5 @@ class RequestManagerTest extends UnitTestCase
 
         // Response decoding is comprehensively tested in ResponseDecoderTest
         $requestManager->sendRequest($request);
-
-        // Assert properties of the send request
-        $recordedRequests = $mockClient->getRequests();
-        $this->assertCount(1, $recordedRequests);
-        $this->assertMatchesRegularExpression(
-            '~https\://account\-id\.matej\.lmc\.cz/foo/endpoint\?hmac_timestamp\=[0-9]+&hmac_sign\=[[:alnum:]]~',
-            $recordedRequests[0]->getUri()->__toString()
-        );
-        $this->assertSame(RequestMethodInterface::METHOD_PUT, $recordedRequests[0]->getMethod());
-        $this->assertJsonStringEqualsJsonString(
-            '{"foo":"bar","list":{"lorem":"ipsum","dolor":333}}',
-            $recordedRequests[0]->getBody()->__toString()
-        );
-        $this->assertSame(['application/json'], $recordedRequests[0]->getHeader('Content-Type'));
-        $this->assertSame(['custom-request-id'], $recordedRequests[0]->getHeader(RequestManager::REQUEST_ID_HEADER));
-        $this->assertSame(
-            Matej::CLIENT_ID . '/' . Matej::VERSION,
-            $recordedRequests[0]->getHeader(RequestManager::CLIENT_VERSION_HEADER)[0]
-        );
     }
 }

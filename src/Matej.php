@@ -2,11 +2,12 @@
 
 namespace Lmc\Matej;
 
-use Http\Client\HttpClient;
-use Http\Message\MessageFactory;
 use Lmc\Matej\Http\RequestManager;
 use Lmc\Matej\Http\ResponseDecoderInterface;
 use Lmc\Matej\RequestBuilder\RequestBuilderFactory;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 
 class Matej
 {
@@ -27,7 +28,7 @@ class Matej
     }
 
     /** @return $this */
-    public function setHttpClient(HttpClient $client): self
+    public function setHttpClient(ClientInterface $client): self
     {
         $this->getRequestManager()->setHttpClient($client);
 
@@ -49,7 +50,7 @@ class Matej
      * @codeCoverageIgnore
      * @return $this
      */
-    public function setHttpMessageFactory(MessageFactory $messageFactory): self
+    public function setHttpMessageFactory(RequestFactoryInterface $messageFactory): self
     {
         $this->getRequestManager()->setMessageFactory($messageFactory);
 
@@ -63,6 +64,17 @@ class Matej
     public function setHttpResponseDecoder(ResponseDecoderInterface $responseDecoder): self
     {
         $this->getRequestManager()->setResponseDecoder($responseDecoder);
+
+        return $this;
+    }
+
+    /**
+     * @codeCoverageIgnore
+     * @return $this
+     */
+    public function setStreamFactory(StreamFactoryInterface $streamFactory): self
+    {
+        $this->getRequestManager()->setStreamFactory($streamFactory);
 
         return $this;
     }

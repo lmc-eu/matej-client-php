@@ -2,7 +2,8 @@
 
 namespace Lmc\Matej;
 
-use Http\Mock\Client;
+use GuzzleHttp\Psr7\Request;
+use Http\Discovery\Psr18Client;
 use Lmc\Matej\Model\Command\ItemPropertySetup;
 use Lmc\Matej\Model\CommandResponse;
 
@@ -25,8 +26,10 @@ class MatejTest extends UnitTestCase
             __DIR__ . '/Http/Fixtures/response-one-successful-command.json'
         );
 
-        $mockClient = new Client();
-        $mockClient->addResponse($dummyHttpResponse);
+        $mockClient = $this->createMock(Psr18Client::class);
+        $mockClient->expects($this->once())
+            ->method('sendRequest')
+            ->willReturn($dummyHttpResponse);
 
         $matej = new Matej('account-id', 'apiKey');
         $matej->setHttpClient($mockClient);
@@ -35,12 +38,6 @@ class MatejTest extends UnitTestCase
             ->setupItemProperties()
             ->addProperty(ItemPropertySetup::timestamp('valid_from'))
             ->send();
-
-        $this->assertCount(1, $mockClient->getRequests());
-        $this->assertStringStartsWith(
-            'https://account-id.matej.lmc.cz/',
-            $mockClient->getRequests()[0]->getUri()->__toString()
-        );
 
         $this->assertSame(1, $response->getNumberOfCommands());
         $this->assertSame(1, $response->getNumberOfSuccessfulCommands());
@@ -58,8 +55,18 @@ class MatejTest extends UnitTestCase
             __DIR__ . '/Http/Fixtures/response-one-successful-command.json'
         );
 
-        $mockClient = new Client();
-        $mockClient->addResponse($dummyHttpResponse);
+        $mockClient = $this->createMock(Psr18Client::class);
+        $mockClient->expects($this->once())
+            ->method('sendRequest')
+            ->with($this->callback(function (Request $request) {
+                $this->assertStringStartsWith(
+                    'https://nobody.nowhere.com/account-id',
+                    $request->getUri()->__toString()
+                );
+
+                return true;
+            }))
+            ->willReturn($dummyHttpResponse);
 
         $matej = new Matej('account-id', 'apiKey');
         $matej->setHttpClient($mockClient);
@@ -70,11 +77,5 @@ class MatejTest extends UnitTestCase
             ->setupItemProperties()
             ->addProperty(ItemPropertySetup::timestamp('valid_from'))
             ->send();
-
-        $this->assertCount(1, $mockClient->getRequests());
-        $this->assertStringStartsWith(
-            'https://nobody.nowhere.com/account-id',
-            $mockClient->getRequests()[0]->getUri()->__toString()
-        );
     }
 }
