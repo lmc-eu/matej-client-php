@@ -28,6 +28,7 @@
     },
     "require-dev": {
         "ergebnis/composer-normalize": "^2.4",
+        "http-interop/http-factory-guzzle": "^1.2",
         "lmc/coding-standard": "^3.0.0",
         "php-coveralls/php-coveralls": "^2.4",
         "php-http/guzzle6-adapter": "^1.1.1 || ^2.0",
@@ -54,9 +55,9 @@
     },
     "config": {
         "allow-plugins": {
-            "composer/package-versions-deprecated": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "ergebnis/composer-normalize": true,
+            "php-http/discovery": true,
             "phpstan/extension-installer": true
         },
         "sort-packages": true
