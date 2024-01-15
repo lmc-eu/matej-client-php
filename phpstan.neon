@@ -9,8 +9,8 @@ parameters:
         - '#Unsafe usage of new static\(\)#'
         - message: '#expects class-string#'
           path: tests/
-        - message: '#parameter \$factoryArguments with no typehint specified#'
-          path: tests/unit/RequestBuilder/RequestBuilderFactoryTest.php
+        - message: '#Unsafe access to private constant .+ through static::#'
+          path: tests/
 
     checkGenericClassInNonGenericObjectType: false
     checkMissingIterableValueType: false

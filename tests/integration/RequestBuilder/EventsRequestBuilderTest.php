@@ -23,15 +23,15 @@ class EventsRequestBuilderTest extends IntegrationTestCase
 
     public static function setUpBeforeClass(): void
     {
-        $matej = static::createMatejInstance();
-        static::setupItemProperties($matej);
-        static::waitForItemPropertiesSetup($matej);
+        $matej = self::createMatejInstance();
+        self::setupItemProperties($matej);
+        self::waitForItemPropertiesSetup($matej);
     }
 
     public static function tearDownAfterClass(): void
     {
-        $matej = static::createMatejInstance();
-        static::resetItemProperties($matej);
+        $matej = self::createMatejInstance();
+        self::resetItemProperties($matej);
     }
 
     /** @test */
@@ -40,7 +40,7 @@ class EventsRequestBuilderTest extends IntegrationTestCase
         $this->expectException(LogicException::class);
         $this->expectExceptionMessage('At least one command must be added to the builder before sending the request');
 
-        static::createMatejInstance()
+        self::createMatejInstance()
             ->request()
             ->events()
             ->send();
@@ -49,7 +49,7 @@ class EventsRequestBuilderTest extends IntegrationTestCase
     /** @test */
     public function shouldExecuteInteractionAndUserMergeAndItemPropertyCommands(): void
     {
-        $response = static::createMatejInstance()
+        $response = self::createMatejInstance()
             ->request()
             ->events()
             ->addInteraction(Interaction::withItem('search', 'user-a', 'item-a'))
@@ -75,7 +75,7 @@ class EventsRequestBuilderTest extends IntegrationTestCase
     private static function setupItemProperties(Matej $matej): void
     {
         $request = $matej->request()->setupItemProperties();
-        foreach (static::PROPERTIES_LIST as $property) {
+        foreach (self::PROPERTIES_LIST as $property) {
             $request->addProperty(ItemPropertySetup::string($property));
         }
         $request->send();
@@ -92,7 +92,7 @@ class EventsRequestBuilderTest extends IntegrationTestCase
                 $properties[] = $property->name;
             }
 
-            if (!array_diff(static::PROPERTIES_LIST, $properties)) {
+            if (!array_diff(self::PROPERTIES_LIST, $properties)) {
                 return;
             }
             usleep(100000); # 0.1s
@@ -102,7 +102,7 @@ class EventsRequestBuilderTest extends IntegrationTestCase
     private static function resetItemProperties(Matej $matej): void
     {
         $request = $matej->request()->deleteItemProperties();
-        foreach (static::PROPERTIES_LIST as $property) {
+        foreach (self::PROPERTIES_LIST as $property) {
             $request->addProperty(ItemPropertySetup::string($property));
         }
         $request->send();

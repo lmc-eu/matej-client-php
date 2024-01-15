@@ -14,24 +14,24 @@ class RecommendationsResponse extends Response
 
     public function getInteraction(): CommandResponse
     {
-        return $this->getCommandResponse(static::INTERACTION_INDEX);
+        return $this->getCommandResponse(self::INTERACTION_INDEX);
     }
 
     public function getUserMerge(): CommandResponse
     {
-        return $this->getCommandResponse(static::USER_MERGE_INDEX);
+        return $this->getCommandResponse(self::USER_MERGE_INDEX);
     }
 
     public function getRecommendation(): CommandResponse
     {
-        return $this->getCommandResponse(static::RECOMMENDATION_INDEX);
+        return $this->getCommandResponse(self::RECOMMENDATION_INDEX);
     }
 
     protected function decodeRawCommandResponses(array $commandResponses): array
     {
         $decodedResponses = [];
         foreach ($commandResponses as $index => $rawCommandResponse) {
-            if ($index === static::RECOMMENDATION_INDEX) {
+            if ($index === self::RECOMMENDATION_INDEX) {
                 $decodedResponses[] = RecommendationCommandResponse::createFromRawCommandResponseObject(
                     $rawCommandResponse
                 );

@@ -22,6 +22,7 @@ class ResponseDecoder implements ResponseDecoderInterface
 
         $responseId = $httpResponse->getHeader(RequestManager::RESPONSE_ID_HEADER)[0] ?? null;
 
+        /** @phpstan-ignore-next-line */
         return new $responseClass(
             (int) $responseData->commands->number_of_commands,
             (int) $responseData->commands->number_of_successful_commands,
