@@ -111,8 +111,8 @@ class ResponseDecoderTest extends UnitTestCase
         $this->assertContainsOnlyInstancesOf(\stdClass::class, $decodedResponse->getRecommendation()->getData());
 
         foreach ($decodedResponse->getRecommendation()->getData() as $recommendedItem) {
-            $this->assertObjectHasAttribute('item_id', $recommendedItem);
-            $this->assertObjectHasAttribute('item_url', $recommendedItem);
+            $this->assertObjectHasProperty('item_id', $recommendedItem);
+            $this->assertObjectHasProperty('item_url', $recommendedItem);
         }
     }
 }

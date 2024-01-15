@@ -45,7 +45,7 @@ class RequestManagerTest extends UnitTestCase
         // Assert properties of the send request
         $recordedRequests = $mockClient->getRequests();
         $this->assertCount(1, $recordedRequests);
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '~https\://account\-id\.matej\.lmc\.cz/foo/endpoint\?hmac_timestamp\=[0-9]+&hmac_sign\=[[:alnum:]]~',
             $recordedRequests[0]->getUri()->__toString()
         );
