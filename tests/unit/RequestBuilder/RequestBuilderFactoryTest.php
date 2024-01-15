@@ -20,6 +20,7 @@ class RequestBuilderFactoryTest extends TestCase
     /**
      * @test
      * @dataProvider provideBuilderMethods
+     * @param mixed $factoryArguments
      */
     public function shouldInstantiateBuilderToBuildAndSendRequest(
         string $factoryMethod,
