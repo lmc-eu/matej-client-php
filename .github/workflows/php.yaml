@@ -48,7 +48,7 @@ jobs:
           vendor/bin/phpunit --testsuite unit --colors=always --coverage-clover build/logs/clover.xml
 
       - name: Submit coverage to Coveralls
-        if: github.event_name != 'pull_request'
+        if: github.event_name == 'pull_request'
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -82,6 +82,7 @@ jobs:
           vendor/bin/phpunit --testsuite functional --colors=always --coverage-clover build/logs/clover.xml
 
       - name: Submit coverage to Coveralls
+        if: github.event_name == 'pull_request'
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
