@@ -1,10 +1,9 @@
 # PHP API Client for Matej recommendation engine
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/lmc/matej-client.svg?style=flat-square)](https://packagist.org/packages/lmc/matej-client)
+![Required PHP version](https://img.shields.io/packagist/dependency-v/lmc/matej-client/php?style=flat-square)
 [![GitHub Actions Build Status](https://img.shields.io/github/actions/workflow/status/lmc-eu/matej-client-php/php.yaml?style=flat-square&label=GitHub%20Actions%20build)](https://github.com/lmc-eu/matej-client-php/actions)
 [![Coverage Status](https://img.shields.io/coveralls/lmc-eu/matej-client-php/main.svg?style=flat-square)](https://coveralls.io/r/lmc-eu/matej-client-php?branch=main)
-
-This library requires PHP 7.1+.
 
 ## Installation
 
