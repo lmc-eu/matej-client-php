@@ -5,15 +5,16 @@ namespace Lmc\Matej\Http;
 use Http\Client\Common\Plugin\AuthenticationPlugin;
 use Http\Client\Common\Plugin\HeaderSetPlugin;
 use Http\Client\Common\PluginClient;
-use Http\Client\HttpClient;
-use Http\Discovery\HttpClientDiscovery;
-use Http\Discovery\MessageFactoryDiscovery;
-use Http\Message\MessageFactory;
+use Http\Discovery\Psr17FactoryDiscovery;
+use Http\Discovery\Psr18ClientDiscovery;
 use Lmc\Matej\Http\Plugin\ExceptionPlugin;
 use Lmc\Matej\Matej;
 use Lmc\Matej\Model\Request;
 use Lmc\Matej\Model\Response;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 
 /**
  * Encapsulates HTTP layer, ie. request/response handling.
@@ -31,12 +32,14 @@ class RequestManager
     protected $accountId;
     /** @var string */
     protected $apiKey;
-    /** @var HttpClient */
+    /** @var ClientInterface */
     protected $httpClient;
-    /** @var MessageFactory */
+    /** @var RequestFactoryInterface */
     protected $messageFactory;
     /** @var ResponseDecoderInterface */
     protected $responseDecoder;
+    /** @var StreamFactoryInterface */
+    protected $streamFactory;
 
     public function __construct(string $accountId, string $apiKey)
     {
@@ -56,13 +59,13 @@ class RequestManager
     }
 
     /** @codeCoverageIgnore */
-    public function setHttpClient(HttpClient $httpClient): void
+    public function setHttpClient(ClientInterface $httpClient): void
     {
         $this->httpClient = $httpClient;
     }
 
     /** @codeCoverageIgnore */
-    public function setMessageFactory(MessageFactory $messageFactory): void
+    public function setMessageFactory(RequestFactoryInterface $messageFactory): void
     {
         $this->messageFactory = $messageFactory;
     }
@@ -74,26 +77,32 @@ class RequestManager
     }
 
     /** @codeCoverageIgnore */
+    public function setStreamFactory(StreamFactoryInterface $streamFactory): void
+    {
+        $this->streamFactory = $streamFactory;
+    }
+
+    /** @codeCoverageIgnore */
     public function setBaseUrl(string $baseUrl): void
     {
         $this->baseUrl = $baseUrl;
     }
 
-    protected function getHttpClient(): HttpClient
+    protected function getHttpClient(): ClientInterface
     {
         if ($this->httpClient === null) {
             // @codeCoverageIgnoreStart
-            $this->httpClient = HttpClientDiscovery::find();
+            $this->httpClient = Psr18ClientDiscovery::find();
             // @codeCoverageIgnoreEnd
         }
 
         return $this->httpClient;
     }
 
-    protected function getMessageFactory(): MessageFactory
+    protected function getMessageFactory(): RequestFactoryInterface
     {
         if ($this->messageFactory === null) {
-            $this->messageFactory = MessageFactoryDiscovery::find();
+            $this->messageFactory = Psr17FactoryDiscovery::findRequestFactory();
         }
 
         return $this->messageFactory;
@@ -108,7 +117,16 @@ class RequestManager
         return $this->responseDecoder;
     }
 
-    protected function createConfiguredHttpClient(): HttpClient
+    protected function getStreamFactory(): StreamFactoryInterface
+    {
+        if ($this->streamFactory === null) {
+            $this->streamFactory = Psr17FactoryDiscovery::findStreamFactory();
+        }
+
+        return $this->streamFactory;
+    }
+
+    protected function createConfiguredHttpClient(): ClientInterface
     {
         return new PluginClient(
             $this->getHttpClient(),
@@ -122,19 +140,19 @@ class RequestManager
 
     protected function createHttpRequestFromMatejRequest(Request $request): RequestInterface
     {
-        $requestBody = json_encode($request->getData()); // TODO: use \Safe\json_encode
+        $requestBody = $this->getStreamFactory()->createStream(
+            json_encode($request->getData(), JSON_THROW_ON_ERROR)
+        ); // TODO: use \Safe\json_encode
         $uri = $this->buildBaseUrl() . $request->getPath();
 
         return $this->getMessageFactory()
             ->createRequest(
                 $request->getMethod(),
-                $uri,
-                [
-                    'Content-Type' => 'application/json',
-                    static::REQUEST_ID_HEADER => $request->getRequestId(),
-                ],
-                $requestBody
-            );
+                $uri
+            )
+            ->withHeader('Content-Type', 'application/json')
+            ->withHeader(static::REQUEST_ID_HEADER, $request->getRequestId())
+            ->withBody($requestBody);
     }
 
     protected function buildBaseUrl(): string

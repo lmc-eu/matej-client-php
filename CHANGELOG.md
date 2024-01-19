@@ -7,6 +7,10 @@
 ## Unreleased
 ### Changed
 - Require PHP ^7.3
+- Drop old version php-http/client-common ^1.6
+
+### Added
+- Replace abandoned package php-http/message-factory. Using psr/http-factory instead.
 
 ## 4.1.0 - 2021-08-19
 ### Added

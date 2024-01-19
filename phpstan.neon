@@ -4,8 +4,6 @@ parameters:
           path: tests/
         - message: '#Parameter .+ of class Lmc\\Matej\\Matej constructor expects string#'
           path: tests/integration/IntegrationTestCase.php
-        - message: '#Parameter \#4 \$body of method Http\\Message\\RequestFactory::createRequest\(\) expects#'
-          path: src/Http/RequestManager.php
         - '#Unsafe usage of new static\(\)#'
         - message: '#expects class-string#'
           path: tests/
